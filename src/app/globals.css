@@ -5,136 +5,345 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  /* Font family — system stack as brand font */
+  --font-sans: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --font-heading: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  /* ── NIA Brand Colors ── */
+  --color-brand: #2e9ddb;
+  --color-brand-2: #1b6fa8;
+  --color-brand-deep: #0e3a5c;
+  --color-brand-soft: #e8f2f9;
+  --color-gold: #f5b43e;
+
+  /* ── Ink (text) ── */
+  --color-ink: #0e1620;
+  --color-ink-2: #2a3340;
+  --color-ink-3: #5a6472;
+  --color-ink-4: #8b95a4;
+
+  /* ── Paper (backgrounds) ── */
+  --color-paper: #ffffff;
+  --color-paper-2: #f6f8fb;
+  --color-paper-3: #ecf1f6;
+
+  /* ── Lines ── */
+  --color-line: #e2e7ee;
+  --color-line-2: #c8d1dd;
+
+  /* ── Why-join tile tints ── */
+  --color-tint-lavender: #f0ebfa;
+  --color-tint-blush: #fbe9e7;
+  --color-tint-mint: #def2ea;
+  --color-tint-butter: #faf1d8;
+
+  /* ── Border radii ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* ── Shadows ── */
+  --shadow-pill: 0 2px 10px rgba(20, 30, 50, 0.1);
+  --shadow-card: 0 4px 20px rgba(20, 30, 50, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(46, 157, 219, 0.25);
+
+  /* ── Shadcn base mappings ── */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-paper-2);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-paper-2);
+  --color-muted-foreground: var(--color-ink-3);
+  --color-accent: var(--color-brand-soft);
+  --color-accent-foreground: var(--color-brand-2);
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-border: var(--color-line);
+  --color-input: var(--color-line);
+  --color-ring: var(--color-brand);
+  --color-card: var(--color-paper);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-paper);
+  --color-popover-foreground: var(--color-ink);
+
+  --color-chart-1: var(--color-brand);
+  --color-chart-2: var(--color-brand-2);
+  --color-chart-3: var(--color-gold);
+  --color-chart-4: var(--color-ink-3);
+  --color-chart-5: var(--color-ink-4);
+
+  --color-sidebar: var(--color-paper);
+  --color-sidebar-foreground: var(--color-ink);
+  --color-sidebar-primary: var(--color-brand);
+  --color-sidebar-primary-foreground: #ffffff;
+  --color-sidebar-accent: var(--color-paper-2);
+  --color-sidebar-accent-foreground: var(--color-ink);
+  --color-sidebar-border: var(--color-line);
+  --color-sidebar-ring: var(--color-brand);
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --gradiant: radial-gradient(
-    101.48% 108.23% at 90% 50%,
-    rgba(245, 180, 62, 0.18) 0%,
-    rgba(245, 180, 62, 0) 50%
-  );
-  --gradiant-2: radial-gradient(
-    128.93% 125.69% at 90% 10%,
-    rgba(46, 157, 219, 0.25) 0%,
-    rgba(46, 157, 219, 0) 50%
-  );
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
+/* ── Global resets ─────────────────────────────────────────────────── */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
+
+  html,
   body {
-    @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
   }
+
+  body {
+    @apply bg-paper text-ink font-sans;
+    font-size: 16px;
+    font-family:
+      system-ui,
+      -apple-system,
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
   html {
-    @apply font-sans;
+    @apply scroll-smooth scroll-pt-24;
   }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+}
+
+/* ── NIA Section Utilities ─────────────────────────────────────────── */
+
+@layer utilities {
+  .section-container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .section-padding {
+    padding-top: 88px;
+    padding-bottom: 88px;
+  }
+
+  .hero-container {
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  /* Headline construction: upright + italic blue */
+  .heading-italic-brand {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--color-brand);
+  }
+
+  /* Eyebrow / pill text */
+  .eyebrow-text {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-brand-2);
+  }
+
+  /* Stat numeral */
+  .stat-numeral {
+    font-size: clamp(56px, 5vw, 72px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-gold);
+  }
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .section-container,
+  .hero-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .section-padding {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+}
+
+/* ── Legacy User Utilities & Typography ────────────────────────────── */
+
+@layer utilities {
+  .serif {
+    font-family:
+      system-ui,
+      -apple-system,
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .serif-it {
+    font-family:
+      system-ui,
+      -apple-system,
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .reset-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+  }
+}
+
+/* ── Legacy Component Grids (from original source code) ────────────── */
+
+@media (max-width: 980px) {
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .stat-band-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .leader-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .schedule-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .faq-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .apply-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+
+  .post-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-link-d {
+    display: none !important;
+  }
+
+  .chapter-switcher-d {
+    display: none !important;
+  }
+
+  .chapter-switcher-m {
+    display: flex !important;
+  }
+
+  .nav-cta-d {
+    display: none !important;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .stat-band-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .members-grid {
+    display: none !important;
+  }
+
+  .members-carousel {
+    display: block !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .filter-row {
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.members-carousel-scroller::-webkit-scrollbar,
+.members-carousel-strip::-webkit-scrollbar {
+  display: none;
 }

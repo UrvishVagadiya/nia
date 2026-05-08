@@ -1,0 +1,13 @@
+export { default as Navbar } from "./Navbar";
+export { default as HeroSection } from "./HeroSection";
+export { default as StatBand } from "./StatBand";
+export { default as WhyJoinSection } from "./WhyJoinSection";
+export { default as StepsSection } from "./StepsSection";
+export { default as LeaderSection } from "./LeaderSection";
+export { default as MembersSection } from "./MembersSection";
+export { default as TestimonialsSection } from "./TestimonialsSection";
+export { default as ScheduleSection } from "./ScheduleSection";
+export { default as PricingSection } from "./PricingSection";
+export { default as UpdatesSection } from "./UpdatesSection";
+export { default as FAQSection } from "./FAQSection";
+export { default as Footer } from "./Footer";
