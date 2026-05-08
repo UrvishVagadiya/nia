@@ -2,45 +2,96 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { useChapter } from "@/lib/chapter-context";
-import { TESTIMONIALS_BY_CHAPTER } from "@/lib/data";
-import { Card } from "@/components/ui/card";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface Testimonial {
+  who: string;
+  role: string;
+  quote: string;
+  photo: string;
+}
+
+// ─── Data ─────────────────────────────────────────────────────────────────────
+// Replace this with your real data source / import from @/lib/data
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    who: "Hetal Mehta",
+    role: "Mehta & Associates · CA",
+    quote:
+      "I've closed three textile-export deals through warm intros from this room in eight months. NIA Innovators is the highest-leverage hour of my week.",
+    photo:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=faces",
+  },
+  {
+    who: "Karan Desai",
+    role: "Desai Tech · Founder",
+    quote:
+      "The referral quality here is unmatched. In six months I've built genuine partnerships that my previous network couldn't deliver in years.",
+    photo:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces",
+  },
+  {
+    who: "Anjali Shah",
+    role: "Shah Consulting · MD",
+    quote:
+      "Every meeting brings a warm intro that actually converts. This chapter changed how I think about professional networking entirely.",
+    photo:
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop&crop=faces",
+  },
+];
+
+// ─── Arc slot config (7 slots: 3 left · center · 3 right) ────────────────────
+
+interface SlotConfig {
+  size: number; // px
+  opacity: number; // 0–1
+  translateY: number; // px downward (positive = drops down, so outer slots drop)
+  borderWidth: number;
+  isCenter: boolean;
+}
+
+const SLOT_CONFIGS: SlotConfig[] = [
+  { size: 44, opacity: 0.55, translateY: 15, borderWidth: 3, isCenter: false },
+  { size: 52, opacity: 0.65, translateY: 10, borderWidth: 3, isCenter: false },
+  { size: 60, opacity: 0.75, translateY: 5, borderWidth: 3, isCenter: false },
+  { size: 84, opacity: 1, translateY: 0, borderWidth: 4, isCenter: true },
+  { size: 60, opacity: 0.75, translateY: 5, borderWidth: 3, isCenter: false },
+  { size: 52, opacity: 0.65, translateY: 10, borderWidth: 3, isCenter: false },
+  { size: 44, opacity: 0.55, translateY: 15, borderWidth: 3, isCenter: false },
+];
+
+// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function TestimonialsSection() {
-  const { activeChapterId } = useChapter();
-  const testimonials = TESTIMONIALS_BY_CHAPTER[activeChapterId] || [];
+  const testimonials = TESTIMONIALS;
   const [active, setActive] = useState(0);
-  const [prevChapterId, setPrevChapterId] = useState(activeChapterId);
+  const n = testimonials.length;
 
-  // Reset when chapter changes (using derived state instead of effect)
-  if (activeChapterId !== prevChapterId) {
-    setPrevChapterId(activeChapterId);
-    setActive(0);
-  }
+  const next = useCallback(() => setActive((p) => (p + 1) % n), [n]);
+  const prev = useCallback(() => setActive((p) => (p - 1 + n) % n), [n]);
 
-  const nextItem = useCallback(() => {
-    setActive((prev) => (prev + 1) % testimonials.length);
-  }, [testimonials.length]);
-
-  const prevItem = useCallback(() => {
-    setActive((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  }, [testimonials.length]);
-
-  // Auto-rotate
+  // Auto-rotate every 8 s — reset on manual interaction via key change trick
+  const [autoKey, setAutoKey] = useState(0);
   useEffect(() => {
-    const timer = setInterval(nextItem, 8000);
-    return () => clearInterval(timer);
-  }, [nextItem]);
+    const id = setInterval(next, 8000);
+    return () => clearInterval(id);
+  }, [next, autoKey]);
+
+  const handleManual = (idx: number) => {
+    setActive(idx);
+    setAutoKey((k) => k + 1); // restart auto-rotate timer
+  };
 
   const current = testimonials[active];
-  if (!current) return null;
 
   return (
     <section className="bg-paper">
       <div className="section-container py-[88px] px-8">
-        {/* Heading */}
-        <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-bold tracking-[0.06em] uppercase mb-4">
+        {/* ── Heading ── */}
+        <div className="text-center flex flex-col items-center mb-14 max-w-[720px] mx-auto">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-full bg-brand-soft text-brand-2 text-[12px] font-bold tracking-[0.06em] uppercase mb-4">
             <span className="w-[6px] h-[6px] rounded-full bg-brand" />
             Member voices
           </div>
@@ -53,53 +104,43 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        {/* Avatar Carousel Row */}
-        <div className="flex justify-center items-center gap-[18px] mb-[32px] relative min-h-[100px]">
-          {testimonials.map((t, i) => {
-            // Determine shortest circular distance
-            const n = testimonials.length;
-            const distRight = (i - active + n) % n;
-            const distLeft = (active - i + n) % n;
-            const distance = Math.min(distRight, distLeft);
-
-            let size = "w-[84px] h-[84px]";
-            let border = "border-4 border-brand";
-            let shadow = "shadow-[0_8px_20px_-6px_rgba(46,157,219,0.45)]";
-            let transform = "translate-y-[0px]";
-            let opacity = "opacity-100";
-
-            if (distance === 1) {
-              size = "w-[52px] h-[52px]";
-              border = "border-[3px] border-white";
-              shadow = "shadow-[0_4px_12px_-4px_rgba(14,58,92,0.2)]";
-              transform = "translate-y-[5px]";
-              opacity = "opacity-75";
-            } else if (distance === 2) {
-              size = "w-[48px] h-[48px]";
-              border = "border-[3px] border-white";
-              shadow = "shadow-[0_4px_12px_-4px_rgba(14,58,92,0.2)]";
-              transform = "translate-y-[10px]";
-              opacity = "opacity-65";
-            } else if (distance >= 3) {
-              size = "w-[44px] h-[44px]";
-              border = "border-[3px] border-white";
-              shadow = "shadow-[0_4px_12px_-4px_rgba(14,58,92,0.2)]";
-              transform = "translate-y-[15px]";
-              opacity = "opacity-55";
-            }
+        {/* ── Arc Avatar Row ── */}
+        {/*
+          7 fixed slots are always rendered.
+          Each slot resolves which testimonial to show via circular offset from `active`.
+          Slot 3 (index 3) is always the active/center slot.
+        */}
+        <div className="flex justify-center items-end gap-[14px] mb-12 min-h-[110px]">
+          {SLOT_CONFIGS.map((slot, slotIndex) => {
+            const offset = slotIndex - 3; // −3 … +3
+            const tIndex = (((active + offset) % n) + n) % n;
+            const t = testimonials[tIndex];
 
             return (
               <button
-                key={t.who + i}
-                onClick={() => setActive(i)}
+                key={slotIndex}
+                onClick={() => handleManual(tIndex)}
                 aria-label={`Show testimonial from ${t.who}`}
-                className={`rounded-full overflow-hidden shrink-0 cursor-pointer transition-all duration-350 ease-[cubic-bezier(0.4,0,0.2,1)] p-0 ${size} ${border} ${shadow} ${transform} ${opacity}`}
+                className="rounded-full overflow-hidden flex-shrink-0 cursor-pointer p-0 border-none transition-all duration-[350ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+                style={{
+                  width: slot.size,
+                  height: slot.size,
+                  opacity: slot.opacity,
+                  transform: `translateY(${slot.translateY}px)`,
+                  border: slot.isCenter
+                    ? "2px solid #2e9ddb"
+                    : `${slot.borderWidth}px solid #ffffff`,
+                  boxShadow: slot.isCenter
+                    ? "0 0 0 3px #2e9ddb, 0 8px 24px -6px rgba(46,157,219,0.5)"
+                    : "0 4px 12px -4px rgba(14,58,92,0.2)",
+                  zIndex: slot.isCenter ? 10 : 0,
+                }}
               >
                 <Image
                   src={t.photo}
                   alt={t.who}
-                  width={100}
-                  height={100}
+                  width={120}
+                  height={120}
                   className="w-full h-full object-cover"
                 />
               </button>
@@ -107,50 +148,65 @@ export default function TestimonialsSection() {
           })}
         </div>
 
-        {/* Main Testimonial Card */}
-        <Card className="max-w-[720px] mx-auto bg-white border border-line rounded-[18px] py-[36px] px-[48px] text-center relative transition-all duration-350 shadow-none">
-          <div className="font-serif italic text-[16px] text-brand mb-2 font-semibold">
+        {/* ── Testimonial Card ── */}
+        <div className="max-w-[840px] mx-auto bg-white border border-line-2/40 rounded-[24px] py-[48px] px-[64px] max-sm:px-8 max-sm:py-8 text-center relative transition-all duration-500 shadow-none">
+          {/* Name */}
+          <div className="font-sans italic text-[22px] text-brand mb-1 font-semibold tracking-[-0.01em]">
             {current.who}
           </div>
-          <div className="text-[12.5px] text-ink-4 mb-5 font-semibold tracking-[0.04em] uppercase">
+
+          {/* Role */}
+          <div className="text-[13px] text-ink-3 mb-8 font-bold tracking-[0.12em] uppercase">
             {current.role}
           </div>
-          <p className="text-[17px] leading-[1.65] text-ink-2 m-0 text-pretty">
-            &quot;{current.quote}&quot;
+
+          {/* Quote */}
+          <p className="text-[20px] max-sm:text-[17px] leading-[1.65] text-ink-2 m-0 max-w-[680px] mx-auto text-pretty">
+            &ldquo;{current.quote}&rdquo;
           </p>
 
-          <div className="absolute left-[-16px] top-1/2 -translate-y-1/2">
+          {/* Prev arrow */}
+          <div className="absolute left-[-22px] top-1/2 -translate-y-1/2 hidden md:block">
             <button
-              onClick={prevItem}
+              onClick={() => {
+                prev();
+                setAutoKey((k) => k + 1);
+              }}
               aria-label="Previous testimonial"
-              className="w-[36px] h-[36px] rounded-full bg-brand text-white grid place-items-center shadow-[0_4px_12px_-4px_rgba(46,157,219,0.5)] cursor-pointer pb-1 text-[20px] hover:bg-brand-2 transition-colors border-none"
+              className="w-[44px] h-[44px] rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
             >
-              ‹
+              <span className="text-[24px] leading-none">‹</span>
             </button>
           </div>
-          <div className="absolute right-[-16px] top-1/2 -translate-y-1/2">
-            <button
-              onClick={nextItem}
-              aria-label="Next testimonial"
-              className="w-[36px] h-[36px] rounded-full bg-brand text-white grid place-items-center shadow-[0_4px_12px_-4px_rgba(46,157,219,0.5)] cursor-pointer pb-1 text-[20px] hover:bg-brand-2 transition-colors border-none"
-            >
-              ›
-            </button>
-          </div>
-        </Card>
 
-        {/* Dots */}
-        <div className="flex justify-center gap-[6px] mt-[24px]">
+          {/* Next arrow */}
+          <div className="absolute right-[-22px] top-1/2 -translate-y-1/2 hidden md:block">
+            <button
+              onClick={() => {
+                next();
+                setAutoKey((k) => k + 1);
+              }}
+              aria-label="Next testimonial"
+              className="w-[44px] h-[44px] rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+            >
+              <span className="text-[24px] leading-none">›</span>
+            </button>
+          </div>
+        </div>
+
+        {/* ── Dot indicators ── */}
+        <div className="flex justify-center gap-[6px] mt-6">
           {testimonials.map((_, i) => (
             <button
               key={i}
-              onClick={() => setActive(i)}
+              onClick={() => handleManual(i)}
               aria-label={`Show testimonial ${i + 1}`}
-              className={`rounded-[4px] transition-all duration-200 border-none p-0 cursor-pointer ${
+              className={[
+                "rounded-[4px] border-none p-0 cursor-pointer transition-all duration-200",
                 i === active
                   ? "w-[24px] h-[8px] bg-brand"
-                  : "w-[8px] h-[8px] bg-line-2 hover:bg-ink-4"
-              }`}
+                  : "w-[8px] h-[8px] bg-line-2 hover:bg-ink-4",
+              ].join(" ")}
             />
           ))}
         </div>
