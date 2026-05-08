@@ -25,7 +25,7 @@ export default function HeroSection() {
             {chapter.members} category leaders. One chair per specialty. No overlap.
           </p>
 
-          <ul className="list-none p-0 m-0 mb-[32px] grid grid-cols-1 sm:grid-cols-2 gap-[12px]">
+          <ul className="list-none p-0 m-0 mb-[32px] grid grid-cols-2 gap-[12px]">
             {[
               "Weekly meetings, predictable cadence",
               "One member per specialty",
