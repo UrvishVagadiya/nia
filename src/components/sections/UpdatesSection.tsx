@@ -2,67 +2,69 @@
 
 import Image from "next/image";
 import Link from "next/link";
+
 import { BLOG_POSTS } from "@/lib/data";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight } from "lucide-react";
+import { Card, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 
 export default function UpdatesSection() {
   return (
-    <section id="updates" className="bg-paper-2 section-padding">
-      <div className="section-container">
+    <section id="updates" className="bg-paper-2 border-t border-line">
+      <div className="max-w-[1280px] mx-auto px-[32px] py-[88px]">
         {/* Heading */}
-        <div className="text-center mb-12">
-          <span className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 eyebrow-text mb-4">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
-            UPDATES
-          </span>
-          <h2 className="text-[clamp(28px,4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-ink">
-            From the <span className="heading-italic-brand">chapter floor.</span>
+        <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-[700] tracking-[0.06em] uppercase mb-[16px]">
+            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+            From the chapter
+          </div>
+          <h2 className="font-sans text-[clamp(34px,4.4vw,52px)] leading-[1.1] tracking-[-0.025em] font-[700] m-0 text-brand-deep text-balance">
+            Updates from the room.
           </h2>
+          <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
+            Recaps, member spotlights and industry insights from across NIA Surat.
+          </p>
         </div>
 
         {/* Blog grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
           {BLOG_POSTS.map((post) => (
-            <article
+            <Card
               key={post.title}
-              className="rounded-[16px] overflow-hidden bg-paper border border-line hover:shadow-card transition-all duration-200 group"
+              className="bg-white rounded-[18px] border border-line ring-0 overflow-hidden flex flex-col shadow-none !py-0 gap-0"
             >
-              <div className="relative aspect-[3/2]">
+              <div className="aspect-[16/10] bg-paper-3 relative overflow-hidden">
                 <Image
                   src={post.image}
                   alt={post.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-              </div>
-              <div className="p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-[12px] text-ink-4">{post.date}</span>
-                  <Badge
-                    variant="secondary"
-                    className="text-[11px] font-semibold bg-brand-soft text-brand-2 border-0"
-                  >
-                    {post.category}
-                  </Badge>
+                <div className="absolute top-[14px] left-[14px] px-[12px] py-[5px] bg-white text-brand-2 text-[11px] font-[700] rounded-pill tracking-[0.04em]">
+                  {post.category}
                 </div>
-                <h3 className="text-[17px] font-bold text-ink leading-snug mb-2">{post.title}</h3>
-                <p className="text-[14px] text-ink-3 line-clamp-2">{post.preview}</p>
               </div>
-            </article>
-          ))}
-        </div>
 
-        {/* Read all */}
-        <div className="text-center mt-8">
-          <Link
-            href="/updates"
-            className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-brand-2 hover:text-brand transition-colors"
-          >
-            Read all updates
-            <ArrowRight size={16} />
-          </Link>
+              <div className="px-[22px] pt-[20px] pb-[24px] flex flex-col gap-[10px] flex-1">
+                <div className="text-[11.5px] text-ink-4 font-[600] tracking-[0.04em]">
+                  {post.date}
+                </div>
+                <CardTitle className="text-[18px] leading-[1.3] tracking-[-0.01em] font-[700] m-0 text-brand-deep text-balance">
+                  {post.title}
+                </CardTitle>
+                <CardContent className="p-0 text-[13.5px] leading-[1.55] text-ink-3 m-0 flex-1 text-pretty">
+                  {post.preview}
+                </CardContent>
+                <CardFooter className="p-0 mt-[6px]">
+                  <Link
+                    href={post.link || "#"}
+                    className="text-brand text-[13px] font-[700] items-center gap-[6px] hover:text-brand-2 transition-colors"
+                  >
+                    Read post <span className="font-serif">&rarr;</span>
+                  </Link>
+                </CardFooter>
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
     </section>

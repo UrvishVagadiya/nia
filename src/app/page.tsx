@@ -12,6 +12,7 @@ import {
   PricingSection,
   UpdatesSection,
   FAQSection,
+  GetintoRoom,
 } from "@/components/sections";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       <HeroSection />
       <StatBand />
       <WhyJoinSection />
+      <GetintoRoom />
       <LeaderSection />
       <MembersSection />
       <TestimonialsSection />

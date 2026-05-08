@@ -4,120 +4,107 @@ import { Check } from "lucide-react";
 
 export default function StepsSection() {
   return (
-    <section className="bg-paper-2 section-padding flex items-center justify-center">
-      <div className="w-full max-w-[1080px] px-4 md:px-8 mx-auto">
-        <div className="flex flex-col lg:flex-row bg-white rounded-[20px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+    <section className="bg-paper-2 border-t border-line">
+      <div className="max-w-[1280px] mx-auto px-[32px] py-[88px]">
+        <div className="bg-white rounded-[24px] overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}
-          <div className="bg-brand-deep text-white p-10 md:p-14 lg:p-16 lg:w-1/2 flex flex-col justify-center">
-            <div className="mb-8">
-              <span className="inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-1.5 text-[11px] font-bold tracking-[0.12em] uppercase text-white/90">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
-                VISIT A MEETING
-              </span>
-            </div>
+          <div className="bg-brand-deep text-white p-[52px_44px] relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(46,157,219,0.25),transparent_50%)] pointer-events-none"></div>
 
-            <h2 className="text-[clamp(36px,4.5vw,52px)] font-bold leading-[1.05] tracking-[-0.02em] mb-6">
-              Sit in,
-              <br />
-              <span className="italic text-brand font-semibold">before you sign up.</span>
-            </h2>
+            <div className="relative">
+              <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-white/15 text-white text-[12px] font-[700] tracking-[0.06em] uppercase mb-[18px]">
+                <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+                Visit a meeting
+              </div>
 
-            <p className="text-[16px] text-white/90 leading-relaxed mb-10 max-w-[360px]">
-              One Tuesday morning is the best way to feel the room. Tell us your specialty — if the
-              seat is open, we&apos;ll book you in.
-            </p>
+              <h2 className="font-sans text-[clamp(32px,3.8vw,48px)] leading-[1.05] tracking-[-0.025em] font-[700] m-0 mb-[18px] text-balance">
+                Sit in,
+                <br />
+                <span className="italic text-brand font-serif">before you sign up.</span>
+              </h2>
 
-            <div className="flex flex-col gap-4.5">
-              <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-[22px] h-[22px] rounded-full bg-brand text-white shrink-0 mt-[2px]">
-                  <Check size={13} strokeWidth={3} />
-                </div>
-                <span className="text-[15px] text-white">
+              <p className="text-[16px] leading-[1.6] text-white/80 mb-[28px] max-w-[460px] text-pretty">
+                One Tuesday morning is the best way to feel the room. Tell us your specialty — if
+                the seat is open, we&apos;ll book you in.
+              </p>
+
+              <ul className="list-none p-0 m-0 flex flex-col gap-[12px]">
+                <li className="flex items-center gap-[12px] text-[14.5px] text-white/90">
+                  <span className="w-[22px] h-[22px] rounded-full bg-brand grid place-items-center shrink-0">
+                    <Check size={12} strokeWidth={3} className="text-white" />
+                  </span>
                   No fee, no obligation, no follow-up sales call
-                </span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-[22px] h-[22px] rounded-full bg-brand text-white shrink-0 mt-[2px]">
-                  <Check size={13} strokeWidth={3} />
-                </div>
-                <span className="text-[15px] text-white">
+                </li>
+                <li className="flex items-center gap-[12px] text-[14.5px] text-white/90">
+                  <span className="w-[22px] h-[22px] rounded-full bg-brand grid place-items-center shrink-0">
+                    <Check size={12} strokeWidth={3} className="text-white" />
+                  </span>
                   Sreyansh personally vets every applicant
-                </span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="flex items-center justify-center w-[22px] h-[22px] rounded-full bg-brand text-white shrink-0 mt-[2px]">
-                  <Check size={13} strokeWidth={3} />
-                </div>
-                <span className="text-[15px] text-white">
+                </li>
+                <li className="flex items-center gap-[12px] text-[14.5px] text-white/90">
+                  <span className="w-[22px] h-[22px] rounded-full bg-brand grid place-items-center shrink-0">
+                    <Check size={12} strokeWidth={3} className="text-white" />
+                  </span>
                   You&apos;ll know if it&apos;s a fit within 90 minutes
-                </span>
-              </div>
+                </li>
+              </ul>
             </div>
           </div>
 
           {/* Right Side (Form) */}
-          <div className="bg-white p-10 md:p-14 lg:p-16 lg:w-1/2 flex flex-col justify-center">
-            <div className="mb-8">
-              <p className="text-[11px] font-bold text-brand uppercase tracking-[0.1em] mb-2.5">
-                VISITOR PASS - INNOVATORS
-              </p>
-              <h3 className="text-[26px] font-bold text-brand-deep">Request a pass</h3>
-            </div>
-
-            <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()}>
+          <div className="p-[44px_36px]">
+            <form className="flex flex-col gap-[16px]" onSubmit={(e) => e.preventDefault()}>
               <div>
-                <label htmlFor="name" className="text-[12px] font-bold text-ink mb-1.5 block">
-                  Your name
-                </label>
+                <div className="text-[11px] font-[700] text-brand-2 uppercase tracking-[0.12em]">
+                  Visitor Pass · Innovators
+                </div>
+                <div className="text-[24px] leading-[1.2] font-[700] mb-[8px] text-brand-deep tracking-[-0.015em]">
+                  Request a pass
+                </div>
+              </div>
+
+              <label className="flex flex-col gap-[6px]">
+                <span className="text-[12px] text-ink-2 font-[700]">Your name</span>
                 <input
-                  id="name"
                   placeholder="Full name"
-                  className="w-full h-[46px] px-4 rounded-[8px] border border-line focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand shadow-[0_1px_2px_rgba(0,0,0,0.02)] text-[14px] placeholder:text-ink-4 transition-all"
+                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
-              </div>
+              </label>
 
-              <div>
-                <label htmlFor="specialty" className="text-[12px] font-bold text-ink mb-1.5 block">
-                  Your specialty / trade
-                </label>
+              <label className="flex flex-col gap-[6px]">
+                <span className="text-[12px] text-ink-2 font-[700]">Your specialty / trade</span>
                 <input
-                  id="specialty"
                   placeholder="e.g. Textile exports"
-                  className="w-full h-[46px] px-4 rounded-[8px] border border-line focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand shadow-[0_1px_2px_rgba(0,0,0,0.02)] text-[14px] placeholder:text-ink-4 transition-all"
+                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
-              </div>
+              </label>
 
-              <div>
-                <label htmlFor="phone" className="text-[12px] font-bold text-ink mb-1.5 block">
-                  Phone (with code)
-                </label>
+              <label className="flex flex-col gap-[6px]">
+                <span className="text-[12px] text-ink-2 font-[700]">Phone (with code)</span>
                 <input
-                  id="phone"
-                  type="tel"
-                  placeholder="+91 ..."
-                  className="w-full h-[46px] px-4 rounded-[8px] border border-line focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand shadow-[0_1px_2px_rgba(0,0,0,0.02)] text-[14px] placeholder:text-ink-4 transition-all"
+                  placeholder="+91 …"
+                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
-              </div>
+              </label>
 
-              <div>
-                <label htmlFor="message" className="text-[12px] font-bold text-ink mb-1.5 block">
-                  Anything else?
-                </label>
+              <label className="flex flex-col gap-[6px]">
+                <span className="text-[12px] text-ink-2 font-[700]">Anything else?</span>
                 <textarea
-                  id="message"
                   placeholder="Optional context"
-                  className="w-full h-[100px] p-4 rounded-[8px] border border-line focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand shadow-[0_1px_2px_rgba(0,0,0,0.02)] text-[14px] placeholder:text-ink-4 resize-none transition-all"
+                  rows={3}
+                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-y focus:border-brand transition-colors"
                 />
-              </div>
+              </label>
 
-              <div className="mt-1">
-                <button
-                  type="button"
-                  className="w-full flex items-center justify-center gap-1.5 h-[46px] rounded-pill bg-brand text-white font-semibold text-[14.5px] hover:bg-brand-2 transition-colors shadow-sm"
-                >
-                  Submit request <span className="font-serif ml-0.5">&rarr;</span>
-                </button>
-                <p className="text-[12px] text-ink-4 mt-4 text-center">Replied within 24 hours</p>
+              <button
+                type="submit"
+                className="bg-brand text-white border-none rounded-pill px-[22px] py-[14px] text-[14.5px] font-[700] cursor-pointer mt-[6px] inline-flex items-center justify-center gap-[8px] hover:bg-brand-2 transition-colors"
+              >
+                Submit request <span className="font-serif">&rarr;</span>
+              </button>
+
+              <div className="text-[11.5px] text-ink-4 text-center font-[600]">
+                Replied within 24 hours
               </div>
             </form>
           </div>

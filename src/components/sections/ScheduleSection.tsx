@@ -58,7 +58,7 @@ export default function ScheduleSection() {
                 Next meeting
               </span>
               <span className="text-[11px] text-white/70 font-semibold tracking-[0.04em]">
-                {nextMeeting.rsvps} RSVP&apos;d
+                {nextMeeting.rsvps} {" RSVP'd"}
               </span>
             </div>
 

@@ -1,38 +1,12 @@
 "use client";
 
 import Link from "next/link";
-
-const COLS = [
-  {
-    title: "Chapters",
-    links: [
-      { label: "Innovators", href: "#" },
-      { label: "Superiors", href: "#" },
-      { label: "Pioneers", href: "#" },
-    ],
-  },
-  {
-    title: "Visit",
-    links: [
-      { label: "About NIA", href: "#about" },
-      { label: "Schedule", href: "#schedule" },
-      { label: "Apply", href: "#apply" },
-    ],
-  },
-  {
-    title: "Contact",
-    links: [
-      { label: "+91 98 25 0X XXXX", href: "tel:+919825000000" },
-      { label: "hello@niasurat.com", href: "mailto:hello@niasurat.com" },
-      { label: "Surat, Gujarat", href: "#" },
-    ],
-  },
-];
+import { FOOTER_DATA } from "@/lib/data";
 
 export default function Footer() {
   return (
     <footer className="bg-brand-deep text-white">
-      <div className="section-container py-16 lg:py-20">
+      <div className="section-container pt-16 pb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 lg:gap-16">
           {/* Brand column */}
           <div>
@@ -43,7 +17,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {COLS.map((col) => (
+          {FOOTER_DATA.map((col) => (
             <div key={col.title}>
               <h4 className="text-[12px] font-semibold uppercase tracking-[0.14em] text-white/40 mb-4">
                 {col.title}
@@ -73,7 +47,7 @@ export default function Footer() {
             href="https://propelius.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[12px] text-white/40 bg-white/5 px-3 py-1.5 rounded-pill hover:bg-white/10 transition-colors"
+            className="inline-flex items-center gap-[8px] text-[12px] text-white px-[14px] py-[7px] bg-white/[0.08] border border-white/15 rounded-pill font-[600] hover:bg-white/[0.12] transition-colors"
           >
             Built by Propelius
           </Link>

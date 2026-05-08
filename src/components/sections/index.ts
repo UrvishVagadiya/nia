@@ -11,3 +11,4 @@ export { default as PricingSection } from "./PricingSection";
 export { default as UpdatesSection } from "./UpdatesSection";
 export { default as FAQSection } from "./FAQSection";
 export { default as Footer } from "./Footer";
+export { default as GetintoRoom } from "./GetintoRoom";

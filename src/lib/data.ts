@@ -34,6 +34,8 @@ export type Member = {
   specialty: string;
   oneliner: string;
   photo: string;
+  location?: string;
+  joined?: string;
 };
 
 export type Testimonial = {
@@ -61,6 +63,15 @@ export type BlogPost = {
   date: string;
   category: string;
   image: string;
+  link?: string;
+};
+
+export type FooterColumn = {
+  title: string;
+  links: {
+    label: string;
+    href: string;
+  }[];
 };
 
 // ─── Photo helpers ───────────────────────────────────────────────────────────
@@ -197,32 +208,44 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       convention: "Jacquards Weaver",
       company: "Saboo Textiles",
       specialty: "Textiles",
-      oneliner: "Premium jacquard weaving for fashion houses across India.",
+      oneliner:
+        "Premium jacquard weaving for fashion houses across India. Three-generation family loom now exporting to Milan and...",
       photo: pic("m", 0),
+      location: "Pandesara, Surat",
+      joined: "Since 2002",
     },
     {
       name: "Hetal Mehta",
       convention: "Numbers Whisperer",
       company: "Mehta & Associates",
       specialty: "Chartered Accountancy",
-      oneliner: "Tax & advisory for family businesses.",
+      oneliner:
+        "Tax & advisory for family businesses navigating succession, GST, and cross-border textile exports.",
       photo: pic("f", 0),
+      location: "Athwa, Surat",
+      joined: "Since 2009",
     },
     {
       name: "Rohan Choksi",
       convention: "Stone Reader",
       company: "Choksi Diamonds",
       specialty: "Diamond Trading",
-      oneliner: "Solitaires sourced from Antwerp & Mumbai.",
+      oneliner:
+        "Solitaires sourced from Antwerp & Mumbai. Specialises in 1ct+ certified diamonds for bridal jewellers.",
       photo: pic("m", 1),
+      location: "Varachha, Surat",
+      joined: "Since 2014",
     },
     {
       name: "Priya Nanavati",
       convention: "Frame Maker",
       company: "Studio Nanavati",
       specialty: "Photography",
-      oneliner: "Wedding & brand photography.",
+      oneliner:
+        "Wedding & brand photography. Documentary style, six-figure portfolio of Gujarat's family-run brands.",
       photo: pic("f", 1),
+      location: "Vesu, Surat",
+      joined: "Since 2016",
     },
     {
       name: "Karan Desai",
@@ -231,6 +254,8 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       specialty: "IT & Software",
       oneliner: "Custom ERP for textile manufacturers.",
       photo: pic("m", 2),
+      location: "Piplod, Surat",
+      joined: "Since 2018",
     },
     {
       name: "Anjali Shah",
@@ -239,6 +264,8 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       specialty: "Architecture",
       oneliner: "Residential architecture across Gujarat.",
       photo: pic("f", 2),
+      location: "Adajan, Surat",
+      joined: "Since 2021",
     },
     {
       name: "Vivek Patel",
@@ -247,6 +274,8 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       specialty: "Wealth Management",
       oneliner: "Portfolio advisory for HNIs.",
       photo: pic("m", 3),
+      location: "Pandesara, Surat",
+      joined: "Since 2002",
     },
     {
       name: "Nirali Kothari",
@@ -255,38 +284,8 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       specialty: "Jewellery",
       oneliner: "Bridal sets, four generations in.",
       photo: pic("f", 3),
-    },
-    {
-      name: "Manish Trivedi",
-      convention: "Truth Keeper",
-      company: "Trivedi Legal",
-      specialty: "Law \u2014 Corporate",
-      oneliner: "M&A and contract law.",
-      photo: pic("m", 4),
-    },
-    {
-      name: "Rina Bhatia",
-      convention: "Heart Healer",
-      company: "Bhatia Clinic",
-      specialty: "Medicine",
-      oneliner: "Preventive cardiac care.",
-      photo: pic("f", 4),
-    },
-    {
-      name: "Devang Gandhi",
-      convention: "Space Shaper",
-      company: "Gandhi Interiors",
-      specialty: "Interior Design",
-      oneliner: "Hospitality and residential interiors.",
-      photo: pic("m", 5),
-    },
-    {
-      name: "Sneha Joshi",
-      convention: "Voice Lifter",
-      company: "Joshi PR",
-      specialty: "Public Relations",
-      oneliner: "PR for D2C and family-run brands.",
-      photo: pic("f", 5),
+      location: "Athwa, Surat",
+      joined: "Since 2009",
     },
   ],
   superiors: [
@@ -297,6 +296,8 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       specialty: "Textiles",
       oneliner: "Industrial-scale weaving and finishing.",
       photo: pic("m", 6),
+      location: "Varachha, Surat",
+      joined: "Since 2014",
     },
     {
       name: "Meena Kapadia",
@@ -305,6 +306,8 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       specialty: "Chartered Accountancy",
       oneliner: "Audit and advisory, 30+ years.",
       photo: pic("f", 0),
+      location: "Vesu, Surat",
+      joined: "Since 2016",
     },
     {
       name: "Sanjay Zaveri",
@@ -313,78 +316,58 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       specialty: "Diamond Trading",
       oneliner: "Wholesale, polished and rough.",
       photo: pic("m", 7),
+      location: "Piplod, Surat",
+      joined: "Since 2018",
     },
     {
       name: "Falguni Modi",
       convention: "Brand Builder",
       company: "Modi Group",
-      specialty: "Marketing",
+      specialty: "Photography",
       oneliner: "Full-service brand & growth.",
       photo: pic("f", 1),
+      location: "Adajan, Surat",
+      joined: "Since 2021",
     },
     {
       name: "Yash Vora",
       convention: "Steel Setter",
       company: "Vora Steels",
-      specialty: "Manufacturing",
+      specialty: "IT & Software",
       oneliner: "Structural steel for infrastructure.",
       photo: pic("m", 8),
+      location: "Pandesara, Surat",
+      joined: "Since 2002",
     },
     {
       name: "Aarti Bhansali",
       convention: "Bone Setter",
       company: "Bhansali Ortho",
-      specialty: "Medicine",
+      specialty: "Architecture",
       oneliner: "Joint replacement specialist.",
       photo: pic("f", 2),
+      location: "Athwa, Surat",
+      joined: "Since 2009",
     },
     {
       name: "Pranav Surana",
       convention: "Land Lord",
       company: "Surana Realty",
-      specialty: "Real Estate",
+      specialty: "Wealth Management",
       oneliner: "Premium residential developments.",
       photo: pic("m", 9),
+      location: "Varachha, Surat",
+      joined: "Since 2014",
     },
     {
       name: "Komal Jariwala",
       convention: "Thread Master",
       company: "Jariwala Embroidery",
-      specialty: "Embroidery",
+      specialty: "Jewellery",
       oneliner: "Hand & machine embroidery, exports.",
       photo: pic("f", 3),
-    },
-    {
-      name: "Nikhil Dalal",
-      convention: "Risk Reader",
-      company: "Dalal Insurance",
-      specialty: "Insurance",
-      oneliner: "Commercial and business insurance.",
-      photo: pic("m", 10),
-    },
-    {
-      name: "Ritu Agarwal",
-      convention: "Plate Painter",
-      company: "Agarwal Catering",
-      specialty: "Catering",
-      oneliner: "Wedding and corporate catering.",
-      photo: pic("f", 4),
-    },
-    {
-      name: "Bhavesh Tanna",
-      convention: "Wheel Wright",
-      company: "Tanna Logistics",
-      specialty: "Logistics",
-      oneliner: "Pan-India textile logistics.",
-      photo: pic("m", 11),
-    },
-    {
-      name: "Shilpa Mansukhani",
-      convention: "Garden Grower",
-      company: "Mansukhani Florals",
-      specialty: "Event Decor",
-      oneliner: "Floral and event production.",
-      photo: pic("f", 5),
+      location: "Vesu, Surat",
+      joined: "Since 2016",
     },
   ],
   pioneers: [
@@ -392,97 +375,81 @@ export const MEMBERS_BY_CHAPTER: Record<string, Member[]> = {
       name: "Tarang Kanjani",
       convention: "Pixel Pusher",
       company: "Kanjani Studios",
-      specialty: "Branding",
+      specialty: "Textiles",
       oneliner: "Identity systems for new ventures.",
       photo: pic("m", 0),
+      location: "Piplod, Surat",
+      joined: "Since 2018",
     },
     {
-      name: "Pooja Vasa",
-      convention: "Word Smith",
-      company: "Vasa Content",
-      specialty: "Marketing",
-      oneliner: "Long-form content for B2B.",
-      photo: pic("f", 0),
-    },
-    {
-      name: "Akshay Sojitra",
-      convention: "Watt Watcher",
-      company: "Sojitra Solar",
-      specialty: "Solar Energy",
-      oneliner: "Rooftop solar for businesses.",
-      photo: pic("m", 1),
-    },
-    {
-      name: "Heena Lalwani",
-      convention: "Skin Scholar",
-      company: "Lalwani Dermatology",
-      specialty: "Medicine",
-      oneliner: "Clinical and aesthetic skincare.",
-      photo: pic("f", 1),
-    },
-    {
-      name: "Mihir Surti",
-      convention: "Tax Tactician",
-      company: "Surti Tax Co.",
-      specialty: "Tax Advisory",
-      oneliner: "GST and direct tax for SMEs.",
-      photo: pic("m", 2),
-    },
-    {
-      name: "Krina Chheda",
-      convention: "Smile Shaper",
-      company: "Chheda Dental",
-      specialty: "Dentistry",
-      oneliner: "Cosmetic and implant dentistry.",
-      photo: pic("f", 2),
-    },
-    {
-      name: "Sahil Doshi",
-      convention: "Cargo Captain",
-      company: "Doshi Shipping",
-      specialty: "Logistics",
-      oneliner: "Sea & air freight, EU and USA.",
-      photo: pic("m", 3),
-    },
-    {
-      name: "Ishita Mehrotra",
-      convention: "Page Turner",
-      company: "Mehrotra Publishing",
-      specialty: "Publishing",
-      oneliner: "Trade and academic publishing.",
-      photo: pic("f", 3),
-    },
-    {
-      name: "Dhruv Gajjar",
-      convention: "Pipe Plumber",
-      company: "Gajjar Plumbing Pro",
-      specialty: "MEP",
-      oneliner: "Commercial MEP contractor.",
-      photo: pic("m", 4),
-    },
-    {
-      name: "Rashmi Vakharia",
-      convention: "Petal Planner",
-      company: "Vakharia Events",
-      specialty: "Wedding Planning",
-      oneliner: "Destination weddings, full service.",
+      name: "Niyati Desai",
+      convention: "Space Solver",
+      company: "Desai Arch",
+      specialty: "Chartered Accountancy",
+      oneliner: "Commercial office interiors.",
       photo: pic("f", 4),
+      location: "Adajan, Surat",
+      joined: "Since 2021",
     },
     {
-      name: "Ojas Kheni",
-      convention: "Stage Setter",
-      company: "Kheni AV",
-      specialty: "Audio Visual",
-      oneliner: "Sound & light for live events.",
-      photo: pic("m", 5),
+      name: "Ravi Teja",
+      convention: "Code Crafter",
+      company: "Teja Tech",
+      specialty: "Diamond Trading",
+      oneliner: "Mobile app development for D2C.",
+      photo: pic("m", 1),
+      location: "Pandesara, Surat",
+      joined: "Since 2002",
     },
     {
-      name: "Bhumi Lath",
-      convention: "Trip Tailor",
-      company: "Lath Travels",
-      specialty: "Travel & Tourism",
-      oneliner: "Bespoke leisure & business travel.",
+      name: "Mona Singh",
+      convention: "Event Weaver",
+      company: "Singh Events",
+      specialty: "Photography",
+      oneliner: "Corporate offsites and conferences.",
       photo: pic("f", 5),
+      location: "Athwa, Surat",
+      joined: "Since 2009",
+    },
+    {
+      name: "Kiran Patel",
+      convention: "Tax Tracker",
+      company: "Patel & Patel",
+      specialty: "IT & Software",
+      oneliner: "GST and corporate tax compliance.",
+      photo: pic("m", 2),
+      location: "Varachha, Surat",
+      joined: "Since 2014",
+    },
+    {
+      name: "Dhruv Shah",
+      convention: "Bean Brewer",
+      company: "Shah Roasters",
+      specialty: "Architecture",
+      oneliner: "Specialty coffee roasting.",
+      photo: pic("m", 3),
+      location: "Vesu, Surat",
+      joined: "Since 2016",
+    },
+    {
+      name: "Anita Jain",
+      convention: "Mind Mender",
+      company: "Jain Therapy",
+      specialty: "Wealth Management",
+      oneliner: "Corporate wellness programs.",
+      photo: pic("f", 6),
+      location: "Piplod, Surat",
+      joined: "Since 2018",
+    },
+    {
+      name: "Vikram Joshi",
+      convention: "Print Pro",
+      company: "Joshi Printers",
+      specialty: "Jewellery",
+      oneliner: "High-end packaging solutions.",
+      photo: pic("m", 4),
+      location: "Adajan, Surat",
+      joined: "Since 2021",
     },
   ],
 };
@@ -619,28 +586,31 @@ export const VALUE_PROPS: ValueProp[] = [
 
 export const BLOG_POSTS: BlogPost[] = [
   {
-    title: "How one referral changed a textile exporter\u2019s quarter.",
-    preview:
-      "When Abhishek walked into his first NIA meeting, he had no idea a 90-minute session would lead to his biggest export order of the year.",
-    date: "Apr 28, 2025",
-    category: "Member Story",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
+    category: "Playbook",
+    image:
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=900&q=80",
+    date: "Apr 28, 2026",
+    title: "The 60-second pitch \u2014 what works in our room.",
+    preview: "The four-line structure for the weekly pitch that consistently produces referrals.",
+    link: "#",
   },
   {
-    title: "Why category exclusivity makes referrals work.",
-    preview:
-      "Most networking groups fill seats. NIA fills categories. Here\u2019s why limiting one professional per specialty changes the trust equation.",
-    date: "Apr 15, 2025",
-    category: "Insight",
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=400&fit=crop",
+    category: "Chapter Notes",
+    image:
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80",
+    date: "Apr 14, 2026",
+    title: "Q1 2026 \u2014 \u20B93.8 Cr exchanged, 312 referrals, 4 new seats.",
+    preview: "Quarterly transparency note from across all three Surat chapters.",
+    link: "#",
   },
   {
-    title: "Three chapters, one mission \u2014 the NIA Surat origin story.",
-    preview:
-      "Sreyansh Jain started with a single room and 12 chairs. Two years later, NIA Surat operates three weekly chapters across the city.",
-    date: "Mar 30, 2025",
-    category: "Chapter Update",
-    image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop",
+    category: "Leader",
+    image:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80",
+    date: "Mar 30, 2026",
+    title: "Why Sreyansh started NIA Surat \u2014 and what he's learned.",
+    preview: "A long conversation with our Community Builder about trust and the room.",
+    link: "#",
   },
 ];
 
@@ -669,3 +639,32 @@ export const SCHEDULE_BY_CHAPTER: Record<
     { day: "Thu", date: "Jun 4", topic: "Quarterly Review & Planning", rsvps: 21 },
   ],
 };
+
+// ─── Footer Data ─────────────────────────────────────────────────────────────
+
+export const FOOTER_DATA: FooterColumn[] = [
+  {
+    title: "Chapters",
+    links: [
+      { label: "Innovators", href: "#" },
+      { label: "Superiors", href: "#" },
+      { label: "Pioneers", href: "#" },
+    ],
+  },
+  {
+    title: "Visit",
+    links: [
+      { label: "About NIA", href: "#about" },
+      { label: "Schedule", href: "#schedule" },
+      { label: "Apply", href: "#apply" },
+    ],
+  },
+  {
+    title: "Contact",
+    links: [
+      { label: "+91 98 25 0X XXXX", href: "tel:+919825000000" },
+      { label: "hello@niasurat.com", href: "mailto:hello@niasurat.com" },
+      { label: "Surat, Gujarat", href: "#" },
+    ],
+  },
+];
