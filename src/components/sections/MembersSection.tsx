@@ -255,7 +255,7 @@ function MemberCard({ member }: { member: Member }) {
           className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/90 via-[#0e3a5c]/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/40 via-[#0e3a5c]/10 to-transparent" />
         <div className="absolute top-4 left-4 bg-white text-brand px-2.5 py-1 rounded-pill text-2.5 font-bold shadow-sm flex items-center gap-[6px] tracking-wide">
           <span className="w-1.25 h-1.25 rounded-full bg-brand" />
           {member.specialty}
