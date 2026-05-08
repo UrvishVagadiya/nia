@@ -3,17 +3,12 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 interface Testimonial {
   who: string;
   role: string;
   quote: string;
   photo: string;
 }
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-// Replace this with your real data source / import from @/lib/data
 
 const TESTIMONIALS: Testimonial[] = [
   {
@@ -42,12 +37,10 @@ const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
-// ─── Arc slot config (7 slots: 3 left · center · 3 right) ────────────────────
-
 interface SlotConfig {
-  size: number; // px
-  opacity: number; // 0–1
-  translateY: number; // px downward (positive = drops down, so outer slots drop)
+  size: number;
+  opacity: number;
+  translateY: number;
   borderWidth: number;
   isCenter: boolean;
 }
@@ -62,8 +55,6 @@ const SLOT_CONFIGS: SlotConfig[] = [
   { size: 44, opacity: 0.55, translateY: 15, borderWidth: 3, isCenter: false },
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function TestimonialsSection() {
   const testimonials = TESTIMONIALS;
   const [active, setActive] = useState(0);
@@ -72,7 +63,6 @@ export default function TestimonialsSection() {
   const next = useCallback(() => setActive((p) => (p + 1) % n), [n]);
   const prev = useCallback(() => setActive((p) => (p - 1 + n) % n), [n]);
 
-  // Auto-rotate every 8 s — reset on manual interaction via key change trick
   const [autoKey, setAutoKey] = useState(0);
   useEffect(() => {
     const id = setInterval(next, 8000);
@@ -81,13 +71,14 @@ export default function TestimonialsSection() {
 
   const handleManual = (idx: number) => {
     setActive(idx);
-    setAutoKey((k) => k + 1); // restart auto-rotate timer
+    setAutoKey((k) => k + 1);
   };
 
   const current = testimonials[active];
 
   return (
     <section className="bg-paper">
+      {/* ✅ Remove overflow-x-hidden from section — it clips the arrow buttons */}
       <div className="section-container py-[88px] px-8">
         {/* ── Heading ── */}
         <div className="text-center flex flex-col items-center mb-14 max-w-[720px] mx-auto">
@@ -105,92 +96,108 @@ export default function TestimonialsSection() {
         </div>
 
         {/* ── Arc Avatar Row ── */}
-        {/*
-          7 fixed slots are always rendered.
-          Each slot resolves which testimonial to show via circular offset from `active`.
-          Slot 3 (index 3) is always the active/center slot.
-        */}
-        <div className="flex justify-center items-end gap-[14px] mb-12 min-h-[110px]">
-          {SLOT_CONFIGS.map((slot, slotIndex) => {
-            const offset = slotIndex - 3; // −3 … +3
-            const tIndex = (((active + offset) % n) + n) % n;
-            const t = testimonials[tIndex];
+        {/* ✅ overflow-x-hidden only on this row to clip avatars, not the card below */}
+        <div className="overflow-x-hidden">
+          <div className="flex justify-center items-end gap-[14px] mb-12 min-h-[110px]">
+            {SLOT_CONFIGS.map((slot, slotIndex) => {
+              const offset = slotIndex - 3;
+              const tIndex = (((active + offset) % n) + n) % n;
+              const t = testimonials[tIndex];
 
-            return (
-              <button
-                key={slotIndex}
-                onClick={() => handleManual(tIndex)}
-                aria-label={`Show testimonial from ${t.who}`}
-                className="rounded-full overflow-hidden flex-shrink-0 cursor-pointer p-0 border-none transition-all duration-[350ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
-                style={{
-                  width: slot.size,
-                  height: slot.size,
-                  opacity: slot.opacity,
-                  transform: `translateY(${slot.translateY}px)`,
-                  border: slot.isCenter
-                    ? "2px solid #2e9ddb"
-                    : `${slot.borderWidth}px solid #ffffff`,
-                  boxShadow: slot.isCenter
-                    ? "0 0 0 3px #2e9ddb, 0 8px 24px -6px rgba(46,157,219,0.5)"
-                    : "0 4px 12px -4px rgba(14,58,92,0.2)",
-                  zIndex: slot.isCenter ? 10 : 0,
-                }}
-              >
-                <Image
-                  src={t.photo}
-                  alt={t.who}
-                  width={120}
-                  height={120}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={slotIndex}
+                  onClick={() => handleManual(tIndex)}
+                  aria-label={`Show testimonial from ${t.who}`}
+                  className="rounded-full overflow-hidden flex-shrink-0 cursor-pointer p-0 border-none transition-all duration-[350ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  style={{
+                    width: slot.size,
+                    height: slot.size,
+                    opacity: slot.opacity,
+                    transform: `translateY(${slot.translateY}px)`,
+                    border: slot.isCenter
+                      ? "2px solid #2e9ddb"
+                      : `${slot.borderWidth}px solid #ffffff`,
+                    boxShadow: slot.isCenter
+                      ? "0 0 0 3px #2e9ddb, 0 8px 24px -6px rgba(46,157,219,0.5)"
+                      : "0 4px 12px -4px rgba(14,58,92,0.2)",
+                    zIndex: slot.isCenter ? 10 : 0,
+                  }}
+                >
+                  <Image
+                    src={t.photo}
+                    alt={t.who}
+                    width={120}
+                    height={120}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* ── Testimonial Card ── */}
-        <div className="max-w-[840px] mx-auto bg-white border border-line-2/40 rounded-[24px] py-[48px] px-[64px] max-sm:px-8 max-sm:py-8 text-center relative transition-all duration-500 shadow-none">
-          {/* Name */}
-          <div className="font-sans italic text-[22px] text-brand mb-1 font-semibold tracking-[-0.01em]">
-            {current.who}
-          </div>
+        {/* ── Testimonial Card wrapper — gives room for the absolute buttons ── */}
+        {/*
+          ✅ Key fix: wrap the card in a div with horizontal padding equal to
+          the button's overflow (≈ 22px half-width = 18px button radius + 4px bleed).
+          On mobile, buttons move inside the card instead of overflowing.
+        */}
+        <div className="max-w-[840px] mx-auto px-6 sm:px-8">
+          <div className="relative bg-white border border-line-2/40 rounded-[24px] py-[48px] px-[64px] max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
+            {/* Name */}
+            <div className="font-sans italic text-[22px] text-brand mb-1 font-semibold tracking-[-0.01em]">
+              {current.who}
+            </div>
 
-          {/* Role */}
-          <div className="text-[13px] text-ink-3 mb-8 font-bold tracking-[0.12em] uppercase">
-            {current.role}
-          </div>
+            {/* Role */}
+            <div className="text-[13px] text-ink-3 mb-8 font-bold tracking-[0.12em] uppercase">
+              {current.role}
+            </div>
 
-          {/* Quote */}
-          <p className="text-[20px] max-sm:text-[17px] leading-[1.65] text-ink-2 m-0 max-w-[680px] mx-auto text-pretty">
-            &ldquo;{current.quote}&rdquo;
-          </p>
+            {/* Quote */}
+            <p className="text-[20px] max-sm:text-[17px] leading-[1.65] text-ink-2 m-0 max-w-[680px] mx-auto text-pretty">
+              &ldquo;{current.quote}&rdquo;
+            </p>
 
-          {/* Prev arrow */}
-          <div className="absolute left-[-22px] top-1/2 -translate-y-1/2 ">
-            <button
-              onClick={() => {
-                prev();
-                setAutoKey((k) => k + 1);
-              }}
-              aria-label="Previous testimonial"
-              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+            {/* ✅ Prev arrow — negative translate pulls it outside the card,
+                but the parent px-6/px-8 wrapper ensures it never overflows the viewport */}
+            <div
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2
+                            max-sm:left-3 max-sm:translate-x-0"
             >
-              <span className="text-[24px] leading-none">‹</span>
-            </button>
-          </div>
+              <button
+                onClick={() => {
+                  prev();
+                  setAutoKey((k) => k + 1);
+                }}
+                aria-label="Previous testimonial"
+                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center
+                           border-none cursor-pointer hover:bg-brand-2 transition-colors p-0
+                           shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+              >
+                <span className="text-[24px] leading-none">‹</span>
+              </button>
+            </div>
 
-          {/* Next arrow */}
-          <div className="absolute right-[-22px] top-1/2 -translate-y-1/2 ">
-            <button
-              onClick={() => {
-                next();
-                setAutoKey((k) => k + 1);
-              }}
-              aria-label="Next testimonial"
-              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+            {/* ✅ Next arrow — same pattern on the right */}
+            <div
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2
+                            max-sm:right-3 max-sm:translate-x-0"
             >
-              <span className="text-[24px] leading-none">›</span>
-            </button>
+              <button
+                onClick={() => {
+                  next();
+                  setAutoKey((k) => k + 1);
+                }}
+                aria-label="Next testimonial"
+                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center
+                           border-none cursor-pointer hover:bg-brand-2 transition-colors p-0
+                           shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+              >
+                <span className="text-[24px] leading-none">›</span>
+              </button>
+            </div>
           </div>
         </div>
 
