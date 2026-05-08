@@ -26,7 +26,7 @@
   /* ── Paper (backgrounds) ── */
   --color-paper: #ffffff;
   --color-paper-2: #f6f8fb;
-  --color-paper-3: #ecf1f6;
+  --color-paper-3: #f6f8fb;
 
   /* ── Lines ── */
   --color-line: #e2e7ee;
@@ -34,9 +34,9 @@
 
   /* ── Why-join tile tints ── */
   --color-tint-lavender: #f0ebfa;
-  --color-tint-blush: #fbe9e7;
-  --color-tint-mint: #def2ea;
-  --color-tint-butter: #faf1d8;
+  --color-tint-blush: #fce6e6;
+  --color-tint-mint: #e2f4e5;
+  --color-tint-butter: #fdeedc;
 
   /* ── Border radii ── */
   --radius-sm: 8px;

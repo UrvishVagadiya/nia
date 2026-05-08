@@ -65,7 +65,7 @@ function Button({
       {variant === "primary" ? (
         <>
           <span>{children}</span>
-          <span className="w-[28px] h-[28px] rounded-full bg-white text-brand grid place-items-center shrink-0 ml-[4px]">
+          {/* <span className="w-[28px] h-[28px] rounded-full bg-white text-brand grid place-items-center shrink-0 ml-[4px]">
             <svg
               width="14"
               height="14"
@@ -79,6 +79,9 @@ function Button({
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
+          </span> */}
+          <span className="w-6 h-6 rounded-full bg-white/20 text-white grid place-items-center text-[12px]">
+            &rarr;
           </span>
         </>
       ) : (

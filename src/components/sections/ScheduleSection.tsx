@@ -4,7 +4,6 @@ import { useChapter } from "@/lib/chapter-context";
 import { SCHEDULE_BY_CHAPTER } from "@/lib/data";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function ScheduleSection() {
   const { activeChapterId, chapter } = useChapter();

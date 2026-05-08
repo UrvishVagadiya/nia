@@ -590,14 +590,14 @@ export const FAQ: FAQItem[] = [
 
 export const VALUE_PROPS: ValueProp[] = [
   {
-    title: "Genuine Networking",
-    body: "One specialty per chapter. Real introductions, not transactions.",
+    title: "Experienced Professionals",
+    body: "Senior business owners, family-business leaders and category specialists — vetted, not just admitted.",
     tint: "tint-lavender",
     icon: "Users",
   },
   {
-    title: "Quality Members",
-    body: "Senior business owners, family-business leaders and category specialists \u2014 vetted, not just admitted.",
+    title: "Satisfaction Guarantee",
+    body: "If your first six months don't return real business, the chapter works directly with you to course-correct.",
     tint: "tint-blush",
     icon: "ShieldCheck",
   },

@@ -5,6 +5,7 @@ import { ChapterSwitcher } from "./EyebrowChip";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
@@ -26,16 +27,15 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky py-1.5 top-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-paper/90 backdrop-blur-lg border-b border-line shadow-sm" : "bg-paper"
       }`}
     >
       <nav className="section-container flex items-center justify-between h-16 gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="text-[28px] font-bold tracking-tight text-brand">NIA</span>
-        </Link>
-
+        <div className="pt-3">
+          <Image src="/Nia.png" alt="NIA Logo" width={45} height={45} className="w-auto h-[38px]" />
+        </div>
         {/* Chapter Switcher — always visible */}
         <div className="hidden sm:flex">
           <ChapterSwitcher />
