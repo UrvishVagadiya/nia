@@ -52,7 +52,7 @@ export default function Typography({
 
     h1: "text-[32px] lg:text-[56px] font-bold leading-[1.08] tracking-[-0.03em]",
 
-    h2: "text-[28px] lg:text-[44px] font-bold leading-[1.12] tracking-[-0.025em]",
+    h2: "text-[28px] lg:text-[48px] font-bold leading-13 tracking-[-0.025em]",
 
     h3: "text-[24px] lg:text-[36px] font-semibold leading-[1.2]",
 
@@ -64,9 +64,9 @@ export default function Typography({
 
     "body-lg": "text-[18px] lg:text-[20px] font-normal leading-[1.7]",
 
-    "body-md": "text-[16px] lg:text-[18px] font-normal leading-[1.75]",
+    "body-md": "text-[16px] lg:text-[17px] font-normal leading-[1.75]",
 
-    "body-sm": "text-[14px] lg:text-[16px] font-normal leading-[1.7]",
+    "body-sm": "text-[14px] font-normal leading-[1.7]",
 
     /* ───────── SMALL TEXT ───────── */
 
