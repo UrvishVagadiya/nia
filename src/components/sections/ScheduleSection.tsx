@@ -21,9 +21,9 @@ export default function ScheduleSection() {
             </Typography>
           </div>
 
-          <h2 className="font-sans text-[clamp(34px,4vw,48px)] leading-[1.1] tracking-[-0.025em] font-bold mb-4 text-brand-deep text-balance">
+          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4">
             Every Wednesday <span className="italic font-serif text-brand">at 9:30 AM</span>
-          </h2>
+          </Typography>
 
           <Typography variant="body-md" color="ink-2" className="mb-6 max-w-[480px]">
             Same time, same room, every week. Sixty-second updates, one specific referral ask each —
@@ -39,9 +39,9 @@ export default function ScheduleSection() {
               <Typography as="div" variant="caption" color="ink-4">
                 Venue
               </Typography>
-              <div className="text-[14px] font-bold text-brand-deep">
+              <Typography as="div" variant="body-sm" color="brand-deep">
                 Hyatt Regency, Athwa Lines
-              </div>
+              </Typography>
             </div>
           </div>
         </div>

@@ -118,7 +118,7 @@ export default function MembersSection() {
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
             The Directory
           </div>
-          <h2 className="text-[clamp(34px,4.4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-brand-deep">
+          <h2 className="text-[clamp(32px,4.4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-brand-deep">
             Meet the innovators.
           </h2>
           <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">

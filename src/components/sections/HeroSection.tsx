@@ -9,7 +9,7 @@ import { HERO_BULLETS } from "../constant/HeroSection.data";
 export default function HeroSection() {
   return (
     <section className="bg-paper-2">
-      <div className="section-container pt-[64px] px-8 pb-[80px] grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="section-container pt-[64px] px-8 pb-[80px] grid grid-col-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side: Copy */}
         <div>
           <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
@@ -18,16 +18,14 @@ export default function HeroSection() {
               NIA Surat · Chapter 01
             </Typography>
           </div>
-          <h1 className="font-sans text-[clamp(40px,5.4vw,64px)] leading-[1.05] tracking-[-0.025em] font-bold m-0 mb-[22px] text-balance text-brand-deep">
-            NIA Innovators.
-            <br />
+          <Typography as="h1" variant="h1" color="brand-deep" className="mb-[22px]">
             <span className="italic text-brand font-serif">
               Surat’s room of trusted professionals.
             </span>
-          </h1>
-          <p className="text-[17.5px] leading-[1.6] text-ink-2 m-0 mb-[28px] max-w-[520px] text-pretty">
+          </Typography>
+          <Typography variant="body-lg" color="ink-2" className="mb-[28px]">
             25 category leaders. One chair per specialty. No overlap.
-          </p>
+          </Typography>
 
           <ul className="list-none p-0 m-0 mb-[32px] grid grid-cols-2 gap-[12px]">
             {HERO_BULLETS.map((item, idx) => (
