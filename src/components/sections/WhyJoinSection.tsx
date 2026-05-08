@@ -1,0 +1,117 @@
+"use client";
+
+import { VALUE_PROPS } from "@/lib/data";
+
+const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; bgClass: string }> =
+  {
+    Users: {
+      svg: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.4 7.2 17.9l.9-5.4L4.2 8.7l5.4-.8z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          ></path>
+        </svg>
+      ),
+      colorClass: "text-[#8b5cf6]",
+      bgClass: "bg-tint-lavender",
+    },
+    ShieldCheck: {
+      svg: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+          ></path>
+          <path
+            d="M9 12l2 2 4-4"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          ></path>
+        </svg>
+      ),
+      colorClass: "text-[#ea580c]",
+      bgClass: "bg-tint-butter", // The previous mapping used butter for this to match the HTML color rgb(253, 238, 220)
+    },
+    IndianRupee: {
+      svg: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6"></circle>
+          <path
+            d="M9 9h6M9 12h6M9 15h4"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          ></path>
+        </svg>
+      ),
+      colorClass: "text-[#dc2626]",
+      bgClass: "bg-tint-blush",
+    },
+    Award: {
+      svg: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="9" r="3.5" stroke="currentColor" strokeWidth="1.6"></circle>
+          <path
+            d="M5 20a7 7 0 0114 0"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          ></path>
+        </svg>
+      ),
+      colorClass: "text-[#15803d]",
+      bgClass: "bg-tint-mint",
+    },
+  };
+
+export default function WhyJoinSection() {
+  return (
+    <section id="about" className="bg-paper">
+      <div className="max-w-[1280px] mx-auto px-[32px] py-[88px]">
+        {/* Section heading */}
+        <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-[700] tracking-[0.06em] uppercase mb-[16px]">
+            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+            Why NIA
+          </div>
+          <h2 className="font-sans text-[clamp(34px,4.4vw,52px)] leading-[1.1] tracking-[-0.025em] font-[700] m-0 text-brand-deep text-balance">
+            Why join us?
+          </h2>
+          <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
+            NIA is built differently — three chapters, exclusive categories, and a structure that
+            makes referrals predictable, not coincidental.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-[16px]">
+          {VALUE_PROPS.map((prop) => {
+            const displayConfig = CUSTOM_ICONS[prop.icon] || CUSTOM_ICONS.Users;
+
+            return (
+              <article
+                key={prop.title}
+                className={`rounded-[20px] px-[32px] py-[28px] flex flex-col gap-[14px] min-h-[220px] relative ${displayConfig.bgClass}`}
+              >
+                <div
+                  className={`w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center shrink-0 shadow-[0_6px_16px_-8px_rgba(14,58,92,0.18)] ${displayConfig.colorClass}`}
+                >
+                  {displayConfig.svg}
+                </div>
+                <h3 className="text-[16px] font-[700] tracking-[-0.005em] m-0 text-brand-deep">
+                  {prop.title}
+                </h3>
+                <p className="text-[13px] leading-[1.55] text-ink-3 m-0 text-pretty">{prop.body}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
