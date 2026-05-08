@@ -19,8 +19,8 @@ export default function StatBand() {
   });
 
   return (
-    <section className="bg-paper-2 px-8 pb-[80px]">
-      <div className="section-container rounded-[18px] py-[36px] px-[48px] relative overflow-hidden bg-brand-2">
+    <section className="bg-paper-2 px-8 pb-20">
+      <div className="section-container rounded-[18px] py-9 px-12 relative overflow-hidden bg-brand-2">
         {/* Radial highlight */}
         <div
           className="absolute inset-0 bg-[--color-primary] pointer-events-none"
@@ -30,7 +30,7 @@ export default function StatBand() {
           }}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[24px] relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
           {stats.map((stat, i) => {
             let borderClass = "border-l border-white/20 pl-[24px]";
             if (i === 0) {

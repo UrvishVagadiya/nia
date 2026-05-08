@@ -80,11 +80,11 @@ export default function TestimonialsSection() {
   return (
     <section className="bg-paper">
       {/* ✅ Remove overflow-x-hidden from section — it clips the arrow buttons */}
-      <div className="section-container py-[88px] px-8">
+      <div className="section-container py-22 px-8">
         {/* ── Heading ── */}
-        <div className="text-center flex flex-col items-center mb-14 max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-full bg-brand-soft mb-4">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+        <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-soft mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
               Member voices
             </Typography>
@@ -92,7 +92,7 @@ export default function TestimonialsSection() {
           <Typography as="h2" variant="h2" color="brand-deep" className="mb-4">
             What our members say.
           </Typography>
-          <Typography variant="body-md" color="ink-3" className="max-w-[620px]">
+          <Typography variant="body-md" color="ink-3" className="max-w-155">
             Three chapters, eighteen referral stories a year on average — here are a few in their
             own words.
           </Typography>
@@ -101,7 +101,7 @@ export default function TestimonialsSection() {
         {/* ── Arc Avatar Row ── */}
         {/* ✅ overflow-x-hidden only on this row to clip avatars, not the card below */}
         <div className="overflow-x-hidden">
-          <div className="flex justify-center items-end gap-[14px] mb-12 min-h-[110px]">
+          <div className="flex justify-center items-end gap-3.5 mb-12 min-h-27.5">
             {SLOT_CONFIGS.map((slot, slotIndex) => {
               const offset = slotIndex - 3;
               const tIndex = (((active + offset) % n) + n) % n;
@@ -112,7 +112,7 @@ export default function TestimonialsSection() {
                   key={slotIndex}
                   onClick={() => handleManual(tIndex)}
                   aria-label={`Show testimonial from ${t.who}`}
-                  className="rounded-full overflow-hidden flex-shrink-0 cursor-pointer p-0 border-none transition-all duration-[350ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
+                  className="rounded-full overflow-hidden shrink-0 cursor-pointer p-0 border-none transition-all duration-350ms ease-[cubic-bezier(0.4,0,0.2,1)]"
                   style={{
                     width: slot.size,
                     height: slot.size,
@@ -146,8 +146,8 @@ export default function TestimonialsSection() {
           the button's overflow (≈ 22px half-width = 18px button radius + 4px bleed).
           On mobile, buttons move inside the card instead of overflowing.
         */}
-        <div className="max-w-[840px] mx-auto px-6 sm:px-8">
-          <div className="relative bg-white border border-line-2/40 rounded-[24px] py-[48px] px-[64px] max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
+        <div className="max-w-210 mx-auto px-6 sm:px-8">
+          <div className="relative bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
             {/* Name */}
             <Typography as="div" variant="h5" color="brand" className="mb-1 italic">
               {current.who}
@@ -159,7 +159,7 @@ export default function TestimonialsSection() {
             </Typography>
 
             {/* Quote */}
-            <Typography as="p" variant="body-md" color="ink-2" className="max-w-[680px] mx-auto">
+            <Typography as="p" variant="body-md" color="ink-2" className="max-w-170 mx-auto">
               &ldquo;{current.quote}&rdquo;
             </Typography>
 
@@ -199,7 +199,7 @@ export default function TestimonialsSection() {
         </div>
 
         {/* ── Dot indicators ── */}
-        <div className="flex justify-center gap-[6px] mt-6">
+        <div className="flex justify-center gap-1.5 mt-6">
           {testimonials.map((_, i) => (
             <button
               key={i}
@@ -207,9 +207,7 @@ export default function TestimonialsSection() {
               aria-label={`Show testimonial ${i + 1}`}
               className={[
                 "rounded-[4px] border-none p-0 cursor-pointer transition-all duration-200",
-                i === active
-                  ? "w-[24px] h-[8px] bg-brand"
-                  : "w-[8px] h-[8px] bg-line-2 hover:bg-ink-4",
+                i === active ? "w-6 h-2 bg-brand" : "w-2 h-2 bg-line-2 hover:bg-ink-4",
               ].join(" ")}
             />
           ))}
