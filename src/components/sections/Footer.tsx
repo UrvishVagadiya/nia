@@ -68,9 +68,9 @@ export default function Footer() {
             href="https://propelius.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-[8px] px-[14px] py-[7px] bg-white/[0.08] border border-white/15 rounded-pill hover:bg-white/[0.12] transition-colors"
+            className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 bg-white/8 border border-white/15 rounded-pill hover:bg-white/12 transition-colors"
           >
-            <span className="w-[5px] h-[5px] rounded-full bg-brand" />
+            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography as="span" variant="body-sm" color="white">
               Built by Propelius
             </Typography>

@@ -12,16 +12,16 @@ import {
 export default function FAQSection() {
   return (
     <section className="bg-paper">
-      <div className="section-container py-[88px] px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 sm:gap-16">
+      <div className="section-container py-22 px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 sm:gap-16">
         {/* Left Side (Header) */}
         <div>
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
               FAQ
             </Typography>
           </div>
-          <Typography as="h2" variant="h2" color="brand-deep" className="mb-[14px]">
+          <Typography as="h2" variant="h2" color="brand-deep" className="mb-3.5">
             Before you visit.
           </Typography>
           <Typography variant="body-sm" color="ink-3" className="max-w-[320px]">
@@ -38,7 +38,7 @@ export default function FAQSection() {
                 value={`item-${index}`}
                 className={`border-b border-line ${index === 0 ? "border-t" : ""}`}
               >
-                <AccordionTrigger className="w-full text-left py-[20px] px-1 flex justify-between items-center gap-4 bg-transparent border-none cursor-pointer hover:no-underline [&>svg[data-slot=accordion-trigger-icon]]:hidden">
+                <AccordionTrigger className="w-full text-left py-5 px-1 flex justify-between items-center gap-4 bg-transparent border-none cursor-pointer hover:no-underline [&>svg[data-slot=accordion-trigger-icon]]:hidden">
                   <Typography
                     as="span"
                     variant="body-md"
@@ -47,12 +47,12 @@ export default function FAQSection() {
                   >
                     {item.q}
                   </Typography>
-                  <span className="w-[30px] h-[30px] rounded-full grid place-items-center shrink-0 text-[18px] leading-none font-semibold transition-all duration-200 bg-paper-2 text-brand-deep group-aria-expanded/accordion-trigger:rotate-45 group-aria-expanded/accordion-trigger:bg-brand group-aria-expanded/accordion-trigger:text-white">
+                  <span className="w-7.5 h-7.5 rounded-full grid place-items-center shrink-0 text-[18px] leading-none font-semibold transition-all duration-200 bg-paper-2 text-brand-deep group-aria-expanded/accordion-trigger:rotate-45 group-aria-expanded/accordion-trigger:bg-brand group-aria-expanded/accordion-trigger:text-white">
                     +
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="pb-[24px]">
-                  <Typography variant="body-sm" color="ink-2" className="max-w-[720px]">
+                <AccordionContent className="pb-6">
+                  <Typography variant="body-sm" color="ink-2" className="max-w-180">
                     {item.a}
                   </Typography>
                 </AccordionContent>

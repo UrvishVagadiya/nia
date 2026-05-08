@@ -79,10 +79,10 @@ export default function MembersSection() {
           {filtered.map((member) => (
             <Card
               key={member.name}
-              className="bg-white rounded-[20px] overflow-hidden shadow-[0_8px_24px_-12px_rgba(14,58,92,0.1)] flex flex-col h-full border border-line/50 !p-0 gap-0 ring-0"
+              className="bg-white rounded-lg overflow-hidden shadow-[0_8px_24px_-12px_rgba(14,58,92,0.1)] flex flex-col h-full border border-line/50 p-0! gap-0 ring-0"
             >
               {/* Image Section (top half) */}
-              <div className="relative h-[320px] w-full shrink-0">
+              <div className="relative h-80 w-full shrink-0">
                 <Image
                   src={member.photo}
                   alt={member.name}
@@ -92,22 +92,22 @@ export default function MembersSection() {
                 />
 
                 {/* Dark Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/40 via-[#0e3a5c]/10 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-brand-deep/40 via-brand-deep/10 to-transparent" />
 
                 {/* Specialty Badge */}
-                <div className="absolute top-[16px] left-[16px] bg-white text-brand px-[12px] py-[6px] rounded-pill text-[11px] font-bold shadow-sm flex items-center gap-[6px]">
-                  <span className="w-[5px] h-[5px] rounded-full bg-brand" />
+                <div className="absolute top-4 left-4 bg-white text-brand px-3 py-1.5 rounded-pill text-[11px] font-bold shadow-sm flex items-center gap-1.5">
+                  <span className="w-1.25 h-1.25 rounded-full bg-brand" />
                   {member.specialty}
                 </div>
 
                 {/* Name and Convention */}
-                <CardHeader className="absolute bottom-[16px] left-[20px] right-[20px] flex flex-col p-0 border-none space-y-0">
+                <CardHeader className="absolute bottom-4 left-5 right-5 flex flex-col p-0 border-none space-y-0">
                   <CardTitle className="m-0 leading-tight">
                     <Typography variant="h5" color="white" className="m-0">
                       {member.name}
                     </Typography>
                   </CardTitle>
-                  <CardDescription className="mt-[2px] m-0">
+                  <CardDescription className="mt-0.5 m-0">
                     <Typography variant="caption" color="white" className="italic m-0">
                       {member.convention}
                     </Typography>
@@ -116,17 +116,17 @@ export default function MembersSection() {
               </div>
 
               {/* Content Section (bottom half) */}
-              <CardContent className="p-[24px] pb-0 flex flex-col flex-1 border-none shadow-none">
+              <CardContent className="p-6 pb-0 flex flex-col flex-1 border-none shadow-none">
                 {/* Meta info */}
-                <div className="flex items-center gap-[6px] mb-[16px] tracking-wide text-ink-3">
-                  <div className="flex items-center gap-[4px]">
+                <div className="flex items-center gap-1.5 mb-4 tracking-wide text-ink-3">
+                  <div className="flex items-center gap-1">
                     <MapPin size={11} className="text-brand" />
                     <Typography as="span" variant="caption" className="text-ink-3">
                       {member.location}
                     </Typography>
                   </div>
-                  <span className="text-ink-4 mx-[2px]">&bull;</span>
-                  <div className="flex items-center gap-[4px]">
+                  <span className="text-ink-4 mx-0.5">&bull;</span>
+                  <div className="flex items-center gap-1">
                     <Calendar size={11} className="text-brand" />
                     <Typography as="span" variant="caption" className="text-ink-3">
                       {member.joined}
@@ -143,22 +143,22 @@ export default function MembersSection() {
                 >
                   {member.oneliner}
                 </Typography>
-                <div className="flex-1 min-h-[16px]" />
+                <div className="flex-1 min-h-4" />
               </CardContent>
 
               {/* Footer with social icons */}
-              <CardFooter className="px-[24px] pb-[10px] pt-[16px] border-t border-line flex items-center gap-[8px] bg-transparent">
+              <CardFooter className="px-6 pb-2.5 pt-4 border-t border-line flex items-center gap-2 bg-transparent">
                 <a
                   href="#"
-                  className="w-[28px] h-[28px] rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
+                  className="w-7 h-7 rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M22.23 0H1.77C.8 0 0 .77 0 1.72v20.56C0 23.23.8 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.2 0 22.23 0zM7.12 20.45H3.56V9h3.56v11.45zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM20.45 20.45h-3.56v-5.56c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.66H9.33V9h3.42v1.56h.05c.48-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29z" />
+                    <path d="M22.23 0H1.77C.8 0 0 .77 0 1.72v20.56C0 23.23.8 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.2 0 22.23 0zM7.12 20.45H3.56V9h3.56v11.45zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM20.45 20.45h-3.56v-5.56c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.66H9.33V9h3.42v1.56h.05c.48-.9 1.63-1.85 3.37-1。85 3。6 0 4。27 2。37 4。27 5。45v6。29z" />
                   </svg>
                 </a>
                 <a
                   href="#"
-                  className="w-[28px] h-[28px] rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
+                  className="w-7 h-7 rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
                 >
                   <svg
                     width="12"
@@ -177,7 +177,7 @@ export default function MembersSection() {
                 </a>
                 <a
                   href="#"
-                  className="w-[28px] h-[28px] rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
+                  className="w-7 h-7 rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
                 >
                   <svg
                     width="12"
