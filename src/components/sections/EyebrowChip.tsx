@@ -3,6 +3,7 @@
 import { useChapter } from "@/lib/chapter-context";
 import { CHAPTER_IDS, CHAPTERS } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import Typography from "@/components/ui/typography";
 
 export default function EyebrowChip({ className }: { className?: string }) {
   const { chapter } = useChapter();
@@ -14,7 +15,9 @@ export default function EyebrowChip({ className }: { className?: string }) {
       )}
     >
       <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
-      NIA SURAT &middot; CHAPTER {chapter.number}
+      <Typography variant="eyebrow" className="m-0">
+        NIA SURAT &middot; CHAPTER {chapter.number}
+      </Typography>
     </span>
   );
 }
@@ -32,11 +35,17 @@ export function ChapterSwitcher() {
             key={id}
             onClick={() => setActiveChapterId(id)}
             className={cn(
-              "relative z-10 rounded-pill px-[16px] py-[8px] text-[13px] font-semibold transition-all duration-200",
+              "relative z-10 rounded-pill px-[16px] py-[8px] transition-all duration-200",
               isActive ? "bg-brand text-white shadow-pill" : "text-ink-3 hover:text-ink"
             )}
           >
-            {ch.short}
+            <Typography
+              as="span"
+              variant="body-sm"
+              className={isActive ? "text-white" : "text-ink-3"}
+            >
+              {ch.short}
+            </Typography>
           </button>
         );
       })}

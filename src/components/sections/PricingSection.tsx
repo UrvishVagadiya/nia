@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import Typography from "@/components/ui/typography";
 
 const PRICING_TIERS = [
   {
@@ -78,17 +79,19 @@ export default function PricingSection() {
       <div className="section-container py-[88px] px-8">
         {/* Header */}
         <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-bold tracking-[0.06em] uppercase mb-4">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
             <span className="w-[6px] h-[6px] rounded-full bg-brand" />
-            Membership
+            <Typography variant="eyebrow" color="brand-2">
+              Membership
+            </Typography>
           </div>
-          <h2 className="font-sans text-[clamp(34px,4.4vw,52px)] leading-[1.1] tracking-[-0.025em] font-bold m-0 text-brand-deep text-balance">
+          <Typography as="h2" variant="h2" color="brand-deep">
             Three ways to be in the room.
-          </h2>
-          <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
+          </Typography>
+          <Typography variant="body-md" color="ink-3" className="mt-[18px] max-w-[620px]">
             Try a chapter for free, then commit when you know it&apos;s a fit. Annual dues pay for
             themselves in a single referral.
-          </p>
+          </Typography>
         </div>
 
         {/* Toggle */}
@@ -96,13 +99,19 @@ export default function PricingSection() {
           <div className="inline-flex p-1 rounded-pill bg-paper-2 border border-line">
             <button
               onClick={() => setBilling("monthly")}
-              className={`text-[13px] px-[18px] py-2 rounded-pill font-semibold capitalize transition-colors duration-200 ${
+              className={`px-[18px] py-2 rounded-pill capitalize transition-colors duration-200 ${
                 billing === "monthly"
                   ? "bg-brand text-white"
                   : "bg-transparent text-ink-2 hover:text-ink"
               }`}
             >
-              monthly
+              <Typography
+                as="span"
+                variant="body-sm"
+                className={billing === "monthly" ? "text-white" : "text-ink-2"}
+              >
+                monthly
+              </Typography>
             </button>
             <button
               onClick={() => setBilling("annual")}
@@ -138,29 +147,35 @@ export default function PricingSection() {
                 )}
 
                 <div className="flex items-baseline gap-2">
-                  <span
-                    className={`font-serif text-[36px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${isDark ? "text-white" : "text-brand-deep"}`}
+                  <Typography
+                    as="span"
+                    variant="stat"
+                    className={`transition-colors duration-300 ${isDark ? "text-white" : "text-brand-deep"}`}
                   >
                     {tier.price[billing]}
-                  </span>
-                  <span
-                    className={`text-[13px] font-semibold transition-colors duration-300 ${isDark ? "text-white/65" : "text-ink-4"}`}
+                  </Typography>
+                  <Typography
+                    as="span"
+                    variant="caption"
+                    className={`transition-colors duration-300 ${isDark ? "text-white/65" : "text-ink-4"}`}
                   >
                     {tier.interval[billing]}
-                  </span>
+                  </Typography>
                 </div>
 
-                <div
-                  className={`text-[22px] font-bold tracking-[-0.015em] transition-colors duration-300 ${isDark ? "text-white" : "text-brand-deep"}`}
+                <Typography
+                  as="div"
+                  variant="h4"
+                  className={`transition-colors duration-300 ${isDark ? "text-white" : "text-brand-deep"}`}
                 >
                   {tier.name}
-                </div>
+                </Typography>
 
                 <ul className="list-none p-0 m-0 flex flex-col gap-2.5 flex-1">
                   {tier.features.map((feature, idx) => (
                     <li
                       key={idx}
-                      className={`flex items-start gap-2.5 text-[13.5px] leading-[1.5] transition-colors duration-300 ${isDark ? "text-white/85" : "text-ink-2"}`}
+                      className={`flex items-start gap-2.5 transition-colors duration-300 ${isDark ? "text-white/85" : "text-ink-2"}`}
                     >
                       <span
                         className={`w-[18px] h-[18px] rounded-full grid place-items-center shrink-0 mt-[2px] transition-colors duration-300 ${isDark ? "bg-brand text-white" : "bg-brand-soft text-brand-2"}`}
@@ -175,7 +190,12 @@ export default function PricingSection() {
                           />
                         </svg>
                       </span>
-                      {feature}
+                      <Typography
+                        variant="body-sm"
+                        className={isDark ? "text-white/85" : "text-ink-2"}
+                      >
+                        {feature}
+                      </Typography>
                     </li>
                   ))}
                 </ul>
@@ -183,13 +203,19 @@ export default function PricingSection() {
                 <Link
                   href="#apply"
                   onClick={(e) => e.stopPropagation()}
-                  className={`py-[13px] px-[22px] rounded-pill text-[13.5px] font-bold inline-flex items-center justify-center gap-2 mt-1 transition-colors duration-300 ${
+                  className={`py-[13px] px-[22px] rounded-pill inline-flex items-center justify-center gap-2 mt-1 transition-colors duration-300 ${
                     isDark
                       ? "bg-white text-brand-deep hover:bg-paper-2"
                       : "bg-brand text-white hover:bg-brand-2"
                   }`}
                 >
-                  {tier.cta}
+                  <Typography
+                    as="span"
+                    variant="body-sm"
+                    className={isDark ? "text-brand-deep" : "text-white"}
+                  >
+                    {tier.cta}
+                  </Typography>
                   <span className=" ml-0.5">→</span>
                 </Link>
               </Card>

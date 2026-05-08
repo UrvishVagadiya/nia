@@ -6,6 +6,7 @@ import { useChapter } from "@/lib/chapter-context";
 import { MEMBERS_BY_CHAPTER } from "@/lib/data";
 import { MapPin, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Typography from "@/components/ui/typography";
 import {
   Card,
   CardContent,
@@ -34,16 +35,16 @@ export default function MembersSection() {
       <div className="section-container">
         {/* Heading */}
         <div className="text-center mb-10">
-          <span className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 eyebrow-text mb-4">
+          <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
-            THE DIRECTORY
-          </span>
-          <h2 className="text-[clamp(32px,4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-brand-deep">
+            <Typography variant="eyebrow">THE DIRECTORY</Typography>
+          </div>
+          <Typography as="h2" variant="h2" color="brand-deep">
             Meet the {chapter.short.toLowerCase()}.
-          </h2>
-          <p className="text-[17px] text-ink-3 mt-4 max-w-2xl mx-auto">
+          </Typography>
+          <Typography variant="body-md" color="ink-3" className="mt-4 max-w-2xl mx-auto">
             {chapter.members} category leaders. Each one holds an exclusive seat in their specialty.
-          </p>
+          </Typography>
         </div>
 
         {/* Filter chips */}
@@ -55,13 +56,19 @@ export default function MembersSection() {
                 key={s}
                 onClick={() => setFilter(s)}
                 className={cn(
-                  "rounded-pill px-5 py-2 text-[14px] font-semibold transition-all duration-200",
+                  "rounded-pill px-5 py-2 transition-all duration-200",
                   isActive
                     ? "bg-brand-deep text-white shadow-md"
                     : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md"
                 )}
               >
-                {s}
+                <Typography
+                  as="span"
+                  variant="body-sm"
+                  className={isActive ? "text-white" : "text-ink-3"}
+                >
+                  {s}
+                </Typography>
               </button>
             );
           })}
@@ -69,7 +76,7 @@ export default function MembersSection() {
 
         {/* Member grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-all duration-240">
-          {filtered.map((member, i) => (
+          {filtered.map((member) => (
             <Card
               key={member.name}
               className="bg-white rounded-[20px] overflow-hidden shadow-[0_8px_24px_-12px_rgba(14,58,92,0.1)] flex flex-col h-full border border-line/50 !p-0 gap-0 ring-0"
@@ -85,7 +92,7 @@ export default function MembersSection() {
                 />
 
                 {/* Dark Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/90 via-[#0e3a5c]/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/40 via-[#0e3a5c]/10 to-transparent" />
 
                 {/* Specialty Badge */}
                 <div className="absolute top-[16px] left-[16px] bg-white text-brand px-[12px] py-[6px] rounded-pill text-[11px] font-bold shadow-sm flex items-center gap-[6px]">
@@ -95,11 +102,15 @@ export default function MembersSection() {
 
                 {/* Name and Convention */}
                 <CardHeader className="absolute bottom-[16px] left-[20px] right-[20px] flex flex-col p-0 border-none space-y-0">
-                  <CardTitle className="text-white text-[18px] font-[700] tracking-tight m-0 leading-tight">
-                    {member.name}
+                  <CardTitle className="m-0 leading-tight">
+                    <Typography variant="h5" color="white" className="m-0">
+                      {member.name}
+                    </Typography>
                   </CardTitle>
-                  <CardDescription className="text-white/85 text-[13px] font-[500] italic mt-[2px] m-0">
-                    {member.convention}
+                  <CardDescription className="mt-[2px] m-0">
+                    <Typography variant="caption" color="white" className="italic m-0">
+                      {member.convention}
+                    </Typography>
                   </CardDescription>
                 </CardHeader>
               </div>
@@ -107,22 +118,31 @@ export default function MembersSection() {
               {/* Content Section (bottom half) */}
               <CardContent className="p-[24px] pb-0 flex flex-col flex-1 border-none shadow-none">
                 {/* Meta info */}
-                <div className="flex items-center gap-[6px] text-ink-3 text-[11px] font-[600] mb-[16px] tracking-wide">
+                <div className="flex items-center gap-[6px] mb-[16px] tracking-wide text-ink-3">
                   <div className="flex items-center gap-[4px]">
                     <MapPin size={11} className="text-brand" />
-                    {member.location}
+                    <Typography as="span" variant="caption" className="text-ink-3">
+                      {member.location}
+                    </Typography>
                   </div>
                   <span className="text-ink-4 mx-[2px]">&bull;</span>
                   <div className="flex items-center gap-[4px]">
                     <Calendar size={11} className="text-brand" />
-                    {member.joined}
+                    <Typography as="span" variant="caption" className="text-ink-3">
+                      {member.joined}
+                    </Typography>
                   </div>
                 </div>
 
                 {/* One-liner */}
-                <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty">
+                <Typography
+                  as="p"
+                  variant="body-sm"
+                  color="ink-3"
+                  className="leading-[1.6] line-clamp-3 m-0"
+                >
                   {member.oneliner}
-                </p>
+                </Typography>
                 <div className="flex-1 min-h-[16px]" />
               </CardContent>
 
