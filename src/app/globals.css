@@ -165,10 +165,10 @@
 
   /* Eyebrow / pill text */
   .eyebrow-text {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     line-height: 1.4;
-    letter-spacing: 0.18em;
+    letter-spacing: 1.1px;
     text-transform: uppercase;
     color: var(--color-brand-2);
   }
