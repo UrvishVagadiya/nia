@@ -11,7 +11,7 @@ export default function HeroSection() {
 
   return (
     <section className="bg-paper-2">
-      <div className="section-container pt-[64px] px-8 pb-[80px] grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="section-container pt-[64px] px-8 pb-[80px] grid grid-col-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side: Copy */}
         <div>
           <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
