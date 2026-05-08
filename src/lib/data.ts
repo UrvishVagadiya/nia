@@ -654,17 +654,18 @@ export const FOOTER_DATA: FooterColumn[] = [
   {
     title: "Visit",
     links: [
-      { label: "About NIA", href: "#about" },
-      { label: "Schedule", href: "#schedule" },
-      { label: "Apply", href: "#apply" },
+      { label: "Schedule a visit", href: "#about" },
+      { label: "Find a meeting", href: "#schedule" },
+      { label: "Membership", href: "#apply" },
+      { label: "FAQ", href: "#apply" },
     ],
   },
   {
     title: "Contact",
     links: [
-      { label: "+91 98 25 0X XXXX", href: "tel:+919825000000" },
       { label: "hello@niasurat.com", href: "mailto:hello@niasurat.com" },
-      { label: "Surat, Gujarat", href: "#" },
+      { label: "+91 98 25 0X XXXX", href: "tel:+919825000000" },
+      { label: "Athwa lines, Surat", href: "#" },
     ],
   },
 ];

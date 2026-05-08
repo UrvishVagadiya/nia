@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
+import Typography from "@/components/ui/typography";
 
 interface Testimonial {
   who: string;
@@ -82,17 +83,19 @@ export default function TestimonialsSection() {
       <div className="section-container py-[88px] px-8">
         {/* ── Heading ── */}
         <div className="text-center flex flex-col items-center mb-14 max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-full bg-brand-soft text-brand-2 text-[12px] font-bold tracking-[0.06em] uppercase mb-4">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-full bg-brand-soft mb-4">
             <span className="w-[6px] h-[6px] rounded-full bg-brand" />
-            Member voices
+            <Typography variant="eyebrow" color="brand-2">
+              Member voices
+            </Typography>
           </div>
-          <h2 className="font-sans text-[clamp(34px,4.4vw,52px)] leading-[1.1] tracking-[-0.025em] font-bold m-0 text-brand-deep text-balance">
+          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4">
             What our members say.
-          </h2>
-          <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
+          </Typography>
+          <Typography variant="body-md" color="ink-3" className="max-w-[620px]">
             Three chapters, eighteen referral stories a year on average — here are a few in their
             own words.
-          </p>
+          </Typography>
         </div>
 
         {/* ── Arc Avatar Row ── */}
@@ -146,19 +149,19 @@ export default function TestimonialsSection() {
         <div className="max-w-[840px] mx-auto px-6 sm:px-8">
           <div className="relative bg-white border border-line-2/40 rounded-[24px] py-[48px] px-[64px] max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
             {/* Name */}
-            <div className="font-sans italic text-[22px] text-brand mb-1 font-semibold tracking-[-0.01em]">
+            <Typography as="div" variant="h5" color="brand" className="mb-1 italic">
               {current.who}
-            </div>
+            </Typography>
 
             {/* Role */}
-            <div className="text-[13px] text-ink-3 mb-8 font-bold tracking-[0.12em] uppercase">
+            <Typography as="div" variant="eyebrow" color="ink-3" className="mb-8">
               {current.role}
-            </div>
+            </Typography>
 
             {/* Quote */}
-            <p className="text-[20px] max-sm:text-[17px] leading-[1.65] text-ink-2 m-0 max-w-[680px] mx-auto text-pretty">
+            <Typography as="p" variant="body-md" color="ink-2" className="max-w-[680px] mx-auto">
               &ldquo;{current.quote}&rdquo;
-            </p>
+            </Typography>
 
             {/* ✅ Prev arrow — negative translate pulls it outside the card,
                 but the parent px-6/px-8 wrapper ensures it never overflows the viewport */}
