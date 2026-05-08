@@ -198,6 +198,21 @@
   }
 }
 
+/* ── Responsive ────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .section-container,
+  .hero-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .section-padding {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+}
+
 /* ── Legacy User Utilities & Typography ────────────────────────────── */
 
 @layer utilities {

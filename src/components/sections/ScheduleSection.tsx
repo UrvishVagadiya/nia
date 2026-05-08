@@ -3,6 +3,7 @@
 import { SCHEDULE } from "../constant/ScheduleSection.data";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
+import Typography from "@/components/ui/typography";
 
 export default function ScheduleSection() {
   const schedule = SCHEDULE;
@@ -13,19 +14,21 @@ export default function ScheduleSection() {
       <div className="section-container py-[88px] px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
         {/* Left Side (Text content) */}
         <div>
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-bold tracking-[0.06em] uppercase mb-4">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
             <span className="w-[6px] h-[6px] rounded-full bg-brand" />
-            Meeting Schedule
+            <Typography variant="eyebrow" color="brand-2">
+              Meeting Schedule
+            </Typography>
           </div>
 
           <h2 className="font-sans text-[clamp(34px,4vw,48px)] leading-[1.1] tracking-[-0.025em] font-bold mb-4 text-brand-deep text-balance">
             Every Wednesday <span className="italic font-serif text-brand">at 9:30 AM</span>
           </h2>
 
-          <p className="text-[17px] leading-[1.6] text-ink-2 mb-6 max-w-[480px] text-pretty">
+          <Typography variant="body-md" color="ink-2" className="mb-6 max-w-[480px]">
             Same time, same room, every week. Sixty-second updates, one specific referral ask each —
             no slide decks.
-          </p>
+          </Typography>
 
           {/* Venue Pill */}
           <div className="inline-flex items-center gap-[14px] px-[18px] py-[14px] rounded-pill bg-white border border-line">
@@ -33,9 +36,9 @@ export default function ScheduleSection() {
               <MapPin size={16} strokeWidth={1.6} />
             </span>
             <div>
-              <div className="text-[11px] text-ink-4 uppercase tracking-[0.1em] font-bold">
+              <Typography as="div" variant="caption" color="ink-4">
                 Venue
-              </div>
+              </Typography>
               <div className="text-[14px] font-bold text-brand-deep">
                 Hyatt Regency, Athwa Lines
               </div>

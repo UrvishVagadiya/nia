@@ -45,3 +45,18 @@ export type FooterColumn = {
     href: string;
   }[];
 };
+
+export interface SlotConfig {
+  size: number;
+  opacity: number;
+  translateY: number;
+  borderWidth: number;
+  isCenter: boolean;
+}
+
+export interface ScheduleItem {
+  day: string;
+  date: string;
+  topic: string;
+  rsvps: number;
+}

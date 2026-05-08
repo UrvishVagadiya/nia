@@ -1,6 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
+import Typography from "@/components/ui/typography";
 
 export default function StepsSection() {
   return (
@@ -12,40 +13,52 @@ export default function StepsSection() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(46,157,219,0.25),transparent_50%)] pointer-events-none"></div>
 
             <div className="relative">
-              <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-white/15 text-white text-[12px] font-[700] tracking-[0.06em] uppercase mb-[18px]">
+              <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-white/15 mb-[18px]">
                 <span className="w-[6px] h-[6px] rounded-full bg-brand" />
-                Visit a meeting
+                <Typography variant="eyebrow" color="white">
+                  Visit a meeting
+                </Typography>
               </div>
 
-              <h2 className="font-sans text-[clamp(32px,3.8vw,48px)] leading-[1.05] tracking-[-0.025em] font-[700] m-0 mb-[18px] text-balance">
+              <Typography as="h2" variant="h2" color="white" className="mb-[18px]">
                 Sit in,
                 <br />
                 <span className="italic text-brand font-serif">before you sign up.</span>
-              </h2>
+              </Typography>
 
-              <p className="text-[16px] leading-[1.6] text-white/80 mb-[28px] max-w-[460px] text-pretty">
+              <Typography
+                variant="body-md"
+                color="white"
+                className="opacity-80 mb-[28px] max-w-[460px]"
+              >
                 One Tuesday morning is the best way to feel the room. Tell us your specialty — if
                 the seat is open, we&apos;ll book you in.
-              </p>
+              </Typography>
 
               <ul className="list-none p-0 m-0 flex flex-col gap-[12px]">
-                <li className="flex items-center gap-[12px] text-[14.5px] text-white/90">
+                <li className="flex items-center gap-[12px]">
                   <span className="w-[22px] h-[22px] rounded-full bg-brand grid place-items-center shrink-0">
                     <Check size={12} strokeWidth={3} className="text-white" />
                   </span>
-                  No fee, no obligation, no follow-up sales call
+                  <Typography variant="body-sm" color="white" className="opacity-90">
+                    No fee, no obligation, no follow-up sales call
+                  </Typography>
                 </li>
-                <li className="flex items-center gap-[12px] text-[14.5px] text-white/90">
+                <li className="flex items-center gap-[12px]">
                   <span className="w-[22px] h-[22px] rounded-full bg-brand grid place-items-center shrink-0">
                     <Check size={12} strokeWidth={3} className="text-white" />
                   </span>
-                  Sreyansh personally vets every applicant
+                  <Typography variant="body-sm" color="white" className="opacity-90">
+                    Sreyansh personally vets every applicant
+                  </Typography>
                 </li>
-                <li className="flex items-center gap-[12px] text-[14.5px] text-white/90">
+                <li className="flex items-center gap-[12px]">
                   <span className="w-[22px] h-[22px] rounded-full bg-brand grid place-items-center shrink-0">
                     <Check size={12} strokeWidth={3} className="text-white" />
                   </span>
-                  You&apos;ll know if it&apos;s a fit within 90 minutes
+                  <Typography variant="body-sm" color="white" className="opacity-90">
+                    You&apos;ll know if it&apos;s a fit within 90 minutes
+                  </Typography>
                 </li>
               </ul>
             </div>
@@ -55,57 +68,68 @@ export default function StepsSection() {
           <div className="p-[44px_36px]">
             <form className="flex flex-col gap-[16px]" onSubmit={(e) => e.preventDefault()}>
               <div>
-                <div className="text-[11px] font-[700] text-brand-2 uppercase tracking-[0.12em]">
+                <Typography as="div" variant="eyebrow" color="brand-2" className="pb-4">
                   Visitor Pass · Innovators
-                </div>
-                <div className="text-[24px] leading-[1.2] font-[700] mb-[8px] text-brand-deep tracking-[-0.015em]">
+                </Typography>
+                <Typography as="div" variant="h4" color="brand-deep" className="mb-[8px]">
                   Request a pass
-                </div>
+                </Typography>
               </div>
 
               <label className="flex flex-col gap-[6px]">
-                <span className="text-[12px] text-ink-2 font-[700]">Your name</span>
+                <Typography as="span" variant="caption" color="ink-2">
+                  Your name
+                </Typography>
                 <input
                   placeholder="Full name"
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
 
               <label className="flex flex-col gap-[6px]">
-                <span className="text-[12px] text-ink-2 font-[700]">Your specialty / trade</span>
+                <Typography as="span" variant="caption" color="ink-2">
+                  Your specialty / trade
+                </Typography>
                 <input
                   placeholder="e.g. Textile exports"
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
 
               <label className="flex flex-col gap-[6px]">
-                <span className="text-[12px] text-ink-2 font-[700]">Phone (with code)</span>
+                <Typography as="span" variant="caption" color="ink-2">
+                  Phone (with code)
+                </Typography>
                 <input
                   placeholder="+91 …"
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
 
               <label className="flex flex-col gap-[6px]">
-                <span className="text-[12px] text-ink-2 font-[700]">Anything else?</span>
+                <Typography as="span" variant="caption" color="ink-2">
+                  Anything else?
+                </Typography>
                 <textarea
                   placeholder="Optional context"
                   rows={3}
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-y focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-y focus:border-brand transition-colors"
                 />
               </label>
 
               <button
                 type="submit"
-                className="bg-brand text-white border-none rounded-pill px-[22px] py-[14px] text-[14.5px] font-[700] cursor-pointer mt-[6px] inline-flex items-center justify-center gap-[8px] hover:bg-brand-2 transition-colors"
+                className="bg-brand text-white border-none rounded-pill px-[22px] py-[14px] font-[700] cursor-pointer mt-[6px] inline-flex items-center justify-center gap-[8px] hover:bg-brand-2 transition-colors"
               >
-                Submit request <span className="font-serif">&rarr;</span>
+                <Typography as="span" variant="body-sm" color="white">
+                  Submit request
+                </Typography>
+                <span className="font-serif">&rarr;</span>
               </button>
 
-              <div className="text-[11.5px] text-ink-4 text-center font-[600]">
+              <Typography as="div" variant="caption" color="ink-4" className="text-center">
                 Replied within 24 hours
-              </div>
+              </Typography>
             </form>
           </div>
         </div>

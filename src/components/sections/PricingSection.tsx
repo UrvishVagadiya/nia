@@ -68,7 +68,7 @@ export default function PricingSection() {
 
                 <div className="flex items-baseline gap-2">
                   <span
-                    className={`text-[36px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${isDark ? "text-white" : "text-brand-deep"}`}
+                    className={`font-serif text-[36px] font-semibold tracking-[-0.02em] transition-colors duration-300 ${isDark ? "text-white" : "text-brand-deep"}`}
                   >
                     {tier.price[billing]}
                   </span>
@@ -119,7 +119,7 @@ export default function PricingSection() {
                   }`}
                 >
                   {tier.cta}
-                  <span className="font-serif ml-0.5">&rarr;</span>
+                  <span className=" ml-0.5">→</span>
                 </Link>
               </Card>
             );

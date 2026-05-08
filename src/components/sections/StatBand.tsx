@@ -4,7 +4,7 @@ import { STATS } from "../constant/Stantband.data";
 export default function StatBand() {
   return (
     <section className="bg-paper-2 px-8 pb-[80px]">
-      <div className="section-container rounded-[18px] py-[36px] px-[48px] relative overflow-hidden bg-brand-2">
+      <div className="section-container rounded-[18px] py-[36px] px-12! relative overflow-hidden bg-brand-2">
         {/* Radial highlight */}
         <div
           className="absolute inset-0 bg-[--color-primary] pointer-events-none"

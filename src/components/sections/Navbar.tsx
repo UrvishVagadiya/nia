@@ -1,13 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { ChapterSwitcher } from "./EyebrowChip";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-
-const CHAPTERS = ["Innovators", "Superiors", "Pioneers"];
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
@@ -20,7 +18,6 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeChapter, setActiveChapter] = useState("Innovators");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -39,24 +36,9 @@ export default function Navbar() {
         <div className="pt-3">
           <Image src="/Nia.png" alt="NIA Logo" width={45} height={45} className="w-auto h-[38px]" />
         </div>
-
-        {/* Cosmetic Chapter Switcher */}
-        <div className="hidden sm:flex items-center border border-line rounded-pill bg-paper-3 p-1 shadow-sm">
-          {CHAPTERS.map((ch) => {
-            const isActive = activeChapter === ch;
-            return (
-              <button
-                key={ch}
-                onClick={() => setActiveChapter(ch)}
-                className={cn(
-                  "px-4 py-1.5 rounded-pill text-[13px] font-semibold transition-all duration-200",
-                  isActive ? "bg-brand text-white shadow-sm" : "text-ink-3 hover:text-ink"
-                )}
-              >
-                {ch}
-              </button>
-            );
-          })}
+        {/* Chapter Switcher — always visible */}
+        <div className="hidden sm:flex">
+          <ChapterSwitcher />
         </div>
 
         {/* Desktop Nav Links */}
@@ -88,6 +70,11 @@ export default function Navbar() {
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </nav>
+
+      {/* Mobile Switcher — visible on small screens */}
+      <div className="sm:hidden flex justify-center pb-2 px-4">
+        <ChapterSwitcher />
+      </div>
 
       {/* Mobile Nav Dropdown */}
       {mobileOpen && (

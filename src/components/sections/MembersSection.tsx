@@ -113,12 +113,12 @@ export default function MembersSection() {
     <section id="members" className="bg-paper-2 py-[88px]">
       <div className="max-w-[1280px] mx-auto px-[32px]">
         {/* Heading */}
-        <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-[700] tracking-[0.06em] uppercase mb-[16px]">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 eyebrow-text mb-4">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
             The Directory
           </div>
-          <h2 className="text-[clamp(34px,4.4vw,52px)] font-bold leading-[1.1] tracking-[-0.025em] text-brand-deep m-0 text-balance">
+          <h2 className="text-[clamp(34px,4.4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-brand-deep">
             Meet the innovators.
           </h2>
           <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
@@ -140,8 +140,8 @@ export default function MembersSection() {
                 className={cn(
                   "px-[14px] py-[8px] rounded-pill text-[13px] font-[600] transition-all duration-200 whitespace-nowrap border",
                   isActive
-                    ? "bg-brand-deep text-white border-brand-deep shadow-sm"
-                    : "bg-white text-ink-2 border-line hover:border-brand/30"
+                    ? "bg-brand-deep text-white shadow-md"
+                    : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md"
                 )}
               >
                 {s}

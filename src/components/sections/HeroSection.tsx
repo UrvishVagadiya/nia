@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Typography from "../ui/typography";
+import { HERO_BULLETS } from "../constant/HeroSection.data";
 
 export default function HeroSection() {
   return (
@@ -10,9 +12,11 @@ export default function HeroSection() {
       <div className="section-container pt-[64px] px-8 pb-[80px] grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left Side: Copy */}
         <div>
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-bold tracking-[0.06em] uppercase mb-4">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
             <span className="w-[6px] h-[6px] rounded-full bg-brand" />
-            NIA Surat · Chapter 01
+            <Typography variant="eyebrow" color="brand-2">
+              NIA Surat · Chapter 01
+            </Typography>
           </div>
           <h1 className="font-sans text-[clamp(40px,5.4vw,64px)] leading-[1.05] tracking-[-0.025em] font-bold m-0 mb-[22px] text-balance text-brand-deep">
             NIA Innovators.
@@ -25,17 +29,9 @@ export default function HeroSection() {
             25 category leaders. One chair per specialty. No overlap.
           </p>
 
-          <ul className="list-none p-0 m-0 mb-[32px] grid grid-cols-1 sm:grid-cols-2 gap-[12px]">
-            {[
-              "Weekly meetings, predictable cadence",
-              "One member per specialty",
-              "Personally vetted by chapter leader",
-              "Trusted referrals, real ROI",
-            ].map((item, idx) => (
-              <li
-                key={idx}
-                className="flex items-center gap-[10px] text-[14.5px] text-ink-2 font-medium"
-              >
+          <ul className="list-none p-0 m-0 mb-[32px] grid grid-cols-2 gap-[12px]">
+            {HERO_BULLETS.map((item, idx) => (
+              <li key={idx} className="flex items-center gap-[10px]">
                 <span className="w-[22px] h-[22px] rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
                   <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                     <path
@@ -47,7 +43,9 @@ export default function HeroSection() {
                     />
                   </svg>
                 </span>
-                {item}
+                <Typography variant="body-sm" color="ink-2">
+                  {item}
+                </Typography>
               </li>
             ))}
           </ul>
@@ -84,14 +82,16 @@ export default function HeroSection() {
               />
             </div>
             <div className="rounded-[18px] overflow-hidden bg-brand p-[18px] text-white flex flex-col justify-between relative">
-              <div className="text-[11px] opacity-85 font-bold tracking-[0.1em] uppercase">
+              <Typography as="div" variant="caption" color="white" className="opacity-85">
                 Next meeting
-              </div>
+              </Typography>
               <div>
-                <div className="font-serif text-[22px] leading-[1.1] tracking-[-0.015em] font-medium">
+                <Typography as="div" variant="h5" color="white">
                   Wed, May 13
-                </div>
-                <div className="text-[12px] opacity-85 mt-1 font-medium">9:30 — 11:00 AM</div>
+                </Typography>
+                <Typography as="div" variant="caption" color="white" className="opacity-85 mt-1">
+                  9:30 — 11:00 AM
+                </Typography>
               </div>
             </div>
           </div>
