@@ -36,7 +36,7 @@ export default function TestimonialsSection() {
   if (!current) return null;
 
   return (
-    <section className="bg-paper-2">
+    <section className="bg-paper">
       <div className="section-container py-[88px] px-8">
         {/* Heading */}
         <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
