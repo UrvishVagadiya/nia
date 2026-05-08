@@ -46,7 +46,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-12 pt-6 border-t border-white/10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-12 pt-6 border-t border-white/10">
           <span className="text-[13px] text-white/40">
             &copy; 2026 NIA Surat &middot; A Network In Action chapter
           </span>

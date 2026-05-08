@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Typography from "@/components/ui/typography";
 
 export default function GetintoRoom() {
   return (
@@ -9,12 +10,12 @@ export default function GetintoRoom() {
         <div className="bg-paper rounded-[24px] p-[clamp(32px,4vw,56px)] border border-line">
           {/* Header */}
           <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
-            <h2 className="font-sans text-[clamp(34px,4.4vw,52px)] leading-[1.1] tracking-[-0.025em] font-[700] m-0 text-brand-deep text-balance">
+            <Typography as="h2" variant="h2" color="brand-deep">
               Get into the room in 3 simple steps.
-            </h2>
-            <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
+            </Typography>
+            <Typography variant="body-md" color="ink-3" className="max-w-[620px]">
               From reaching out to sitting at the table — three steps, two weeks, no friction.
-            </p>
+            </Typography>
           </div>
 
           {/* Grid Layout */}
@@ -29,8 +30,10 @@ export default function GetintoRoom() {
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 40vw"
               />
-              <div className="absolute bottom-[16px] left-[16px] px-[14px] py-[8px] rounded-pill bg-white/95 backdrop-blur-[8px] text-[11px] font-[700] tracking-[0.06em] uppercase text-brand-deep shadow-sm">
-                Hyatt Regency · Surat
+              <div className="absolute bottom-[16px] left-[16px] px-[14px] py-[8px] rounded-pill bg-white/95 backdrop-blur-[8px] shadow-sm">
+                <Typography as="div" variant="caption" color="brand-deep">
+                  Hyatt Regency · Surat
+                </Typography>
               </div>
             </div>
 
@@ -44,13 +47,18 @@ export default function GetintoRoom() {
                   01
                 </div>
                 <div>
-                  <div className="text-[17px] font-[700] text-brand-deep mb-[6px] tracking-[-0.01em]">
+                  <Typography
+                    as="div"
+                    variant="body-md"
+                    color="brand-deep"
+                    className="mb-[6px] font-bold"
+                  >
                     Step 1: Request a visitor pass
-                  </div>
-                  <p className="text-[14px] leading-[1.6] text-ink-3 m-0 text-pretty">
+                  </Typography>
+                  <Typography variant="body-sm" color="ink-3">
                     Tell us your name, your specialty, and a phone number. Sreyansh will personally
                     check seat availability for your category.
-                  </p>
+                  </Typography>
                 </div>
               </div>
 
@@ -59,13 +67,18 @@ export default function GetintoRoom() {
                   02
                 </div>
                 <div>
-                  <div className="text-[17px] font-[700] text-brand-deep mb-[6px] tracking-[-0.01em]">
+                  <Typography
+                    as="div"
+                    variant="body-md"
+                    color="brand-deep"
+                    className="mb-[6px] font-bold"
+                  >
                     Step 2: Sit in for a Tuesday
-                  </div>
-                  <p className="text-[14px] leading-[1.6] text-ink-3 m-0 text-pretty">
+                  </Typography>
+                  <Typography variant="body-sm" color="ink-3">
                     Attend a full 90-minute meeting. Watch the format, meet the room, get a feel for
                     whether the chapter is a fit for you.
-                  </p>
+                  </Typography>
                 </div>
               </div>
 
@@ -74,13 +87,18 @@ export default function GetintoRoom() {
                   03
                 </div>
                 <div>
-                  <div className="text-[17px] font-[700] text-brand-deep mb-[6px] tracking-[-0.01em]">
+                  <Typography
+                    as="div"
+                    variant="body-md"
+                    color="brand-deep"
+                    className="mb-[6px] font-bold"
+                  >
                     Step 3: Apply for the seat
-                  </div>
-                  <p className="text-[14px] leading-[1.6] text-ink-3 m-0 text-pretty">
+                  </Typography>
+                  <Typography variant="body-sm" color="ink-3">
                     If both sides see a fit, we&apos;ll formalise membership. You&apos;ll be the
                     only voice in your category, for as long as you hold it.
-                  </p>
+                  </Typography>
                 </div>
               </div>
             </div>

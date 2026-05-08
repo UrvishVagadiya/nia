@@ -1,6 +1,7 @@
 "use client";
 
 import { VALUE_PROPS } from "@/lib/data";
+import Typography from "@/components/ui/typography";
 
 const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; bgClass: string }> =
   {
@@ -76,17 +77,19 @@ export default function WhyJoinSection() {
       <div className="max-w-[1280px] mx-auto px-[32px] py-[88px]">
         {/* Section heading */}
         <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft text-brand-2 text-[12px] font-[700] tracking-[0.06em] uppercase mb-[16px]">
+          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-[16px]">
             <span className="w-[6px] h-[6px] rounded-full bg-brand" />
-            Why NIA
+            <Typography variant="eyebrow" color="brand-2">
+              Why NIA
+            </Typography>
           </div>
-          <h2 className="font-sans text-[clamp(34px,4.4vw,52px)] leading-[1.1] tracking-[-0.025em] font-[700] m-0 text-brand-deep text-balance">
+          <Typography as="h2" variant="h2" color="brand-deep">
             Why join us?
-          </h2>
-          <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
+          </Typography>
+          <Typography variant="body-md" color="ink-3" className="max-w-[620px]">
             NIA is built differently — three chapters, exclusive categories, and a structure that
             makes referrals predictable, not coincidental.
-          </p>
+          </Typography>
         </div>
 
         <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-[16px]">
@@ -103,10 +106,12 @@ export default function WhyJoinSection() {
                 >
                   {displayConfig.svg}
                 </div>
-                <h3 className="text-[16px] font-[700] tracking-[-0.005em] m-0 text-brand-deep">
+                <Typography as="h3" variant="h4" color="brand-deep">
                   {prop.title}
-                </h3>
-                <p className="text-[13px] leading-[1.55] text-ink-3 m-0 text-pretty">{prop.body}</p>
+                </Typography>
+                <Typography variant="body-sm" color="ink-3">
+                  {prop.body}
+                </Typography>
               </article>
             );
           })}
