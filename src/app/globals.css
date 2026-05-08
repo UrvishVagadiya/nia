@@ -4,6 +4,31 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --gradiant-1: radial-gradient(
+    101.48% 108.23% at 90% 50%,
+    rgba(245, 180, 62, 0.18) 0%,
+    rgba(245, 180, 62, 0) 50%
+  );
+  --gradiant-2: radial-gradient(
+    128.93% 125.69% at 90% 10%,
+    rgba(46, 157, 219, 0.25) 0%,
+    rgba(46, 157, 219, 0) 50%
+  );
+
+  /* page background */
+  --color-page-primary: #f6f8fb;
+  --color-page-secondary: #ffffff;
+
+  /* background colors */
+  --color-blue: #2e9ddb;
+  --color-dark-blue: #0e3a5c;
+
+  /* text colors */
+  --color-tprimary: #0e3a5c;
+  --color-tsecondary: #2e9ddb;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -50,7 +75,7 @@
 
 :root {
   --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --foreground: #0a0a0a;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
