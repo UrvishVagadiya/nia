@@ -55,7 +55,7 @@ export default function StepsSection() {
           <div className="p-[44px_36px]">
             <form className="flex flex-col gap-[16px]" onSubmit={(e) => e.preventDefault()}>
               <div>
-                <div className="text-[11px] font-[700] text-brand-2 uppercase tracking-[0.12em]">
+                <div className="text-[11px] font-[700] text-brand-2 uppercase tracking-[0.12em] pb-4">
                   Visitor Pass · Innovators
                 </div>
                 <div className="text-[24px] leading-[1.2] font-[700] mb-[8px] text-brand-deep tracking-[-0.015em]">
@@ -67,7 +67,7 @@ export default function StepsSection() {
                 <span className="text-[12px] text-ink-2 font-[700]">Your name</span>
                 <input
                   placeholder="Full name"
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
 
@@ -75,7 +75,7 @@ export default function StepsSection() {
                 <span className="text-[12px] text-ink-2 font-[700]">Your specialty / trade</span>
                 <input
                   placeholder="e.g. Textile exports"
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
 
@@ -83,7 +83,7 @@ export default function StepsSection() {
                 <span className="text-[12px] text-ink-2 font-[700]">Phone (with code)</span>
                 <input
                   placeholder="+91 …"
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
 
@@ -92,7 +92,7 @@ export default function StepsSection() {
                 <textarea
                   placeholder="Optional context"
                   rows={3}
-                  className="w-full px-[14px] py-[12px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-y focus:border-brand transition-colors"
+                  className="w-full px-[13px] py-[11px] text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-y focus:border-brand transition-colors"
                 />
               </label>
 

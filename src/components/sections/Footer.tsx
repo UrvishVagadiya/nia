@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FOOTER_DATA } from "@/lib/data";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -10,7 +11,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 lg:gap-16">
           {/* Brand column */}
           <div>
-            <span className="text-[32px] font-bold tracking-tight">NIA</span>
+            <Image
+              src="/nia-logo.png"
+              alt="NIA Logo"
+              width={120}
+              height={40}
+              className="invert brightness-0 "
+            />
             <p className="text-[14px] text-white/60 mt-3 leading-relaxed max-w-xs">
               Three chapters. 72 business owners. One mission — to be the most-trusted referral room
               in Surat.
@@ -47,8 +54,9 @@ export default function Footer() {
             href="https://propelius.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-[8px] text-[12px] text-white px-[14px] py-[7px] bg-white/[0.08] border border-white/15 rounded-pill font-[600] hover:bg-white/[0.12] transition-colors"
+            className="inline-flex items-center justify-center gap-[8px] text-[12px] text-white px-[14px] py-[7px] bg-white/[0.08] border border-white/15 rounded-pill font-[600] hover:bg-white/[0.12] transition-colors"
           >
+            <span className="w-[5px] h-[5px] rounded-full bg-brand" />
             Built by Propelius
           </Link>
         </div>
