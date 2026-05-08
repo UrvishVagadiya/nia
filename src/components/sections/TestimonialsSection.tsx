@@ -166,28 +166,28 @@ export default function TestimonialsSection() {
           </p>
 
           {/* Prev arrow */}
-          <div className="absolute left-[-22px] top-1/2 -translate-y-1/2 hidden md:block">
+          <div className="absolute left-[-22px] top-1/2 -translate-y-1/2 ">
             <button
               onClick={() => {
                 prev();
                 setAutoKey((k) => k + 1);
               }}
               aria-label="Previous testimonial"
-              className="w-[44px] h-[44px] rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
             >
               <span className="text-[24px] leading-none">‹</span>
             </button>
           </div>
 
           {/* Next arrow */}
-          <div className="absolute right-[-22px] top-1/2 -translate-y-1/2 hidden md:block">
+          <div className="absolute right-[-22px] top-1/2 -translate-y-1/2 ">
             <button
               onClick={() => {
                 next();
                 setAutoKey((k) => k + 1);
               }}
               aria-label="Next testimonial"
-              className="w-[44px] h-[44px] rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
             >
               <span className="text-[24px] leading-none">›</span>
             </button>

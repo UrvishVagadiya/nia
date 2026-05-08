@@ -31,34 +31,36 @@ export default function Navbar() {
         scrolled ? "bg-paper/90 backdrop-blur-lg border-b border-line shadow-sm" : "bg-paper"
       }`}
     >
-      <nav className="section-container flex items-center justify-between h-16 gap-6">
+      <nav className="section-container flex items-center h-16 gap-x-12">
         {/* Logo */}
-        <div className="pt-3">
+        <div className="pt-3 flex-none">
           <Image src="/Nia.png" alt="NIA Logo" width={45} height={45} className="w-auto h-[38px]" />
         </div>
         {/* Chapter Switcher — always visible */}
-        <div className="hidden sm:flex">
+        <div className="hidden sm:flex flex-none">
           <ChapterSwitcher />
         </div>
 
-        {/* Desktop Nav Links */}
-        <div className="hidden lg:flex items-center gap-6">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[14px] font-medium text-ink-2 hover:text-brand-2 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+        <div className="flex-1 flex items-center justify-end gap-x-6">
+          {/* Desktop Nav Links */}
+          <div className="hidden lg:flex items-center gap-x-6">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-[14px] font-medium text-ink-2 hover:text-brand-2 transition-colors whitespace-nowrap"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
 
-        {/* CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <Button variant="primary" render={<Link href="#apply" />} nativeButton={false}>
-            Visit a Meeting
-          </Button>
+          {/* CTA */}
+          <div className="hidden md:flex items-center">
+            <Button variant="primary" render={<Link href="#apply" />} nativeButton={false}>
+              Visit a Meeting
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
