@@ -1,6 +1,6 @@
 "use client";
 
-import { SCHEDULE } from "../constant/ScheduleSection.data";
+import { SCHEDULE } from "@/components/constant/ScheduleSection.data";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";

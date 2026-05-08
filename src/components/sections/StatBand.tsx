@@ -1,5 +1,5 @@
 "use client";
-import { STATS } from "../constant/Stantband.data";
+import { STATS } from "@/components/constant/Stantband.data";
 
 export default function StatBand() {
   return (

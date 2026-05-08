@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { MEMBERS } from "../constant/MembersSection.data";
+import { MEMBERS } from "@/components/constant/MembersSection.data";
 import { Member } from "@/lib/types";
 import { MapPin, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";

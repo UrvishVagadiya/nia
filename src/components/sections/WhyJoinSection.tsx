@@ -1,6 +1,6 @@
 "use client";
 
-import { VALUE_PROPS } from "../constant/WhyJoinSection.data";
+import { VALUE_PROPS } from "@/components/constant/WhyJoinSection.data";
 import Typography from "@/components/ui/typography";
 
 const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; bgClass: string }> =

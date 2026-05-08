@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Typography from "../ui/typography";
-import { HERO_BULLETS } from "../constant/HeroSection.data";
+import { HERO_BULLETS } from "@/components/constant/HeroSection.data";
 
 export default function HeroSection() {
   return (
