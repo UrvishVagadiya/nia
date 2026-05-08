@@ -2,69 +2,108 @@
 
 import Image from "next/image";
 import { useChapter } from "@/lib/chapter-context";
+import Typography from "@/components/ui/typography";
 
 export default function LeaderSection() {
   const { chapter } = useChapter();
   const { leader } = chapter;
 
   const stats = [
-    { label: "Specialty", value: leader.specialty },
-    { label: "Tenure", value: leader.tenure },
-    { label: "Leads", value: "3 chapters" },
+    { label: "SPECIALTY", value: leader.specialty },
+    { label: "TENURE", value: leader.tenure },
+    { label: "LEADS", value: "3 chapters" },
   ];
 
   return (
     <section id="leader" className="bg-paper section-padding">
       <div className="section-container">
-        {/* Section heading */}
-        <div className="text-center mb-12">
-          <span className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 eyebrow-text mb-4">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
-            LEADERSHIP
-          </span>
-          <h2 className="text-[clamp(28px,4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-ink">
-            Led by <span className="heading-italic-brand">Sreyansh Jain.</span>
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          {/* Portrait */}
-          <div className="relative w-full aspect-square max-w-[480px] mx-auto rounded-[20px] overflow-hidden">
+        <div className="leader-grid grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-16 items-center">
+          {/* Portrait with gradient overlay */}
+          <div className="relative aspect-[4/5] rounded-[18px] overflow-hidden bg-paper-3 w-full">
             <Image
               src={leader.photo}
               alt={leader.name}
               fill
-              className="object-cover transition-all duration-240"
-              sizes="(max-width: 1024px) 90vw, 480px"
+              className="object-cover"
+              sizes="(max-width: 980px) 90vw, 480px"
             />
+            {/* Gradient overlay */}
+            <div
+              className="absolute inset-x-0 bottom-0 pt-[60px] px-[22px] pb-[22px]"
+              style={{ background: "linear-gradient(transparent, rgba(14,58,92,0.92))" }}
+            >
+              <Typography
+                as="div"
+                variant="eyebrow"
+                className="block !font-bold tracking-[0.12em] !text-white"
+              >
+                Group Leader · Innovators
+              </Typography>
+              <Typography
+                as="div"
+                variant="h5"
+                color="white"
+                className="serif mt-1 tracking-[-0.015em]"
+              >
+                {leader.name}
+              </Typography>
+            </div>
           </div>
 
-          {/* Bio */}
-          <div className="flex flex-col gap-5">
-            <div>
-              <h3 className="text-[24px] font-bold tracking-[-0.02em] text-ink">{leader.name}</h3>
-              <p className="text-[14px] text-ink-3 mt-1">{leader.title}</p>
-            </div>
+          {/* Right column */}
+          <div className="flex flex-col">
+            {/* Eyebrow */}
+            <span className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3.5 py-1.5 w-fit mb-4">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand shrink-0" />
+              <Typography variant="eyebrow" color="brand-2" className="font-bold!">
+                Chapter Leadership
+              </Typography>
+            </span>
 
-            <p className="text-[15px] leading-relaxed text-ink-2 transition-all duration-240">
+            {/* Heading */}
+            <Typography
+              as="h2"
+              variant="h2"
+              color="brand-deep"
+              className="mb-6 [text-wrap:balance]"
+            >
+              Led by <span className="heading-italic-brand">Sreyansh</span>.
+              <br />
+              Vouched for by every seat in the room.
+            </Typography>
+
+            {/* Bio */}
+            <Typography
+              variant="body-md"
+              color="ink-2"
+              className="mb-7 max-w-[580px] [text-wrap:pretty]"
+            >
               {leader.bio}
-            </p>
+            </Typography>
 
             {/* Stat strip */}
-            <div className="flex flex-wrap gap-0 rounded-[12px] border border-line overflow-hidden mt-2">
+            <div className="grid grid-cols-3 border border-line rounded-[14px] overflow-hidden bg-paper-2 max-w-[540px]">
               {stats.map((stat, i) => (
                 <div
                   key={stat.label}
-                  className={`flex-1 min-w-[120px] px-4 py-3 ${
-                    i < stats.length - 1 ? "border-r border-line" : ""
-                  }`}
+                  className={`px-[18px] py-4 ${i < stats.length - 1 ? "border-r border-line" : ""}`}
                 >
-                  <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-4">
+                  <Typography
+                    as="span"
+                    variant="eyebrow"
+                    color="ink-4"
+                    className="block font-bold! text-[#8b95a4]! mb-1.5"
+                  >
                     {stat.label}
-                  </span>
-                  <span className="block text-[14px] font-semibold text-ink mt-0.5">
+                  </Typography>
+                  <Typography
+                    as="span"
+                    variant="body-sm"
+                    color="brand-deep"
+                    className="block font-bold!"
+                  >
                     {stat.value}
-                  </span>
+                  </Typography>
                 </div>
               ))}
             </div>

@@ -23,7 +23,7 @@ export function ChapterSwitcher() {
   const { activeChapterId, setActiveChapterId } = useChapter();
 
   return (
-    <div className="relative flex items-center rounded-pill bg-paper-3 p-1 shadow-pill">
+    <div className="relative flex items-center border-1 border-[var(--color-line)] rounded-pill bg-paper-3 p-1 shadow-pill">
       {CHAPTER_IDS.map((id) => {
         const ch = CHAPTERS[id];
         const isActive = id === activeChapterId;
@@ -32,7 +32,7 @@ export function ChapterSwitcher() {
             key={id}
             onClick={() => setActiveChapterId(id)}
             className={cn(
-              "relative z-10 rounded-pill px-4 py-1.5 text-[13px] font-semibold transition-all duration-200",
+              "relative z-10 rounded-pill px-[16px] py-[8px] text-[13px] font-semibold transition-all duration-200",
               isActive ? "bg-brand text-white shadow-pill" : "text-ink-3 hover:text-ink"
             )}
           >
