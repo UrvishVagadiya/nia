@@ -162,10 +162,7 @@ export default function TestimonialsSection() {
 
             {/* ✅ Prev arrow — negative translate pulls it outside the card,
                 but the parent px-6/px-8 wrapper ensures it never overflows the viewport */}
-            <div
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2
-                            max-sm:left-3 max-sm:translate-x-0"
-            >
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
               <button
                 onClick={() => {
                   prev();
@@ -181,10 +178,7 @@ export default function TestimonialsSection() {
             </div>
 
             {/* ✅ Next arrow — same pattern on the right */}
-            <div
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2
-                            max-sm:right-3 max-sm:translate-x-0"
-            >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
               <button
                 onClick={() => {
                   next();

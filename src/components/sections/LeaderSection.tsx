@@ -17,9 +17,9 @@ export default function LeaderSection() {
   return (
     <section id="leader" className="bg-paper section-padding">
       <div className="section-container">
-        <div className="leader-grid grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-16 items-center">
+        <div className="leader-grid flex flex-col md:flex-row gap-16 items-center">
           {/* Portrait with gradient overlay */}
-          <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full">
+          <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-[420px] sm:flex-none">
             <Image
               src={leader.photo}
               alt={leader.name}
@@ -51,7 +51,7 @@ export default function LeaderSection() {
           </div>
 
           {/* Right column */}
-          <div className="flex flex-col">
+          <div className="flex flex-col sm:flex-1">
             {/* Eyebrow */}
             <span className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3.5 py-1.5 w-fit mb-4">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand shrink-0" />
