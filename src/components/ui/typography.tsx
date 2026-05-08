@@ -8,7 +8,6 @@ type TypographyVariant =
   | "h3"
   | "h4"
   | "h5"
-  | "body-xl"
   | "body-lg"
   | "body-md"
   | "body-sm"
@@ -43,44 +42,41 @@ export default function Typography({
   as: Component = "p",
 }: TypographyProps) {
   const variantStyles: Record<TypographyVariant, string> = {
-    /* ───────────────── HERO ───────────────── */
+    /* ───────── HERO ───────── */
 
-    display:
-      "text-[48px] sm:text-[64px] lg:text-[88px] font-bold tracking-[-0.04em] leading-[0.95]",
+    display: "text-[56px] lg:text-[88px] font-bold leading-[0.95] tracking-[-0.04em]",
 
-    hero: "text-[40px] sm:text-[52px] lg:text-[72px] font-bold tracking-[-0.03em] leading-[1]",
+    hero: "text-[40px] lg:text-[72px] font-bold leading-[1] tracking-[-0.03em]",
 
-    /* ───────────────── HEADINGS ───────────────── */
+    /* ───────── HEADINGS ───────── */
 
-    h1: "text-[32px] sm:text-[40px] lg:text-[56px] font-bold tracking-[-0.03em] leading-[1.08]",
+    h1: "text-[32px] lg:text-[56px] font-bold leading-[1.08] tracking-[-0.03em]",
 
-    h2: "text-[28px] sm:text-[34px] lg:text-[44px] font-bold tracking-[-0.025em] leading-[1.12]",
+    h2: "text-[28px] lg:text-[44px] font-bold leading-[1.12] tracking-[-0.025em]",
 
-    h3: "text-[24px] sm:text-[28px] lg:text-[36px] font-semibold leading-[1.2]",
+    h3: "text-[24px] lg:text-[36px] font-semibold leading-[1.2]",
 
-    h4: "text-[20px] sm:text-[22px] lg:text-[28px] font-semibold leading-[1.3]",
+    h4: "text-[20px] lg:text-[28px] font-semibold leading-[1.3]",
 
-    h5: "text-[18px] sm:text-[20px] lg:text-[24px] font-medium leading-[1.35]",
+    h5: "text-[18px] lg:text-[24px] font-medium leading-[1.35]",
 
-    /* ───────────────── BODY ───────────────── */
+    /* ───────── BODY ───────── */
 
-    "body-xl": "text-[20px] sm:text-[22px] lg:text-[24px] font-normal leading-[1.7]",
+    "body-lg": "text-[18px] lg:text-[20px] font-normal leading-[1.7]",
 
-    "body-lg": "text-[18px] sm:text-[19px] lg:text-[20px] font-normal leading-[1.7]",
+    "body-md": "text-[16px] lg:text-[18px] font-normal leading-[1.75]",
 
-    "body-md": "text-[16px] sm:text-[17px] lg:text-[18px] font-normal leading-[1.75]",
+    "body-sm": "text-[14px] lg:text-[16px] font-normal leading-[1.7]",
 
-    "body-sm": "text-[14px] sm:text-[15px] lg:text-[16px] font-normal leading-[1.7]",
+    /* ───────── SMALL TEXT ───────── */
 
-    /* ───────────────── SMALL TEXT ───────────────── */
+    caption: "text-[12px] lg:text-[14px] font-normal leading-[1.5]",
 
-    caption: "text-[12px] sm:text-[13px] lg:text-[14px] font-normal leading-[1.5]",
+    eyebrow: "eyebrow-text",
 
-    eyebrow: "text-[11px] font-semibold uppercase tracking-[0.18em] leading-[1.4]",
+    /* ───────── STATS ───────── */
 
-    /* ───────────────── STAT ───────────────── */
-
-    stat: "text-[48px] sm:text-[56px] lg:text-[72px] font-bold tracking-[-0.03em] leading-none",
+    stat: "stat-numeral",
   };
 
   const colorStyles: Record<TypographyColor, string> = {
