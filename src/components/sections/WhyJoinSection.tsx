@@ -1,6 +1,6 @@
 "use client";
 
-import { VALUE_PROPS } from "@/lib/data";
+import { VALUE_PROPS } from "../constant/WhyJoinSection.data";
 
 const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; bgClass: string }> =
   {

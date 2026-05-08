@@ -1,13 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { useChapter } from "@/lib/chapter-context";
 import Typography from "@/components/ui/typography";
 
-export default function LeaderSection() {
-  const { chapter } = useChapter();
-  const { leader } = chapter;
+const leader = {
+  name: "Sreyansh Jain",
+  title: "Group Leader · Community Builder",
+  specialty: "Diamond Trading",
+  tenure: "Since 2023",
+  bio: "Third-generation diamond trader and a believer that trust compounds faster than capital. Sreyansh founded the Innovators chapter to give Surat’s professionals a room where referrals come from genuine relationships, not transactions.",
+  photo:
+    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=750&fit=crop&crop=faces",
+};
 
+export default function LeaderSection() {
   const stats = [
     { label: "SPECIALTY", value: leader.specialty },
     { label: "TENURE", value: leader.tenure },

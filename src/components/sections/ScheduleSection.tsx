@@ -1,15 +1,11 @@
 "use client";
 
-import { useChapter } from "@/lib/chapter-context";
-import { SCHEDULE_BY_CHAPTER } from "@/lib/data";
+import { SCHEDULE } from "../constant/ScheduleSection.data";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 
 export default function ScheduleSection() {
-  const { activeChapterId, chapter } = useChapter();
-
-  const schedule = SCHEDULE_BY_CHAPTER[activeChapterId] || [];
-
+  const schedule = SCHEDULE;
   const nextMeeting = schedule[0];
 
   return (
@@ -23,10 +19,7 @@ export default function ScheduleSection() {
           </div>
 
           <h2 className="font-sans text-[clamp(34px,4vw,48px)] leading-[1.1] tracking-[-0.025em] font-bold mb-4 text-brand-deep text-balance">
-            {chapter.meetingDay}{" "}
-            <span className="italic font-serif text-brand">
-              at {chapter.meetingTime.split("—")[0].trim()}
-            </span>
+            Every Wednesday <span className="italic font-serif text-brand">at 9:30 AM</span>
           </h2>
 
           <p className="text-[17px] leading-[1.6] text-ink-2 mb-6 max-w-[480px] text-pretty">
@@ -43,7 +36,9 @@ export default function ScheduleSection() {
               <div className="text-[11px] text-ink-4 uppercase tracking-[0.1em] font-bold">
                 Venue
               </div>
-              <div className="text-[14px] font-bold text-brand-deep">{chapter.venue}</div>
+              <div className="text-[14px] font-bold text-brand-deep">
+                Hyatt Regency, Athwa Lines
+              </div>
             </div>
           </div>
         </div>

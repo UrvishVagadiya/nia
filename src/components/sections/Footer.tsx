@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FOOTER_DATA } from "@/lib/data";
+import { FOOTER_DATA } from "@/components/constant/Footer.data";
 
 export default function Footer() {
   return (

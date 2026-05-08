@@ -193,8 +193,8 @@
   }
 
   .section-padding {
-    padding-top: 56px;
-    padding-bottom: 56px;
+    padding-top: 26px;
+    padding-bottom: 26px;
   }
 }
 
@@ -344,6 +344,12 @@
 }
 
 .members-carousel-scroller::-webkit-scrollbar,
-.members-carousel-strip::-webkit-scrollbar {
+.members-carousel-strip::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
   display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

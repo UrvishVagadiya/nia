@@ -1,12 +1,12 @@
 "use client";
 
-import { FAQ } from "@/lib/data";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { FAQ } from "@/components/constant/FAQSection.data";
 
 export default function FAQSection() {
   return (

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { BLOG_POSTS } from "@/lib/data";
+import { BLOG_POSTS } from "../constant/UpdatesSection.data";
 import { Card, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 
 export default function UpdatesSection() {

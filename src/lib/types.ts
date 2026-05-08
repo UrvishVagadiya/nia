@@ -1,0 +1,47 @@
+export type Member = {
+  id: string;
+  name: string;
+  convention: string;
+  company: string;
+  specialty: string;
+  oneliner: string;
+  photo: string;
+  location?: string;
+  joined?: string;
+};
+
+export type Testimonial = {
+  quote: string;
+  who: string;
+  role: string;
+  photo: string;
+};
+
+export type FAQItem = {
+  q: string;
+  a: string;
+};
+
+export type ValueProp = {
+  title: string;
+  body: string;
+  tint: string;
+  icon: string;
+};
+
+export type BlogPost = {
+  title: string;
+  preview: string;
+  date: string;
+  category: string;
+  image: string;
+  link?: string;
+};
+
+export type FooterColumn = {
+  title: string;
+  links: {
+    label: string;
+    href: string;
+  }[];
+};

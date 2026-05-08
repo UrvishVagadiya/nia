@@ -3,11 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useChapter } from "@/lib/chapter-context";
 
 export default function HeroSection() {
-  const { chapter } = useChapter();
-
   return (
     <section className="bg-paper-2">
       <div className="section-container pt-[64px] px-8 pb-[80px] grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -18,11 +15,14 @@ export default function HeroSection() {
             NIA Surat · Chapter 01
           </div>
           <h1 className="font-sans text-[clamp(40px,5.4vw,64px)] leading-[1.05] tracking-[-0.025em] font-bold m-0 mb-[22px] text-balance text-brand-deep">
-            {chapter.name}.<br />
-            <span className="italic text-brand font-serif">{chapter.tagline}</span>
+            NIA Innovators.
+            <br />
+            <span className="italic text-brand font-serif">
+              Surat’s room of trusted professionals.
+            </span>
           </h1>
           <p className="text-[17.5px] leading-[1.6] text-ink-2 m-0 mb-[28px] max-w-[520px] text-pretty">
-            {chapter.members} category leaders. One chair per specialty. No overlap.
+            25 category leaders. One chair per specialty. No overlap.
           </p>
 
           <ul className="list-none p-0 m-0 mb-[32px] grid grid-cols-1 sm:grid-cols-2 gap-[12px]">
@@ -62,7 +62,6 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Right Side: Bento Photo Grid */}
         <div className="relative">
           <div className="grid grid-cols-[1.15fr_1fr] grid-rows-2 gap-[12px] aspect-[1.05/1]">
             <div className="row-span-2 rounded-[18px] overflow-hidden bg-paper-3 relative border border-line">

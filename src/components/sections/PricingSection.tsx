@@ -3,71 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-
-const PRICING_TIERS = [
-  {
-    name: "Visitor",
-    price: {
-      monthly: "₹0",
-      annual: "₹0",
-    },
-    interval: {
-      monthly: "Per session",
-      annual: "Per session",
-    },
-    features: [
-      "Attend up to 2 chapter meetings",
-      "Full participation in 60-sec updates",
-      "Personal intro by chapter leader",
-      "Networking over chai post-meeting",
-      "Decide if NIA fits before applying",
-    ],
-    cta: "Book a visit",
-    popular: false,
-  },
-  {
-    name: "Member",
-    price: {
-      monthly: "₹6k",
-      annual: "₹65k",
-    },
-    interval: {
-      monthly: "Per month",
-      annual: "Per year · saves ₹7k",
-    },
-    features: [
-      "Exclusive seat in your specialty",
-      "Weekly chapter meeting (52/year)",
-      "1-on-1s with all members",
-      "Member directory & private channel",
-      "Quarterly cross-chapter mixers",
-      "Six-month ROI commitment",
-    ],
-    cta: "Apply for membership",
-    popular: true,
-  },
-  {
-    name: "Founding Member",
-    price: {
-      monthly: "₹8k",
-      annual: "₹85k",
-    },
-    interval: {
-      monthly: "Per month",
-      annual: "Per year · cap of 5",
-    },
-    features: [
-      "Everything in Member",
-      "Voice in chapter governance",
-      "Co-host one quarterly meet",
-      "Priority on cross-chapter intros",
-      "Speaking slots at NIA Surat events",
-      "Recognised in all chapter materials",
-    ],
-    cta: "Speak to Sreyansh",
-    popular: false,
-  },
-];
+import { Switch } from "@/components/ui/switch";
+import { PRICING_TIERS } from "@/components/constant/PricingSection.data";
 
 export default function PricingSection() {
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
@@ -92,29 +29,21 @@ export default function PricingSection() {
         </div>
 
         {/* Toggle */}
-        <div className="flex justify-center mb-[40px]">
-          <div className="inline-flex p-1 rounded-pill bg-paper-2 border border-line">
-            <button
-              onClick={() => setBilling("monthly")}
-              className={`text-[13px] px-[18px] py-2 rounded-pill font-semibold capitalize transition-colors duration-200 ${
-                billing === "monthly"
-                  ? "bg-brand text-white"
-                  : "bg-transparent text-ink-2 hover:text-ink"
-              }`}
-            >
-              monthly
-            </button>
-            <button
-              onClick={() => setBilling("annual")}
-              className={`text-[13px] px-[18px] py-2 rounded-pill font-semibold capitalize transition-colors duration-200 ${
-                billing === "annual"
-                  ? "bg-brand text-white"
-                  : "bg-transparent text-ink-2 hover:text-ink"
-              }`}
-            >
-              annual
-            </button>
-          </div>
+        <div className="flex justify-center items-center gap-4 mb-[40px]">
+          <span
+            className={`text-[13px] font-semibold ${billing === "monthly" ? "text-brand-deep" : "text-ink-4"}`}
+          >
+            Monthly
+          </span>
+          <Switch
+            checked={billing === "annual"}
+            onCheckedChange={(checked) => setBilling(checked ? "annual" : "monthly")}
+          />
+          <span
+            className={`text-[13px] font-semibold ${billing === "annual" ? "text-brand-deep" : "text-ink-4"}`}
+          >
+            Annual
+          </span>
         </div>
 
         {/* Pricing Grid */}

@@ -2,18 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface Testimonial {
-  who: string;
-  role: string;
-  quote: string;
-  photo: string;
-}
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-// Replace this with your real data source / import from @/lib/data
+import { Testimonial } from "@/lib/types";
 
 const TESTIMONIALS: Testimonial[] = [
   {
