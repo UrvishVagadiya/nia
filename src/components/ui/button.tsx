@@ -9,10 +9,12 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
+        primary:
+          "bg-brand text-white rounded-pill text-[15px] font-[600] hover:bg-brand-2 h-auto pl-[22px] pr-[14px] py-[8px] min-h-[48px] gap-[10px]",
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "bg-transparent border border-line text-ink rounded-pill text-[15px] font-[600] hover:bg-paper-2 h-auto px-[22px] py-[14px] min-h-[48px]",
         ghost:
           "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
         destructive:
@@ -43,15 +45,46 @@ const buttonVariants = cva(
 function Button({
   className,
   variant = "default",
-  size = "default",
+  size,
+  children,
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+  const finalSize =
+    size === undefined
+      ? variant === "primary" || variant === "secondary"
+        ? null
+        : "default"
+      : size;
+
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size: finalSize, className }))}
       {...props}
-    />
+    >
+      {variant === "primary" ? (
+        <>
+          <span>{children}</span>
+          <span className="w-[28px] h-[28px] rounded-full bg-white text-brand grid place-items-center shrink-0 ml-[4px]">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </span>
+        </>
+      ) : (
+        children
+      )}
+    </ButtonPrimitive>
   );
 }
 
