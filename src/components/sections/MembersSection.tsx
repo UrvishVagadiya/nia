@@ -38,7 +38,7 @@ export default function MembersSection() {
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
             THE DIRECTORY
           </span>
-          <h2 className="text-[clamp(32px,4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-ink">
+          <h2 className="text-[clamp(32px,4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-brand-deep">
             Meet the {chapter.short.toLowerCase()}.
           </h2>
           <p className="text-[17px] text-ink-3 mt-4 max-w-2xl mx-auto">
@@ -57,7 +57,7 @@ export default function MembersSection() {
                 className={cn(
                   "rounded-pill px-5 py-2 text-[14px] font-semibold transition-all duration-200",
                   isActive
-                    ? "bg-ink text-white shadow-md"
+                    ? "bg-brand-deep text-white shadow-md"
                     : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md"
                 )}
               >

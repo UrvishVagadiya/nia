@@ -19,7 +19,7 @@ export default function LeaderSection() {
       <div className="section-container">
         <div className="leader-grid grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-16 items-center">
           {/* Portrait with gradient overlay */}
-          <div className="relative aspect-[4/5] rounded-[18px] overflow-hidden bg-paper-3 w-full">
+          <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full">
             <Image
               src={leader.photo}
               alt={leader.name}
@@ -29,13 +29,13 @@ export default function LeaderSection() {
             />
             {/* Gradient overlay */}
             <div
-              className="absolute inset-x-0 bottom-0 pt-[60px] px-[22px] pb-[22px]"
+              className="absolute inset-x-0 bottom-0 pt-15 px-5.5 pb-5.5"
               style={{ background: "linear-gradient(transparent, rgba(14,58,92,0.92))" }}
             >
               <Typography
                 as="div"
                 variant="eyebrow"
-                className="block !font-bold tracking-[0.12em] !text-white"
+                className="block font-bold! tracking-[0.12em] text-white!"
               >
                 Group Leader · Innovators
               </Typography>
@@ -61,32 +61,23 @@ export default function LeaderSection() {
             </span>
 
             {/* Heading */}
-            <Typography
-              as="h2"
-              variant="h2"
-              color="brand-deep"
-              className="mb-6 [text-wrap:balance]"
-            >
+            <Typography as="h2" variant="h2" color="brand-deep" className="mb-6 [text-balance]">
               Led by <span className="heading-italic-brand">Sreyansh</span>.
               <br />
               Vouched for by every seat in the room.
             </Typography>
 
             {/* Bio */}
-            <Typography
-              variant="body-md"
-              color="ink-2"
-              className="mb-7 max-w-[580px] [text-wrap:pretty]"
-            >
+            <Typography variant="body-md" color="ink-2" className="mb-7 max-w-145 [text-pretty]">
               {leader.bio}
             </Typography>
 
             {/* Stat strip */}
-            <div className="grid grid-cols-3 border border-line rounded-[14px] overflow-hidden bg-paper-2 max-w-[540px]">
+            <div className="grid grid-cols-3 border border-line rounded-[14px] overflow-hidden bg-paper-2 max-w-135">
               {stats.map((stat, i) => (
                 <div
                   key={stat.label}
-                  className={`px-[18px] py-4 ${i < stats.length - 1 ? "border-r border-line" : ""}`}
+                  className={`px-4.5 py-4 ${i < stats.length - 1 ? "border-r border-line" : ""}`}
                 >
                   <Typography
                     as="span"
