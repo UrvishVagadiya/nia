@@ -25,7 +25,7 @@ export default function LeaderSection() {
       <div className="section-container">
         <div className="leader-grid flex flex-col md:flex-row gap-16 items-center">
           {/* Portrait with gradient overlay */}
-          <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-[420px] sm:flex-none">
+          <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-105 sm:flex-none">
             <Image
               src={leader.photo}
               alt={leader.name}

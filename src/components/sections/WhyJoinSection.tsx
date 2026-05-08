@@ -74,11 +74,11 @@ const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; b
 export default function WhyJoinSection() {
   return (
     <section id="about" className="bg-paper">
-      <div className="max-w-[1280px] mx-auto px-[32px] py-[88px]">
+      <div className="max-w-7xl mx-auto px-8 py-22">
         {/* Section heading */}
-        <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-[16px]">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+        <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
               Why NIA
             </Typography>
@@ -86,23 +86,23 @@ export default function WhyJoinSection() {
           <Typography as="h2" variant="h2" color="brand-deep">
             Why join us?
           </Typography>
-          <Typography variant="body-md" color="ink-3" className="max-w-[620px]">
+          <Typography variant="body-md" color="ink-3" className="max-w-155">
             NIA is built differently — three chapters, exclusive categories, and a structure that
             makes referrals predictable, not coincidental.
           </Typography>
         </div>
 
-        <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-[16px]">
+        <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4">
           {VALUE_PROPS.map((prop) => {
             const displayConfig = CUSTOM_ICONS[prop.icon] || CUSTOM_ICONS.Users;
 
             return (
               <article
                 key={prop.title}
-                className={`rounded-[20px] px-[32px] py-[28px] flex flex-col gap-[14px] min-h-[220px] relative ${displayConfig.bgClass}`}
+                className={`rounded-[20px] px-8 py-7 flex flex-col gap-3.5 min-h-55 relative ${displayConfig.bgClass}`}
               >
                 <div
-                  className={`w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center shrink-0 shadow-[0_6px_16px_-8px_rgba(14,58,92,0.18)] ${displayConfig.colorClass}`}
+                  className={`w-13 h-13 rounded-full bg-white flex items-center justify-center shrink-0 shadow-[0_6px_16px_-8px_rgba(14,58,92,0.18)] ${displayConfig.colorClass}`}
                 >
                   {displayConfig.svg}
                 </div>

@@ -6,6 +6,7 @@ import { MEMBERS } from "@/components/constant/MembersSection.data";
 import { Member } from "@/lib/types";
 import { MapPin, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Typography from "@/components/ui/typography";
 import {
   Card,
   CardContent,
@@ -110,24 +111,24 @@ export default function MembersSection() {
   };
 
   return (
-    <section id="members" className="bg-paper-2 py-[88px]">
-      <div className="max-w-[1280px] mx-auto px-[32px]">
+    <section id="members" className="bg-paper-2 py-22">
+      <div className="section-container px-4">
         {/* Heading */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 eyebrow-text mb-4">
+          <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
-            The Directory
+            <Typography variant="eyebrow">THE DIRECTORY</Typography>
           </div>
-          <h2 className="text-[clamp(32px,4.4vw,52px)] font-bold leading-[1.05] tracking-[-0.025em] text-brand-deep">
+          <Typography as="h2" variant="h2" color="brand-deep">
             Meet the innovators.
-          </h2>
-          <p className="text-[17px] leading-[1.6] text-ink-3 mt-[18px] mb-0 max-w-[620px] text-pretty">
-            {members.length} category leaders. Each one holds an exclusive seat in their specialty.
-          </p>
+          </Typography>
+          <Typography variant="body-md" color="ink-3" className="mt-4 max-w-2xl mx-auto">
+            25 category leaders. Each one holds an exclusive seat in their specialty.
+          </Typography>
         </div>
 
         {/* Filter buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-[6px] mb-[24px]">
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
           {specialties.map((s) => {
             const isActive = filter === s;
             return (
@@ -138,25 +139,31 @@ export default function MembersSection() {
                   setActiveIndex(0);
                 }}
                 className={cn(
-                  "px-[14px] py-[8px] rounded-pill text-[13px] font-[600] transition-all duration-200 whitespace-nowrap border",
+                  "rounded-pill px-5 py-2 transition-all duration-200",
                   isActive
                     ? "bg-brand-deep text-white shadow-md"
                     : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md"
                 )}
               >
-                {s}
+                <Typography
+                  as="span"
+                  variant="body-sm"
+                  className={isActive ? "text-white" : "text-ink-3"}
+                >
+                  {s}
+                </Typography>
               </button>
             );
           })}
         </div>
 
         {/* Members List (Responsive: Carousel on Mobile, Grid on Desktop) */}
-        <div className="relative -mx-[32px] px-[32px] md:mx-0 md:px-0">
+        <div className="relative -mx-8 px-8 md:mx-0 md:px-0">
           <div
             ref={scrollRef}
             className={cn(
-              "flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[14px] md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-none",
-              "pb-[20px] -mb-[20px]" // Extra padding to hide scrollbar if it appears
+              "flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-none",
+              "pb-5 -mb-5" // Extra padding to hide scrollbar if it appears
             )}
           >
             {filtered.map((member, i) => (
@@ -165,7 +172,7 @@ export default function MembersSection() {
                 ref={(el) => {
                   cardRefs.current[i] = el;
                 }}
-                className="flex-none w-[78%] max-w-[320px] md:w-full md:max-w-none snap-center"
+                className="flex-none w-[78%] max-w-80 md:w-full md:max-w-none snap-center"
               >
                 <MemberCard member={member} />
               </div>
@@ -174,23 +181,23 @@ export default function MembersSection() {
         </div>
 
         {/* Mobile-only Controls & Pagination */}
-        <div className="md:hidden mt-[40px]">
-          <div className="flex items-center justify-between mt-[18px] px-1">
-            <div className="text-[12px] font-[700] tracking-[0.08em] text-ink-3 uppercase">
+        <div className="md:hidden mt-10">
+          <div className="flex items-center justify-between mt-4.5 px-1">
+            <div className="text-sm font-bold tracking-[0.08em] text-ink-3 uppercase">
               {String(activeIndex + 1).padStart(2, "0")}{" "}
               <span className="text-ink-4">/ {String(filtered.length).padStart(2, "0")}</span>
             </div>
-            <div className="flex gap-[8px]">
+            <div className="flex gap-2">
               <button
                 onClick={() => scrollTo(Math.max(0, activeIndex - 1))}
-                className="w-[40px] h-[40px] rounded-full border border-line bg-white text-brand-deep flex items-center justify-center disabled:opacity-30 transition-all active:scale-95"
+                className="w-10 h-10 rounded-full border border-line bg-white text-brand-deep flex items-center justify-center disabled:opacity-30 transition-all active:scale-95"
                 disabled={activeIndex === 0}
               >
                 <ChevronLeft size={20} />
               </button>
               <button
                 onClick={() => scrollTo(Math.min(filtered.length - 1, activeIndex + 1))}
-                className="w-[40px] h-[40px] rounded-full bg-brand-deep text-white flex items-center justify-center disabled:opacity-30 transition-all active:scale-95 shadow-md"
+                className="w-10 h-10 rounded-full bg-brand-deep text-white flex items-center justify-center disabled:opacity-30 transition-all active:scale-95 shadow-md"
                 disabled={activeIndex === filtered.length - 1}
               >
                 <ChevronRight size={20} />
@@ -202,7 +209,7 @@ export default function MembersSection() {
           <ScrollArea className="w-full">
             <div
               ref={thumbScrollRef}
-              className="flex gap-[6px] px-1 py-2 overflow-x-auto scrollbar-none scroll-smooth"
+              className="flex gap-1.5 px-1 py-2 overflow-x-auto scrollbar-none scroll-smooth"
             >
               {filtered.map((member, idx) => (
                 <button
@@ -212,7 +219,7 @@ export default function MembersSection() {
                   }}
                   onClick={() => scrollTo(idx)}
                   className={cn(
-                    "relative w-[48px] h-[48px] rounded-full overflow-hidden flex-shrink-0 transition-all duration-300",
+                    "relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 transition-all duration-300",
                     activeIndex === idx
                       ? "ring-2 ring-brand ring-offset-2 scale-110 opacity-100 z-10"
                       : "opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0"
@@ -238,9 +245,9 @@ export default function MembersSection() {
 
 function MemberCard({ member }: { member: Member }) {
   return (
-    <Card className="bg-white rounded-[20px] overflow-hidden shadow-[0_8px_24px_-12px_rgba(14,58,92,0.1)] flex flex-col h-full border border-line/50 !p-0 gap-0 ring-0">
+    <Card className="bg-white rounded-lg overflow-hidden shadow-[0_8px_24px_-12px_rgba(14,58,92,0.1)] flex flex-col h-full border border-line/50 !p-0 gap-0 ring-0">
       {/* Image Section */}
-      <div className="relative h-[280px] sm:h-[320px] w-full shrink-0 bg-paper-3">
+      <div className="relative h-72 sm:h-80 w-full shrink-0 bg-paper-3">
         <Image
           src={member.photo}
           alt={member.name}
@@ -249,29 +256,29 @@ function MemberCard({ member }: { member: Member }) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/90 via-[#0e3a5c]/20 to-transparent" />
-        <div className="absolute top-[16px] left-[16px] bg-white text-brand px-[10px] py-[5px] rounded-pill text-[10.5px] font-bold shadow-sm flex items-center gap-[6px] tracking-wide">
-          <span className="w-[5px] h-[5px] rounded-full bg-brand" />
+        <div className="absolute top-4 left-4 bg-white text-brand px-2.5 py-1 rounded-pill text-2.5 font-bold shadow-sm flex items-center gap-[6px] tracking-wide">
+          <span className="w-1.25 h-1.25 rounded-full bg-brand" />
           {member.specialty}
         </div>
-        <CardHeader className="absolute bottom-[16px] left-[20px] right-[20px] flex flex-col p-0 border-none space-y-0 text-left">
-          <CardTitle className="text-white text-[18px] font-[700] tracking-tight m-0 leading-tight">
+        <CardHeader className="absolute bottom-4 left-4 right-4 flex flex-col p-0 border-none space-y-0 text-left">
+          <CardTitle className="text-white text-4 font-bold tracking-tight m-0 leading-tight">
             {member.name}
           </CardTitle>
-          <CardDescription className="text-white/85 text-[13px] font-[500] italic mt-[2px] m-0">
+          <CardDescription className="text-white/85 text-2.5 font-medium italic mt-0.5 m-0">
             {member.convention}
           </CardDescription>
         </CardHeader>
       </div>
 
       {/* Content Section */}
-      <CardContent className="p-[24px] pb-0 flex flex-col flex-1 border-none shadow-none text-left">
-        <div className="flex items-center gap-[6px] text-ink-3 text-[11px] font-[600] mb-[16px] tracking-wide">
-          <div className="flex items-center gap-[4px]">
+      <CardContent className="p-6 pb-0 flex flex-col flex-1 border-none shadow-none text-left">
+        <div className="flex items-center gap-2 text-ink-3 text-[11px] font-bold mb-4 tracking-wide">
+          <div className="flex items-center gap-1">
             <MapPin size={11} className="text-brand" />
             {member.location}
           </div>
-          <span className="text-ink-4 mx-[2px]">&bull;</span>
-          <div className="flex items-center gap-[4px]">
+          <span className="text-ink-4 mx-0.5">&bull;</span>
+          <div className="flex items-center gap-1">
             <Calendar size={11} className="text-brand" />
             {member.joined}
           </div>
@@ -279,11 +286,11 @@ function MemberCard({ member }: { member: Member }) {
         <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty">
           {member.oneliner}
         </p>
-        <div className="flex-1 min-h-[16px]" />
+        <div className="flex-1 min-h-4" />
       </CardContent>
 
       {/* Footer */}
-      <CardFooter className="px-[24px] pb-[10px] pt-[16px] border-t border-line flex items-center gap-[8px] bg-transparent">
+      <CardFooter className="px-6 pb-2.5 pt-4 border-t border-line flex items-center gap-2 bg-transparent">
         {[
           {
             icon: "linkedin",
@@ -298,7 +305,7 @@ function MemberCard({ member }: { member: Member }) {
           <a
             key={idx}
             href="#"
-            className="w-[28px] h-[28px] rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
+            className="w-7 h-7 rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
           >
             <svg
               width="12"

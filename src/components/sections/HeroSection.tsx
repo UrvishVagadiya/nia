@@ -9,25 +9,25 @@ import { HERO_BULLETS } from "@/components/constant/HeroSection.data";
 export default function HeroSection() {
   return (
     <section className="bg-paper-2">
-      <div className="section-container pt-[64px] px-8 pb-[80px] grid grid-col-1 md:grid-cols-2 gap-16 items-center">
+      <div className="section-container pt-16 px-8 pb-20 grid grid-col-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side: Copy */}
         <div>
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
               NIA Surat · Chapter 01
             </Typography>
           </div>
-          <Typography as="h1" variant="h1" color="brand-deep" className="mb-[22px]">
+          <Typography as="h1" variant="h1" color="brand-deep" className="mb-5.5">
             <span className="italic text-brand font-serif">
               Surat’s room of trusted professionals.
             </span>
           </Typography>
-          <Typography variant="body-lg" color="ink-2" className="mb-[28px]">
+          <Typography variant="body-lg" color="ink-2" className="mb-7">
             25 category leaders. One chair per specialty. No overlap.
           </Typography>
 
-          <ul className="list-none p-0 m-0 mb-[32px] grid grid-cols-2 gap-[12px]">
+          <ul className="list-none p-0 m-0 mb-8 grid grid-cols-2 gap-3">
             {HERO_BULLETS.map((item, idx) => (
               <li key={idx} className="flex items-center gap-[10px]">
                 <span className="w-[22px] h-[22px] rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
@@ -48,7 +48,7 @@ export default function HeroSection() {
             ))}
           </ul>
 
-          <div className="flex flex-wrap gap-[12px]">
+          <div className="flex flex-wrap gap-3">
             <Button variant="primary" render={<Link href="#apply" />} nativeButton={false}>
               Visit a meeting
             </Button>
@@ -59,7 +59,7 @@ export default function HeroSection() {
         </div>
 
         <div className="relative">
-          <div className="grid grid-cols-[1.15fr_1fr] grid-rows-2 gap-[12px] aspect-[1.05/1]">
+          <div className="grid grid-cols-[1.15fr_1fr] grid-rows-2 gap-3 aspect-[1.05/1]">
             <div className="row-span-2 rounded-[18px] overflow-hidden bg-paper-3 relative border border-line">
               <Image
                 src="https://images.unsplash.com/photo-1552581234-26160f608093?w=1200&h=700&fit=crop"
@@ -79,7 +79,7 @@ export default function HeroSection() {
                 sizes="(max-width: 1024px) 50vw, 25vw"
               />
             </div>
-            <div className="rounded-[18px] overflow-hidden bg-brand p-[18px] text-white flex flex-col justify-between relative">
+            <div className="rounded-[18px] overflow-hidden bg-brand p-4.5 text-white flex flex-col justify-between relative">
               <Typography as="div" variant="caption" color="white" className="opacity-85">
                 Next meeting
               </Typography>
@@ -96,10 +96,10 @@ export default function HeroSection() {
 
           <Link
             href="#schedule"
-            className="absolute top-4 right-4 bg-brand-deep text-white py-[10px] px-[16px] rounded-pill text-[12.5px] font-semibold shadow-[0_8px_24px_-8px_rgba(14,58,92,0.4)] inline-flex items-center gap-[8px] hover:bg-brand-deep/90 transition-colors"
+            className="absolute top-4 right-4 bg-brand-deep text-white py-2.5 px-4 rounded-pill text-[12.5px] font-semibold shadow-[0_8px_24px_-8px_rgba(14,58,92,0.4)] inline-flex items-center gap-2 hover:bg-brand-deep/90 transition-colors"
           >
             View Schedule
-            <span className="w-[18px] h-[18px] rounded-full bg-brand grid place-items-center text-[9px]">
+            <span className="w-4.5 h-4.5 rounded-full bg-brand grid place-items-center text-[9px]">
               &rarr;
             </span>
           </Link>

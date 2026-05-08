@@ -11,11 +11,11 @@ export default function ScheduleSection() {
 
   return (
     <section id="schedule" className="bg-paper-2">
-      <div className="section-container py-[88px] px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
+      <div className="section-container py-22 px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
         {/* Left Side (Text content) */}
         <div>
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-4">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.25 rounded-pill bg-brand-soft mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
               Meeting Schedule
             </Typography>
@@ -25,14 +25,14 @@ export default function ScheduleSection() {
             Every Wednesday <span className="italic font-serif text-brand">at 9:30 AM</span>
           </Typography>
 
-          <Typography variant="body-md" color="ink-2" className="mb-6 max-w-[480px]">
+          <Typography variant="body-md" color="ink-2" className="mb-6 max-w-120">
             Same time, same room, every week. Sixty-second updates, one specific referral ask each —
             no slide decks.
           </Typography>
 
           {/* Venue Pill */}
-          <div className="inline-flex items-center gap-[14px] px-[18px] py-[14px] rounded-pill bg-white border border-line">
-            <span className="w-[36px] h-[36px] rounded-full bg-brand-soft text-brand-2 grid place-items-center shrink-0">
+          <div className="inline-flex items-center gap-3.5 px-4.5 py-3.5 rounded-pill bg-white border border-line">
+            <span className="w-9 h-9 rounded-full bg-brand-soft text-brand-2 grid place-items-center shrink-0">
               <MapPin size={16} strokeWidth={1.6} />
             </span>
             <div>
@@ -51,7 +51,7 @@ export default function ScheduleSection() {
           {/* Main Next Meeting Card */}
           <div className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden">
             <div className="flex justify-between items-start mb-6">
-              <span className="px-3 py-[5px] bg-brand text-white rounded-pill text-[11px] font-bold tracking-[0.08em] uppercase">
+              <span className="px-3 py-1.25 bg-brand text-white rounded-pill text-[11px] font-bold tracking-[0.08em] uppercase">
                 Next meeting
               </span>
               <span className="text-[11px] text-white/70 font-semibold tracking-[0.04em]">
@@ -63,13 +63,13 @@ export default function ScheduleSection() {
               {nextMeeting.day}, {nextMeeting.date}
             </div>
 
-            <div className="text-[15px] text-white/80 mb-7 leading-[1.5] text-pretty">
+            <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty">
               {nextMeeting.topic}
             </div>
 
             <Link
               href="#apply"
-              className="bg-brand text-white border border-brand py-[13px] px-[22px] rounded-pill text-[14px] font-semibold inline-flex items-center gap-[10px] w-full justify-center hover:bg-brand-2 transition-colors"
+              className="bg-brand text-white border border-brand py-3.25 px-5.5 rounded-pill text-[14px] font-semibold inline-flex items-center gap-2.5 w-full justify-center hover:bg-brand-2 transition-colors"
             >
               Request a visitor pass
               <span className="w-6 h-6 rounded-full bg-white/20 text-white grid place-items-center text-[12px]">
@@ -83,10 +83,7 @@ export default function ScheduleSection() {
             {schedule.map((item, index) => {
               const label = index === 0 ? "Up next" : `Wk ${index + 1}`;
               return (
-                <div
-                  key={index}
-                  className="bg-white border border-line rounded-[12px] py-3 px-[14px]"
-                >
+                <div key={index} className="bg-white border border-line rounded-md py-3 px-3.5">
                   <div className="text-[10px] text-ink-4 uppercase tracking-[0.08em] font-bold">
                     {label}
                   </div>

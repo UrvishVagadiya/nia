@@ -10,11 +10,11 @@ import { Card, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 export default function UpdatesSection() {
   return (
     <section id="updates" className="bg-paper-2 border-t border-line">
-      <div className="max-w-[1280px] mx-auto px-[32px] py-[88px]">
+      <div className="max-w-7xl mx-auto px-8 py-22">
         {/* Heading */}
-        <div className="text-center flex flex-col items-center mb-[56px] max-w-[720px] mx-auto">
-          <div className="inline-flex items-center gap-[10px] px-[14px] py-[6px] rounded-pill bg-brand-soft mb-[16px]">
-            <span className="w-[6px] h-[6px] rounded-full bg-brand" />
+        <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
               From the chapter
             </Typography>
@@ -22,19 +22,19 @@ export default function UpdatesSection() {
           <Typography as="h2" variant="h2" color="brand-deep">
             Updates from the room.
           </Typography>
-          <Typography variant="body-md" color="ink-3" className="max-w-[620px]">
+          <Typography variant="body-md" color="ink-3" className="max-w-155">
             Recaps, member spotlights and industry insights from across NIA Surat.
           </Typography>
         </div>
 
         {/* Blog grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[24px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {BLOG_POSTS.map((post) => (
             <Card
               key={post.title}
-              className="bg-white rounded-[18px] border border-line ring-0 overflow-hidden flex flex-col shadow-none !py-0 gap-0"
+              className="bg-white rounded-[18px] border border-line ring-0 overflow-hidden flex flex-col shadow-none py-0! gap-0"
             >
-              <div className="aspect-[16/10] bg-paper-3 relative overflow-hidden">
+              <div className="aspect-16/10 bg-paper-3 relative overflow-hidden">
                 <Image
                   src={post.image}
                   alt={post.title}
@@ -42,14 +42,14 @@ export default function UpdatesSection() {
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <div className="absolute top-[14px] left-[14px] px-[12px] py-[5px] bg-white rounded-pill">
+                <div className="absolute top-3.5 left-3.5 px-3 py-1.25 bg-white rounded-pill">
                   <Typography as="div" variant="caption" color="brand-2">
                     {post.category}
                   </Typography>
                 </div>
               </div>
 
-              <div className="px-[22px] pt-[20px] pb-[24px] flex flex-col gap-[10px] flex-1">
+              <div className="px-5.5 pt-5 pb-6 flex flex-col gap-2.5 flex-1">
                 <Typography as="div" variant="caption" color="ink-4">
                   {post.date}
                 </Typography>
@@ -63,10 +63,10 @@ export default function UpdatesSection() {
                     {post.preview}
                   </Typography>
                 </CardContent>
-                <CardFooter className="p-0 mt-[6px]">
+                <CardFooter className="p-0 mt-1.5">
                   <Link
                     href={post.link || "#"}
-                    className="text-brand text-[13px] font-[700] items-center gap-[6px] hover:text-brand-2 transition-colors"
+                    className="text-brand text-[13px] font-bold items-center gap-1.5 hover:text-brand-2 transition-colors"
                   >
                     Read post <span className="font-serif">&rarr;</span>
                   </Link>

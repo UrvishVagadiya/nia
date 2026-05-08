@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import Typography from "@/components/ui/typography";
 
 export const CHAPTERS = ["Innovators", "Superiors", "Pioneers"];
 
@@ -13,7 +14,9 @@ export default function EyebrowChip({ className }: { className?: string }) {
       )}
     >
       <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
-      NIA SURAT &middot; CHAPTER 01
+      <Typography variant="eyebrow" className="m-0">
+        NIA SURAT &middot; CHAPTER 01
+      </Typography>
     </span>
   );
 }
