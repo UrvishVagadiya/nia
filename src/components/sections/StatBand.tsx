@@ -1,6 +1,7 @@
 "use client";
 
 import { useChapter } from "@/lib/chapter-context";
+import Typography from "@/components/ui/typography";
 
 const STATS = [
   { key: "active", numeral: "23+", label: "Years Active" },
@@ -41,11 +42,17 @@ export default function StatBand() {
 
             return (
               <div key={stat.key} className={`text-left ${borderClass}`}>
-                <div className="font-serif text-[clamp(36px,4vw,48px)] leading-none tracking-[-0.02em] text-gold font-semibold">
-                  {stat.numeral}
-                </div>
-                <div className="text-[11.5px] text-white/85 mt-2 font-bold tracking-[0.12em] uppercase">
-                  {stat.label}
+                <div>
+                  <Typography variant="stat" color="gold" className="font-semibold leading-none">
+                    {stat.numeral}
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="white"
+                    className="mt-2 font-bold tracking-[0.12em] uppercase text-white/85"
+                  >
+                    {stat.label}
+                  </Typography>
                 </div>
               </div>
             );

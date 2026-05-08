@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FOOTER_DATA } from "@/lib/data";
 import Image from "next/image";
+import Typography from "@/components/ui/typography";
 
 export default function Footer() {
   return (
@@ -18,25 +19,38 @@ export default function Footer() {
               height={40}
               className="invert brightness-0 "
             />
-            <p className="text-[14px] text-white/60 mt-3 leading-relaxed max-w-xs">
+            <Typography
+              variant="body-sm"
+              color="white"
+              className="mt-3 leading-relaxed max-w-xs text-white/60"
+            >
               Three chapters. 72 business owners. One mission — to be the most-trusted referral room
               in Surat.
-            </p>
+            </Typography>
           </div>
 
           {FOOTER_DATA.map((col) => (
             <div key={col.title}>
-              <h4 className="text-[12px] font-semibold uppercase tracking-[0.14em] text-white/40 mb-4">
+              <Typography
+                as="h4"
+                variant="h5"
+                color="white"
+                className="uppercase tracking-[0.14em] mb-4 text-white/40"
+              >
                 {col.title}
-              </h4>
+              </Typography>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-[14px] text-white/70 hover:text-white transition-colors"
-                    >
-                      {link.label}
+                    <Link href={link.href} className="transition-colors">
+                      <Typography
+                        as="span"
+                        variant="body-sm"
+                        color="white"
+                        className="text-white/70"
+                      >
+                        {link.label}
+                      </Typography>
                     </Link>
                   </li>
                 ))}
@@ -47,17 +61,19 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-12 pt-6 border-t border-white/10">
-          <span className="text-[13px] text-white/40">
+          <Typography as="span" variant="caption" color="white" className="text-white/40">
             &copy; 2026 NIA Surat &middot; A Network In Action chapter
-          </span>
+          </Typography>
           <Link
             href="https://propelius.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-[8px] text-[12px] text-white px-[14px] py-[7px] bg-white/[0.08] border border-white/15 rounded-pill font-[600] hover:bg-white/[0.12] transition-colors"
+            className="inline-flex items-center justify-center gap-[8px] px-[14px] py-[7px] bg-white/[0.08] border border-white/15 rounded-pill hover:bg-white/[0.12] transition-colors"
           >
             <span className="w-[5px] h-[5px] rounded-full bg-brand" />
-            Built by Propelius
+            <Typography as="span" variant="body-sm" color="white">
+              Built by Propelius
+            </Typography>
           </Link>
         </div>
       </div>
