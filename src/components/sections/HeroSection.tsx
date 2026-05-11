@@ -5,16 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Typography from "../ui/typography";
 import { HERO_BULLETS, HERO_IMAGES } from "@/components/constant/HeroSection.data";
-import { MEMBERS } from "@/components/constant/MembersSection.data";
 import { SCHEDULE } from "@/components/constant/ScheduleSection.data";
-
-interface HeroProps {
-  chapterNumber: string;
-  title: React.ReactNode;
-  subtitle: string;
-  mainImage?: string;
-  leaderImage?: string;
-}
+import type { HeroProps } from "@/lib/types";
 
 export default function HeroSection({
   chapterNumber,

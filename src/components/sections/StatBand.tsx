@@ -16,7 +16,7 @@ export default function StatBand() {
           }}
         />
 
-        <div className="stat-band-grid flex flex-col lg:flex-row items-stretch lg:items-start justify-between gap-12 lg:gap-6 relative z-10">
+        <div className="stat-band-grid flex flex-col md:flex-row items-stretch lg:items-start justify-between gap-12 lg:gap-6 relative z-10">
           {STATS.map((stat, i) => {
             const isFirst = i === 0;
 

@@ -15,7 +15,6 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function MembersSection() {
   const members = MEMBERS;
@@ -31,22 +30,14 @@ export default function MembersSection() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const thumbScrollRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const isManualScrolling = useRef(false);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   const isFirstRender = useRef(true);
 
   // Filter members based on selected specialty
   const filtered = useMemo(() => {
     return filter === "All" ? members : members.filter((m) => m.specialty === filter);
   }, [filter, members]);
-
-  // Reset active index when filter changes
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({ left: 0 });
-    }
-    if (thumbScrollRef.current) {
-      thumbScrollRef.current.scrollTo({ left: 0 });
-    }
-  }, [filter]);
 
   // Sync thumbnail scroll when activeIndex changes
   useEffect(() => {
@@ -56,57 +47,66 @@ export default function MembersSection() {
     }
 
     const targetThumb = thumbRefs.current[activeIndex];
-    if (targetThumb) {
-      targetThumb.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
+    if (targetThumb && thumbScrollRef.current) {
+      const container = thumbScrollRef.current;
+      const thumb = targetThumb;
+      const scrollLeft = thumb.offsetLeft - container.offsetWidth / 2 + thumb.offsetWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
     }
   }, [activeIndex]);
 
-  // Use Intersection Observer for robust active index tracking
-  useEffect(() => {
+  // Handle manual scroll synchronization
+  const handleScroll = () => {
+    if (isManualScrolling.current || window.innerWidth >= 768) return;
+
     const container = scrollRef.current;
-    if (!container || window.innerWidth >= 768) return;
+    if (container) {
+      const scrollLeft = container.scrollLeft;
+      const containerCenter = scrollLeft + container.offsetWidth / 2;
 
-    const options = {
-      root: container,
-      threshold: 0.6, // Card must be 60% visible to be considered active
-    };
+      let closestIndex = 0;
+      let minDiff = Infinity;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = cardRefs.current.indexOf(entry.target as HTMLDivElement);
-          if (index !== -1) {
-            setActiveIndex(index);
+      cardRefs.current.forEach((card, idx) => {
+        if (card) {
+          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+          const diff = Math.abs(cardCenter - containerCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = idx;
           }
         }
       });
-    }, options);
 
-    const currentCards = cardRefs.current;
-    currentCards.forEach((card) => {
-      if (card) observer.observe(card);
-    });
-
-    return () => {
-      currentCards.forEach((card) => {
-        if (card) observer.unobserve(card);
-      });
-    };
-  }, [filtered, filter]);
+      if (closestIndex !== activeIndex && closestIndex < filtered.length) {
+        setActiveIndex(closestIndex);
+      }
+    }
+  };
 
   const scrollTo = (index: number) => {
+    const container = scrollRef.current;
     const targetCard = cardRefs.current[index];
-    if (targetCard) {
-      targetCard.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
+
+    if (container && targetCard) {
+      isManualScrolling.current = true;
       setActiveIndex(index);
+
+      const targetScrollLeft =
+        targetCard.offsetLeft - container.offsetWidth / 2 + targetCard.offsetWidth / 2;
+
+      container.scrollTo({
+        left: targetScrollLeft,
+        behavior: "smooth",
+      });
+
+      // Clear previous timeout
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+
+      // Re-enable observer after animation
+      scrollTimeout.current = setTimeout(() => {
+        isManualScrolling.current = false;
+      }, 600); // Wait for smooth scroll to finish
     }
   };
 
@@ -137,6 +137,12 @@ export default function MembersSection() {
                 onClick={() => {
                   setFilter(s);
                   setActiveIndex(0);
+                  if (scrollRef.current) {
+                    scrollRef.current.scrollTo({ left: 0 });
+                  }
+                  if (thumbScrollRef.current) {
+                    thumbScrollRef.current.scrollTo({ left: 0 });
+                  }
                 }}
                 suppressHydrationWarning
                 className={cn(
@@ -162,6 +168,7 @@ export default function MembersSection() {
         <div className="relative -mx-8 px-8 md:mx-0 md:px-0">
           <div
             ref={scrollRef}
+            onScroll={handleScroll}
             className={cn(
               "flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-none",
               "pb-5 -mb-5" // Extra padding to hide scrollbar if it appears
@@ -291,7 +298,7 @@ function MemberCard({ member }: { member: Member }) {
             {member.joined}
           </div>
         </div>
-        <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty">
+        <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty min-h-[64px]">
           {member.oneliner}
         </p>
         <div className="flex-1 min-h-4" />

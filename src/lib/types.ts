@@ -60,3 +60,11 @@ export interface ScheduleItem {
   topic: string;
   rsvps: number;
 }
+
+export interface HeroProps {
+  chapterNumber: string;
+  title: React.ReactNode;
+  subtitle: string;
+  mainImage?: string;
+  leaderImage?: string;
+}
