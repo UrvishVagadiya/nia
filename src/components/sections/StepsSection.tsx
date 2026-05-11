@@ -6,7 +6,7 @@ import Typography from "@/components/ui/typography";
 export default function StepsSection() {
   return (
     <section className="bg-paper-2 border-t border-line">
-      <div className="max-w-7xl mx-auto px-8 py-22">
+      <div className="section-container section-padding">
         <div className="bg-white rounded-[24px] overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}
           <div className="bg-brand-deep text-white p-[52px_44px] relative overflow-hidden">

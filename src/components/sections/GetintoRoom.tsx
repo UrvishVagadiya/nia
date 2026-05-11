@@ -6,7 +6,7 @@ import Typography from "@/components/ui/typography";
 export default function GetintoRoom() {
   return (
     <section className="bg-paper-2">
-      <div className="max-w-7xl mx-auto px-8 py-22">
+      <div className="section-container section-padding">
         <div className="bg-paper rounded-3xl p-[clamp(32px,4vw,56px)] border border-line">
           {/* Header */}
           <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">

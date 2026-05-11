@@ -10,7 +10,7 @@ import { Card, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 export default function UpdatesSection() {
   return (
     <section id="updates" className="bg-paper-2 border-t border-line">
-      <div className="max-w-7xl mx-auto px-8 py-22">
+      <div className="section-container section-padding">
         {/* Heading */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">

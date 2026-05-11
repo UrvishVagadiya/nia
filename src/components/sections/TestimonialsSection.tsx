@@ -29,7 +29,7 @@ export default function TestimonialsSection() {
   return (
     <section className="bg-paper">
       {/* ✅ Remove overflow-x-hidden from section — it clips the arrow buttons */}
-      <div className="section-container py-22 px-8">
+      <div className="section-container section-padding">
         {/* ── Heading ── */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-soft mb-4">

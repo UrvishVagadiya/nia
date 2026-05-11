@@ -21,8 +21,8 @@ export default function LeaderSection() {
   ];
 
   return (
-    <section id="leader" className="bg-paper section-padding">
-      <div className="section-container">
+    <section id="leader" className="bg-paper">
+      <div className="section-container section-padding">
         <div className="leader-grid flex flex-col md:flex-row gap-16 items-center">
           {/* Portrait with gradient overlay */}
           <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-105 sm:flex-none">

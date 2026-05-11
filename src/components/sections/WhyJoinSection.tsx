@@ -73,9 +73,8 @@ const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; b
 
 export default function WhyJoinSection() {
   return (
-    <section id="about" className="bg-paper">
-      <div className="max-w-7xl mx-auto px-8 py-22">
-        {/* Section heading */}
+    <section id="about" className="bg-paper overflow-hidden">
+      <div className="section-container section-padding">
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
