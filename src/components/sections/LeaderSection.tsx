@@ -41,15 +41,15 @@ export default function LeaderSection() {
               <Typography
                 as="div"
                 variant="eyebrow"
-                className="block font-bold! tracking-[0.12em] text-white!"
+                className="block font-bold! tracking-[0.12em] text-[11px]! text-white!"
               >
                 Group Leader · Innovators
               </Typography>
               <Typography
                 as="div"
-                variant="h5"
+                variant="h3"
                 color="white"
-                className="serif mt-1 tracking-[-0.015em]"
+                className="serif mt-1 text-[26px] font-semibold tracking-[-0.015em]"
               >
                 {leader.name}
               </Typography>
@@ -67,7 +67,12 @@ export default function LeaderSection() {
             </span>
 
             {/* Heading */}
-            <Typography as="h2" variant="h2" color="brand-deep" className="mb-6 [text-balance]">
+            <Typography
+              as="h2"
+              variant="h2"
+              color="brand-deep"
+              className="mb-6 [text-balance] text-[48px]!"
+            >
               Led by <span className="heading-italic-brand">Sreyansh</span>.
               <br />
               Vouched for by every seat in the room.

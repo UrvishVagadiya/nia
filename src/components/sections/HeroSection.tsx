@@ -55,7 +55,7 @@ export default function HeroSection({
                     />
                   </svg>
                 </span>
-                <Typography variant="body-sm" color="ink-2">
+                <Typography variant="body-sm" color="ink-2" className="text-[14.5px]!">
                   {item}
                 </Typography>
               </li>

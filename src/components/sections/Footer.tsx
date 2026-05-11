@@ -62,7 +62,12 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-12 pt-6 border-t border-white/10">
-          <Typography as="span" variant="caption" color="white" className="text-white/40">
+          <Typography
+            as="span"
+            variant="eyebrow"
+            color="white"
+            className="text-white/40 font-medium!"
+          >
             &copy; 2026 NIA Surat &middot; A Network In Action chapter
           </Typography>
           <Link
@@ -72,7 +77,7 @@ export default function Footer() {
             className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 bg-white/8 border border-white/15 rounded-pill hover:bg-white/12 transition-colors"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
-            <Typography as="span" variant="body-sm" color="white">
+            <Typography as="span" variant="body-sm" color="white" className="font-bold!">
               Built by Propelius
             </Typography>
           </Link>

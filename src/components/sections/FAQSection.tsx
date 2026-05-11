@@ -43,7 +43,7 @@ export default function FAQSection() {
                     as="span"
                     variant="body-md"
                     color="brand-deep"
-                    className="text-balance font-bold"
+                    className="text-balance font-bold!"
                   >
                     {item.q}
                   </Typography>

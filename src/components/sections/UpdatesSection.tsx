@@ -19,7 +19,7 @@ export default function UpdatesSection() {
               From the chapter
             </Typography>
           </div>
-          <Typography as="h2" variant="h2" color="brand-deep">
+          <Typography as="h2" variant="h2" color="brand-deep" className="mb-8">
             Updates from the room.
           </Typography>
           <Typography variant="body-md" color="ink-3" className="max-w-155">
@@ -43,18 +43,18 @@ export default function UpdatesSection() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <div className="absolute top-3.5 left-3.5 px-3 py-1.25 bg-white rounded-pill">
-                  <Typography as="div" variant="caption" color="brand-2">
+                  <Typography as="div" variant="caption" color="brand-2" className="font-bold!">
                     {post.category}
                   </Typography>
                 </div>
               </div>
 
               <div className="px-5.5 pt-5 pb-6 flex flex-col gap-2.5 flex-1">
-                <Typography as="div" variant="caption" color="ink-4">
+                <Typography as="div" variant="caption" color="ink-4" className="font-semibold!">
                   {post.date}
                 </Typography>
                 <CardTitle>
-                  <Typography variant="h4" color="brand-deep">
+                  <Typography variant="h4" color="brand-deep" className="text-[18px]! font-bold!">
                     {post.title}
                   </Typography>
                 </CardTitle>

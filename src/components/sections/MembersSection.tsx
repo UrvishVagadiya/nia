@@ -149,7 +149,7 @@ export default function MembersSection() {
                 <Typography
                   as="span"
                   variant="body-sm"
-                  className={isActive ? "text-white" : "text-ink-3"}
+                  className={`${isActive ? "text-white" : "text-ink-3"} text-[13px]!  font-semibold!`}
                 >
                   {s}
                 </Typography>
@@ -262,7 +262,9 @@ function MemberCard({ member }: { member: Member }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/40 via-[#0e3a5c]/10 to-transparent" />
         <div className="absolute top-4 left-4 bg-white text-brand px-2.5 py-1 rounded-pill text-2.5 font-bold shadow-sm flex items-center gap-[6px] tracking-wide">
           <span className="w-1.25 h-1.25 rounded-full bg-brand" />
-          {member.specialty}
+          <Typography variant="caption" color="brand" className="text-[10.5] font-bold!">
+            {member.specialty}
+          </Typography>
         </div>
         <CardHeader className="absolute bottom-4 left-5 right-5 flex flex-col p-0 border-none space-y-0">
           <CardTitle className="m-0 leading-tight">

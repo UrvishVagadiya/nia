@@ -21,8 +21,8 @@ export default function ScheduleSection() {
             </Typography>
           </div>
 
-          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4">
-            Every Wednesday <span className="italic font-serif text-brand">at 9:30 AM</span>
+          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4 text-[48px]!">
+            Every Wednesday <span className="italic font-serif text-brand">at 9:30</span>
           </Typography>
 
           <Typography variant="body-md" color="ink-2" className="mb-6 max-w-120">
@@ -36,10 +36,10 @@ export default function ScheduleSection() {
               <MapPin size={16} strokeWidth={1.6} />
             </span>
             <div>
-              <Typography as="div" variant="caption" color="ink-4">
+              <Typography as="div" variant="caption" color="ink-4" className="uppercase">
                 Venue
               </Typography>
-              <Typography as="div" variant="body-sm" color="brand-deep">
+              <Typography as="div" variant="body-sm" color="brand-deep" className="font-bold!">
                 {VENUE}
               </Typography>
             </div>

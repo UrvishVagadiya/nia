@@ -52,11 +52,11 @@ export default function Typography({
 
     h2: "text-[clamp(34px,4.4vw,52px)] font-bold leading-[1.1] tracking-[-0.025em]",
 
-    h3: "text-[22px] lg:text-[26px] font-semibold leading-[1.2] tracking-[-0.015em]",
+    h3: "text-[22px] lg:text-[28px] font-semibold leading-[1.2] tracking-[-0.015em]",
 
-    h4: "text-[20px] lg:text-[28px] font-semibold leading-[1.3] tracking-[-0.01em]",
+    h4: "text-[16px] font-semibold leading-[1.3] tracking-[-0.01em]",
 
-    h5: "text-[17px] lg:text-[22px] font-semibold leading-[1.35] tracking-[-0.015em]",
+    h5: "text-[10px] lg:text-[14px] font-semibold leading-[1.35] tracking-[-0.015em]",
 
     // BODY — matched to body copy across HeroSection (17.5px), LeaderSection (17px), ScheduleSection (17px)
     "body-lg": "text-[17.5px] font-normal leading-[1.6]",
@@ -73,7 +73,7 @@ export default function Typography({
     // font-size: 12px, font-weight: 700, tracking: 0.06em, uppercase
     // NOTE: color intentionally NOT set here — use color prop or override via className
     // because eyebrow appears on both light (brand-soft bg) and dark (brand-deep bg) surfaces
-    eyebrow: "text-[12px] font-bold leading-[1.4] tracking-[0.06em] uppercase",
+    eyebrow: "text-[12px] font-bold leading-[1.4] tracking-[0.06em] ",
 
     // matched to StatBand numerals
     stat: "text-[clamp(36px,4vw,48px)] font-semibold leading-none tracking-[-0.02em]",
