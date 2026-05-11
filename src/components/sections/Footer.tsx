@@ -33,9 +33,9 @@ export default function Footer() {
             <div key={col.title}>
               <Typography
                 as="h4"
-                variant="h5"
+                variant="caption"
                 color="white"
-                className="uppercase tracking-[0.14em] mb-4 text-white/40"
+                className="uppercase font-bold! tracking-[0.14em] mb-4 text-white/40"
               >
                 {col.title}
               </Typography>
