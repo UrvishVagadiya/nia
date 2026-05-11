@@ -48,7 +48,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* ── Arc Avatar Row ── */}
-        <div className="overflow-x-hidden">
+        <div>
           <div className="flex justify-center items-end gap-3.5 mb-12 min-h-27.5">
             {(() => {
               const displayCount = Math.min(n, 7);
@@ -99,12 +99,6 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
-        {/* ── Testimonial Card wrapper — gives room for the absolute buttons ── */}
-        {/*
-          ✅ Key fix: wrap the card in a div with horizontal padding equal to
-          the button's overflow (≈ 22px half-width = 18px button radius + 4px bleed).
-          On mobile, buttons move inside the card instead of overflowing.
-        */}
         <div className="max-w-210 mx-auto px-6 sm:px-8">
           <div className="relative bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
             {/* Name */}
@@ -132,9 +126,22 @@ const TestimonialsSection = () => {
                 }}
                 aria-label="Previous testimonial"
                 suppressHydrationWarning
-                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+                className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
               >
-                <span className="text-[24px] leading-none">‹</span>
+                <div className="flex items-center justify-center w-full h-full -ml-0.5">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m15 18-6-6 6-6" />
+                  </svg>
+                </div>
               </button>
             </div>
 
@@ -147,9 +154,22 @@ const TestimonialsSection = () => {
                 }}
                 aria-label="Next testimonial"
                 suppressHydrationWarning
-                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+                className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
               >
-                <span className="text-[24px] leading-none">›</span>
+                <div className="flex items-center justify-center w-full h-full ml-0.5">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </div>
               </button>
             </div>
           </div>
