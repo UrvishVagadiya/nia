@@ -84,9 +84,9 @@ const MembersSection = () => {
 
   return (
     <section id="members" className="bg-paper-2">
-      <div className="section-container section-padding">
+      <div className="py-11 lg:py-22 md:px-8">
         {/* Heading */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-10 px-5 lg:px-8">
           <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow">THE DIRECTORY</Typography>
@@ -100,8 +100,8 @@ const MembersSection = () => {
         </div>
 
         {/* Filter buttons */}
-        <div className="flex overflow-x-auto no-scrollbar md:flex-wrap items-center justify-start md:justify-center gap-2 mb-8 px-8 sm:px-12 md:px-0">
-          {specialties.map((s) => {
+        <div className="flex overflow-x-auto no-scrollbar md:flex-wrap items-center justify-start md:justify-center gap-2 mb-6">
+          {specialties.map((s, index) => {
             const isActive = filter === s;
             return (
               <button
@@ -115,7 +115,9 @@ const MembersSection = () => {
                   "rounded-pill px-5 py-2 transition-all duration-200 shrink-0 mb-1",
                   isActive
                     ? "bg-brand-deep text-white shadow-md"
-                    : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md"
+                    : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md",
+                  index === 0 && "ml-8 sm:ml-12 md:ml-0",
+                  index === specialties.length - 1 && "mr-8 sm:mr-12 md:mr-0"
                 )}
               >
                 <Typography
@@ -137,18 +139,22 @@ const MembersSection = () => {
             align: "start",
             loop: false,
             dragFree: true,
-            containScroll: false,
+            containScroll: "trimSnaps",
             breakpoints: {
               "(min-width: 768px)": { active: false },
             },
           }}
-          className="relative -mx-8 sm:-mx-12 md:mx-0 px-8 sm:px-12 md:px-0"
+          className="relative w-full overflow-hidden"
         >
           <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 ml-0">
-            {filtered.map((member) => (
+            {filtered.map((member, index) => (
               <CarouselItem
                 key={member.id}
-                className="basis-[82%] min-w-73 sm:max-w-80 md:basis-full md:max-w-none pl-0 pr-4 md:pr-0"
+                className={cn(
+                  "basis-[78%] min-w-73 sm:max-w-80 md:basis-full md:max-w-none ml-0",
+                  index === 0 && "pl-8 sm:pl-12 md:pl-0",
+                  index === filtered.length - 1 && "pr-8 sm:pr-12 md:pr-0"
+                )}
               >
                 <MemberCard member={member} />
               </CarouselItem>
@@ -199,7 +205,7 @@ const MembersSection = () => {
                   onClick={() => scrollTo(idx)}
                   suppressHydrationWarning
                   className={cn(
-                    "flex-none w-9 h-9 rounded-full overflow-hidden p-0 transition-all duration-[160ms]",
+                    "flex-none w-9 h-9 rounded-full overflow-hidden p-0 transition-all duration-160",
                     isActive
                       ? "border-2 border-brand opacity-100"
                       : "border-2 border-transparent ring-1 ring-line ring-inset opacity-65"
