@@ -15,7 +15,13 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 export default function MembersSection() {
   const members = MEMBERS;
@@ -27,27 +33,15 @@ export default function MembersSection() {
 
   const [filter, setFilter] = useState("All");
   const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const thumbScrollRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const isFirstRender = useRef(true);
+  const [api, setApi] = useState<CarouselApi>();
 
   // Filter members based on selected specialty
   const filtered = useMemo(() => {
     return filter === "All" ? members : members.filter((m) => m.specialty === filter);
   }, [filter, members]);
-
-  // Reset active index when filter changes
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({ left: 0 });
-    }
-    if (thumbScrollRef.current) {
-      thumbScrollRef.current.scrollTo({ left: 0 });
-    }
-  }, [filter]);
-
   // Sync thumbnail scroll when activeIndex changes
   useEffect(() => {
     if (isFirstRender.current) {
@@ -56,57 +50,34 @@ export default function MembersSection() {
     }
 
     const targetThumb = thumbRefs.current[activeIndex];
-    if (targetThumb) {
-      targetThumb.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
+    if (targetThumb && thumbScrollRef.current) {
+      const container = thumbScrollRef.current;
+      const thumb = targetThumb;
+      const scrollLeft = thumb.offsetLeft - container.offsetWidth / 2 + thumb.offsetWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
     }
   }, [activeIndex]);
 
-  // Use Intersection Observer for robust active index tracking
+  // Handle Carousel API state
   useEffect(() => {
-    const container = scrollRef.current;
-    if (!container || window.innerWidth >= 768) return;
+    if (!api) return;
 
-    const options = {
-      root: container,
-      threshold: 0.6, // Card must be 60% visible to be considered active
+    const onSelect = () => {
+      setActiveIndex(api.selectedScrollSnap());
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = cardRefs.current.indexOf(entry.target as HTMLDivElement);
-          if (index !== -1) {
-            setActiveIndex(index);
-          }
-        }
-      });
-    }, options);
-
-    const currentCards = cardRefs.current;
-    currentCards.forEach((card) => {
-      if (card) observer.observe(card);
-    });
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
 
     return () => {
-      currentCards.forEach((card) => {
-        if (card) observer.unobserve(card);
-      });
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
     };
-  }, [filtered, filter]);
+  }, [api]);
 
   const scrollTo = (index: number) => {
-    const targetCard = cardRefs.current[index];
-    if (targetCard) {
-      targetCard.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
-      setActiveIndex(index);
+    if (api) {
+      api.scrollTo(index);
     }
   };
 
@@ -136,7 +107,7 @@ export default function MembersSection() {
                 key={s}
                 onClick={() => {
                   setFilter(s);
-                  setActiveIndex(0);
+                  scrollTo(0);
                 }}
                 suppressHydrationWarning
                 className={cn(
@@ -158,28 +129,31 @@ export default function MembersSection() {
           })}
         </div>
 
-        {/* Members List (Responsive: Carousel on Mobile, Grid on Desktop) */}
-        <div className="relative -mx-8 px-8 md:mx-0 md:px-0">
-          <div
-            ref={scrollRef}
-            className={cn(
-              "flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-none",
-              "pb-5 -mb-5" // Extra padding to hide scrollbar if it appears
-            )}
-          >
-            {filtered.map((member, i) => (
-              <div
+        <Carousel
+          setApi={setApi}
+          plugins={[WheelGesturesPlugin()]}
+          opts={{
+            align: "start",
+            loop: false,
+            dragFree: true,
+            containScroll: "trimSnaps",
+            breakpoints: {
+              "(min-width: 768px)": { active: false },
+            },
+          }}
+          className="relative -mx-8 px-8 md:mx-0 md:px-0"
+        >
+          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 md:ml-0">
+            {filtered.map((member) => (
+              <CarouselItem
                 key={member.id}
-                ref={(el) => {
-                  cardRefs.current[i] = el;
-                }}
-                className="flex-none w-[78%] max-w-80 md:w-full md:max-w-none snap-center"
+                className="basis-[78%] max-w-80 md:basis-full md:max-w-none md:pl-0"
               >
                 <MemberCard member={member} />
-              </div>
+              </CarouselItem>
             ))}
-          </div>
-        </div>
+          </CarouselContent>
+        </Carousel>
 
         {/* Mobile-only Controls & Pagination */}
         <div className="md:hidden mt-10">
@@ -291,7 +265,7 @@ function MemberCard({ member }: { member: Member }) {
             {member.joined}
           </div>
         </div>
-        <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty">
+        <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty min-h-[64px]">
           {member.oneliner}
         </p>
         <div className="flex-1 min-h-4" />

@@ -142,7 +142,7 @@ export default function PricingSection() {
                   onClick={(e) => e.stopPropagation()}
                   className={`py-3.25 px-5.5 rounded-pill inline-flex items-center justify-center gap-2 mt-2.5 transition-colors duration-300 ${
                     isDark
-                      ? "bg-white text-brand-deep hover:bg-paper-2"
+                      ? "bg-white text-brand-deep hover:b-paper-2"
                       : "bg-brand text-white hover:bg-brand-2"
                   }`}
                 >
