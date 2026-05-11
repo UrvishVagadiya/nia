@@ -7,9 +7,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FAQ } from "@/components/constant/FAQSection.data";
+import { FAQ } from "@/constant/FAQSection.data";
 
-export default function FAQSection() {
+const FAQSection = () => {
   return (
     <section className="bg-paper">
       <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 sm:gap-16">
@@ -63,4 +63,6 @@ export default function FAQSection() {
       </div>
     </section>
   );
-}
+};
+
+export default FAQSection;

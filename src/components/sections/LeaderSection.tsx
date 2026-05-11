@@ -13,7 +13,7 @@ const leader = {
     "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=750&fit=crop&crop=faces",
 };
 
-export default function LeaderSection() {
+const LeaderSection = () => {
   const stats = [
     { label: "SPECIALTY", value: leader.specialty },
     { label: "TENURE", value: leader.tenure },
@@ -114,4 +114,5 @@ export default function LeaderSection() {
       </div>
     </section>
   );
-}
+};
+export default LeaderSection;

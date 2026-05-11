@@ -4,25 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Typography from "../ui/typography";
-import { HERO_BULLETS, HERO_IMAGES } from "@/components/constant/HeroSection.data";
-import { MEMBERS } from "@/components/constant/MembersSection.data";
-import { SCHEDULE } from "@/components/constant/ScheduleSection.data";
+import { HERO_BULLETS, HERO_IMAGES } from "@/constant/HeroSection.data";
+import { SCHEDULE } from "@/constant/ScheduleSection.data";
+import type { HeroProps } from "@/lib/types";
 
-interface HeroProps {
-  chapterNumber: string;
-  title: React.ReactNode;
-  subtitle: string;
-  mainImage?: string;
-  leaderImage?: string;
-}
-
-export default function HeroSection({
+const HeroSection = ({
   chapterNumber,
   title,
   subtitle,
   mainImage = HERO_IMAGES.main,
   leaderImage = HERO_IMAGES.leader,
-}: HeroProps) {
+}: HeroProps) => {
   return (
     <section className="bg-paper-2 overflow-hidden">
       <div className="section-container section-padding grid grid-col-1 md:grid-cols-2 gap-16 items-center">
@@ -121,4 +113,5 @@ export default function HeroSection({
       </div>
     </section>
   );
-}
+};
+export default HeroSection;

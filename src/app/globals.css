@@ -155,7 +155,6 @@
     @apply px-5 lg:px-8;
   }
 
-  /* Headline construction: upright + italic blue */
   .heading-italic-brand {
     font-style: italic;
     font-weight: 600;

@@ -6,9 +6,9 @@ import {
   GETINTOROOM_HEADER,
   GETINTOROOM_IMAGE,
   GETINTOROOM_STEPS,
-} from "@/components/constant/GetintoRoom.data";
+} from "@/constant/GetintoRoom.data";
 
-export default function GetintoRoom() {
+const GetintoRoom = () => {
   return (
     <section className="bg-paper-2">
       <div className="section-container section-padding">
@@ -76,4 +76,6 @@ export default function GetintoRoom() {
       </div>
     </section>
   );
-}
+};
+
+export default GetintoRoom;

@@ -3,7 +3,7 @@
 import { Check } from "lucide-react";
 import Typography from "@/components/ui/typography";
 
-export default function StepsSection() {
+const StepsSection = () => {
   return (
     <section className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
@@ -147,4 +147,5 @@ export default function StepsSection() {
       </div>
     </section>
   );
-}
+};
+export default StepsSection;

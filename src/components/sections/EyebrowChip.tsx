@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-export default function EyebrowChip({ className }: { className?: string }) {
+const EyebrowChip = ({ className }: { className?: string }) => {
   return (
     <span
       className={cn(
@@ -14,4 +14,6 @@ export default function EyebrowChip({ className }: { className?: string }) {
       NIA SURAT &middot; CHAPTER 01
     </span>
   );
-}
+};
+
+export default EyebrowChip;

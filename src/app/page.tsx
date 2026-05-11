@@ -20,7 +20,7 @@ export default function Home() {
         chapterNumber="Chapter 01"
         title={
           <span className="italic text-brand font-serif">
-            Surat’s room of trusted professionals.
+            {`Surat’s room of trusted professionals.`}
           </span>
         }
         subtitle="72 category leaders. One chair per specialty. No overlap."

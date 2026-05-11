@@ -7,9 +7,9 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { CHAPTERS, NAV_LINKS } from "@/components/constant/Navbar.data";
+import { CHAPTERS, NAV_LINKS } from "@/constant/Navbar.data";
 
-export default function Navbar() {
+const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -43,8 +43,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="hidden lg:flex flex-1 items-center justify-end gap-x-6 px-4 overflow-hidden">
-          <div className="flex items-center gap-x-6 overflow-x-auto no-scrollbar">
+        <div className="hidden lg:flex items-center gap-x-6 px-4 overflow-hidden">
+          <div className="flex items-center md:gap-x-4 lg:gap-x-5  no-scrollbar">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -132,4 +132,5 @@ export default function Navbar() {
       )}
     </header>
   );
-}
+};
+export default Navbar;

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { MEMBERS } from "@/components/constant/MembersSection.data";
+import { MEMBERS } from "@/constant/MembersSection.data";
 import { Member } from "@/lib/types";
 import { MapPin, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,9 +15,16 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
+import MemberCard from "./MemberCard";
 
-export default function MembersSection() {
+const MembersSection = () => {
   const members = MEMBERS;
 
   const specialties = useMemo(() => {
@@ -27,27 +34,15 @@ export default function MembersSection() {
 
   const [filter, setFilter] = useState("All");
   const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const thumbScrollRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const isFirstRender = useRef(true);
+  const [api, setApi] = useState<CarouselApi>();
 
   // Filter members based on selected specialty
   const filtered = useMemo(() => {
     return filter === "All" ? members : members.filter((m) => m.specialty === filter);
   }, [filter, members]);
-
-  // Reset active index when filter changes
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({ left: 0 });
-    }
-    if (thumbScrollRef.current) {
-      thumbScrollRef.current.scrollTo({ left: 0 });
-    }
-  }, [filter]);
-
   // Sync thumbnail scroll when activeIndex changes
   useEffect(() => {
     if (isFirstRender.current) {
@@ -56,57 +51,34 @@ export default function MembersSection() {
     }
 
     const targetThumb = thumbRefs.current[activeIndex];
-    if (targetThumb) {
-      targetThumb.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
+    if (targetThumb && thumbScrollRef.current) {
+      const container = thumbScrollRef.current;
+      const thumb = targetThumb;
+      const scrollLeft = thumb.offsetLeft - container.offsetWidth / 2 + thumb.offsetWidth / 2;
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
     }
   }, [activeIndex]);
 
-  // Use Intersection Observer for robust active index tracking
+  // Handle Carousel API state
   useEffect(() => {
-    const container = scrollRef.current;
-    if (!container || window.innerWidth >= 768) return;
+    if (!api) return;
 
-    const options = {
-      root: container,
-      threshold: 0.6, // Card must be 60% visible to be considered active
+    const onSelect = () => {
+      setActiveIndex(api.selectedScrollSnap());
     };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = cardRefs.current.indexOf(entry.target as HTMLDivElement);
-          if (index !== -1) {
-            setActiveIndex(index);
-          }
-        }
-      });
-    }, options);
-
-    const currentCards = cardRefs.current;
-    currentCards.forEach((card) => {
-      if (card) observer.observe(card);
-    });
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
 
     return () => {
-      currentCards.forEach((card) => {
-        if (card) observer.unobserve(card);
-      });
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
     };
-  }, [filtered, filter]);
+  }, [api]);
 
   const scrollTo = (index: number) => {
-    const targetCard = cardRefs.current[index];
-    if (targetCard) {
-      targetCard.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
-      });
-      setActiveIndex(index);
+    if (api) {
+      api.scrollTo(index);
     }
   };
 
@@ -136,7 +108,7 @@ export default function MembersSection() {
                 key={s}
                 onClick={() => {
                   setFilter(s);
-                  setActiveIndex(0);
+                  scrollTo(0);
                 }}
                 suppressHydrationWarning
                 className={cn(
@@ -158,28 +130,31 @@ export default function MembersSection() {
           })}
         </div>
 
-        {/* Members List (Responsive: Carousel on Mobile, Grid on Desktop) */}
-        <div className="relative -mx-8 px-8 md:mx-0 md:px-0">
-          <div
-            ref={scrollRef}
-            className={cn(
-              "flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-none",
-              "pb-5 -mb-5" // Extra padding to hide scrollbar if it appears
-            )}
-          >
-            {filtered.map((member, i) => (
-              <div
+        <Carousel
+          setApi={setApi}
+          plugins={[WheelGesturesPlugin()]}
+          opts={{
+            align: "start",
+            loop: false,
+            dragFree: true,
+            containScroll: "trimSnaps",
+            breakpoints: {
+              "(min-width: 768px)": { active: false },
+            },
+          }}
+          className="relative -mx-8 px-8 md:mx-0 md:px-0"
+        >
+          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 md:ml-0">
+            {filtered.map((member) => (
+              <CarouselItem
                 key={member.id}
-                ref={(el) => {
-                  cardRefs.current[i] = el;
-                }}
-                className="flex-none w-[78%] max-w-80 md:w-full md:max-w-none snap-center"
+                className="basis-[78%] min-w-73 sm:max-w-80 md:basis-full md:max-w-none md:pl-0"
               >
                 <MemberCard member={member} />
-              </div>
+              </CarouselItem>
             ))}
-          </div>
-        </div>
+          </CarouselContent>
+        </Carousel>
 
         {/* Mobile-only Controls & Pagination */}
         <div className="md:hidden mt-10">
@@ -245,99 +220,6 @@ export default function MembersSection() {
       </div>
     </section>
   );
-}
+};
 
-function MemberCard({ member }: { member: Member }) {
-  return (
-    <Card className="bg-white rounded-lg overflow-hidden shadow-[0_8px_24px_-12px_rgba(14,58,92,0.1)] flex flex-col h-full border border-line/50 !p-0 gap-0 ring-0">
-      {/* Image Section */}
-      <div className="relative h-72 sm:h-80 w-full shrink-0 bg-paper-3">
-        <Image
-          src={member.photo}
-          alt={member.name}
-          fill
-          className="object-cover"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e3a5c]/40 via-[#0e3a5c]/10 to-transparent" />
-        <div className="absolute top-4 left-4 bg-white text-brand px-2.5 py-1 rounded-pill text-2.5 font-bold shadow-sm flex items-center gap-[6px] tracking-wide">
-          <span className="w-1.25 h-1.25 rounded-full bg-brand" />
-          <Typography variant="caption" color="brand" className="text-[10.5] font-bold!">
-            {member.specialty}
-          </Typography>
-        </div>
-        <CardHeader className="absolute bottom-4 left-5 right-5 flex flex-col p-0 border-none space-y-0">
-          <CardTitle className="m-0 leading-tight">
-            <Typography as="span" variant="h5" color="white" className="m-0">
-              {member.name}
-            </Typography>
-          </CardTitle>
-          <CardDescription className="mt-0.5 m-0">
-            <Typography as="span" variant="caption" color="white" className="italic m-0">
-              {member.convention}
-            </Typography>
-          </CardDescription>
-        </CardHeader>
-      </div>
-
-      {/* Content Section */}
-      <CardContent className="p-6 pb-0 flex flex-col flex-1 border-none shadow-none text-left">
-        <div className="flex items-center gap-2 text-ink-4 text-[11px] font-bold mb-4 tracking-wide uppercase">
-          <div className="flex items-center gap-1">
-            <MapPin size={11} className="text-brand" />
-            {member.location}
-          </div>
-          <span className="text-ink-4 mx-0.5">&bull;</span>
-          <div className="flex items-center gap-1">
-            <Calendar size={11} className="text-brand" />
-            {member.joined}
-          </div>
-        </div>
-        <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty">
-          {member.oneliner}
-        </p>
-        <div className="flex-1 min-h-4" />
-      </CardContent>
-
-      {/* Footer */}
-      <CardFooter className="px-6 pb-2.5 pt-4 border-t border-line flex items-center gap-2 bg-transparent">
-        {[
-          {
-            icon: "linkedin",
-            path: "M22.23 0H1.77C.8 0 0 .77 0 1.72v20.56C0 23.23.8 24 1.77 24h20.46c.98 0 1.77-.77 1.77-1.72V1.72C24 .77 23.2 0 22.23 0zM7.12 20.45H3.56V9h3.56v11.45zM5.34 7.43a2.06 2.06 0 110-4.13 2.06 2.06 0 010 4.13zM20.45 20.45h-3.56v-5.56c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.66H9.33V9h3.42v1.56h.05c.48-.9 1.63-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29z",
-          },
-          { icon: "instagram", path: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" },
-          {
-            icon: "web",
-            path: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
-          },
-        ].map((social, idx) => (
-          <a
-            key={idx}
-            href="#"
-            className="w-7 h-7 rounded-full bg-paper-2 flex items-center justify-center text-ink-3 hover:text-brand hover:bg-brand-soft transition-colors cursor-pointer"
-          >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill={social.icon === "linkedin" ? "currentColor" : "none"}
-              stroke={social.icon === "linkedin" ? "none" : "currentColor"}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              {social.icon === "instagram" && (
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              )}
-              {social.icon === "web" && <circle cx="12" cy="12" r="10"></circle>}
-              {social.icon === "web" && <line x1="2" y1="12" x2="22" y2="12"></line>}
-              <path d={social.path} />
-              {social.icon === "instagram" && <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>}
-            </svg>
-          </a>
-        ))}
-      </CardFooter>
-    </Card>
-  );
-}
+export default MembersSection;

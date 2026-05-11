@@ -4,9 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
-import { PRICING_TIERS } from "@/components/constant/PricingSection.data";
+import { PRICING_TIERS } from "@/constant/PricingSection.data";
 
-export default function PricingSection() {
+const PricingSection = () => {
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
   const [selectedCard, setSelectedCard] = useState<string>("Member");
 
@@ -142,7 +142,7 @@ export default function PricingSection() {
                   onClick={(e) => e.stopPropagation()}
                   className={`py-3.25 px-5.5 rounded-pill inline-flex items-center justify-center gap-2 mt-2.5 transition-colors duration-300 ${
                     isDark
-                      ? "bg-white text-brand-deep hover:bg-paper-2"
+                      ? "bg-white text-brand-deep hover:b-paper-2"
                       : "bg-brand text-white hover:bg-brand-2"
                   }`}
                 >
@@ -162,4 +162,6 @@ export default function PricingSection() {
       </div>
     </section>
   );
-}
+};
+
+export default PricingSection;

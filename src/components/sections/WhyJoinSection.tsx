@@ -1,6 +1,6 @@
 "use client";
 
-import { VALUE_PROPS } from "@/components/constant/WhyJoinSection.data";
+import { VALUE_PROPS } from "@/constant/WhyJoinSection.data";
 import Typography from "@/components/ui/typography";
 
 const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; bgClass: string }> =
@@ -71,7 +71,7 @@ const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; b
     },
   };
 
-export default function WhyJoinSection() {
+const WhyJoinSection = () => {
   return (
     <section id="about" className="bg-paper overflow-hidden">
       <div className="section-container section-padding">
@@ -118,4 +118,5 @@ export default function WhyJoinSection() {
       </div>
     </section>
   );
-}
+};
+export default WhyJoinSection;

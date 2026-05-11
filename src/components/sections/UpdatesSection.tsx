@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
 
-import { BLOG_POSTS } from "../constant/UpdatesSection.data";
+import { BLOG_POSTS } from "../../constant/UpdatesSection.data";
 import { Card, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
 
-export default function UpdatesSection() {
+const UpdatesSection = () => {
   return (
     <section id="updates" className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
@@ -78,4 +78,5 @@ export default function UpdatesSection() {
       </div>
     </section>
   );
-}
+};
+export default UpdatesSection;
