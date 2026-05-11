@@ -1,9 +1,9 @@
 "use client";
-import { STATS } from "@/components/constant/Stantband.data";
+import { STATS } from "@/constant/Stantband.data";
 import Typography from "../ui/typography";
 import { cn } from "@/lib/utils";
 
-export default function StatBand() {
+const StatBand = () => {
   return (
     <section className="bg-paper-2 px-4 pb-12 lg:px-8 lg:pb-20 overflow-hidden">
       <div className="section-container px-12! rounded-[18px] py-6  lg:py-9 lg:px-12 relative overflow-hidden bg-brand-2">
@@ -51,4 +51,5 @@ export default function StatBand() {
       </div>
     </section>
   );
-}
+};
+export default StatBand;

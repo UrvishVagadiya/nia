@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import Typography from "@/components/ui/typography";
-import { TESTIMONIALS, SLOT_CONFIGS } from "@/components/constant/TestimonialsSection.data";
+import { TESTIMONIALS, SLOT_CONFIGS } from "@/constant/TestimonialsSection.data";
 
-export default function TestimonialsSection() {
+const TestimonialsSection = () => {
   const testimonials = TESTIMONIALS;
   const [active, setActive] = useState(0);
   const n = testimonials.length;
@@ -52,11 +52,6 @@ export default function TestimonialsSection() {
           <div className="flex justify-center items-end gap-3.5 mb-12 min-h-27.5">
             {(() => {
               const displayCount = Math.min(n, 7);
-              // Calculate which subset of SLOT_CONFIGS to use to keep it centered
-              // 7 slots -> start at 0
-              // 5 slots -> start at 1
-              // 3 slots -> start at 2
-              // 1 slot  -> start at 3
               const configStartIndex = Math.max(0, 3 - Math.floor(displayCount / 2));
               const activeConfigs = SLOT_CONFIGS.slice(
                 configStartIndex,
@@ -64,9 +59,6 @@ export default function TestimonialsSection() {
               );
 
               return activeConfigs.map((slot, i) => {
-                // If we are showing fewer than 7, the 'offset' logic changes
-                // The center item in our activeConfigs should always show the 'active' testimonial.
-                // The center index of activeConfigs is Math.floor(displayCount / 2)
                 const centerInSub = Math.floor(displayCount / 2);
                 const offset = i - centerInSub;
                 const tIndex = (((active + offset) % n) + n) % n;
@@ -181,4 +173,5 @@ export default function TestimonialsSection() {
       </div>
     </section>
   );
-}
+};
+export default TestimonialsSection;

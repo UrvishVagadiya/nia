@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { FOOTER_DATA } from "@/components/constant/Footer.data";
+import { FOOTER_DATA } from "@/constant/Footer.data";
 import Image from "next/image";
 import Typography from "@/components/ui/typography";
 
-export default function Footer() {
+const Footer = () => {
   return (
     <footer className="bg-brand-deep text-white">
       <div className="section-container pt-16 pb-8">
@@ -85,4 +85,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

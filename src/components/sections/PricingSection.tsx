@@ -4,9 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
-import { PRICING_TIERS } from "@/components/constant/PricingSection.data";
+import { PRICING_TIERS } from "@/constant/PricingSection.data";
 
-export default function PricingSection() {
+const PricingSection = () => {
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
   const [selectedCard, setSelectedCard] = useState<string>("Member");
 
@@ -162,4 +162,6 @@ export default function PricingSection() {
       </div>
     </section>
   );
-}
+};
+
+export default PricingSection;

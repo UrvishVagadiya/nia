@@ -7,9 +7,9 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { CHAPTERS, NAV_LINKS } from "@/components/constant/Navbar.data";
+import { CHAPTERS, NAV_LINKS } from "@/constant/Navbar.data";
 
-export default function Navbar() {
+const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -132,4 +132,5 @@ export default function Navbar() {
       )}
     </header>
   );
-}
+};
+export default Navbar;

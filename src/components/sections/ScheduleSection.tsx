@@ -1,11 +1,11 @@
 "use client";
 
-import { SCHEDULE, VENUE } from "@/components/constant/ScheduleSection.data";
+import { SCHEDULE, VENUE } from "@/constant/ScheduleSection.data";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
 
-export default function ScheduleSection() {
+const ScheduleSection = () => {
   const schedule = SCHEDULE;
   const nextMeeting = schedule[0];
 
@@ -96,4 +96,5 @@ export default function ScheduleSection() {
       </div>
     </section>
   );
-}
+};
+export default ScheduleSection;
