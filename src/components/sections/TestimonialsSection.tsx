@@ -48,44 +48,62 @@ export default function TestimonialsSection() {
         </div>
 
         {/* ── Arc Avatar Row ── */}
-        {/* ✅ overflow-x-hidden only on this row to clip avatars, not the card below */}
         <div className="overflow-x-hidden">
           <div className="flex justify-center items-end gap-3.5 mb-12 min-h-27.5">
-            {SLOT_CONFIGS.map((slot, slotIndex) => {
-              const offset = slotIndex - 3;
-              const tIndex = (((active + offset) % n) + n) % n;
-              const t = testimonials[tIndex];
-
-              return (
-                <button
-                  key={slotIndex}
-                  onClick={() => handleManual(tIndex)}
-                  aria-label={`Show testimonial from ${t.who}`}
-                  className="rounded-full overflow-hidden shrink-0 cursor-pointer p-0 border-none transition-all duration-350ms ease-[cubic-bezier(0.4,0,0.2,1)]"
-                  style={{
-                    width: slot.size,
-                    height: slot.size,
-                    opacity: slot.opacity,
-                    transform: `translateY(${slot.translateY}px)`,
-                    border: slot.isCenter
-                      ? "2px solid #2e9ddb"
-                      : `${slot.borderWidth}px solid #ffffff`,
-                    boxShadow: slot.isCenter
-                      ? "0 0 0 3px #2e9ddb, 0 8px 24px -6px rgba(46,157,219,0.5)"
-                      : "0 4px 12px -4px rgba(14,58,92,0.2)",
-                    zIndex: slot.isCenter ? 10 : 0,
-                  }}
-                >
-                  <Image
-                    src={t.photo}
-                    alt={t.who}
-                    width={120}
-                    height={120}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
+            {(() => {
+              const displayCount = Math.min(n, 7);
+              // Calculate which subset of SLOT_CONFIGS to use to keep it centered
+              // 7 slots -> start at 0
+              // 5 slots -> start at 1
+              // 3 slots -> start at 2
+              // 1 slot  -> start at 3
+              const configStartIndex = Math.max(0, 3 - Math.floor(displayCount / 2));
+              const activeConfigs = SLOT_CONFIGS.slice(
+                configStartIndex,
+                configStartIndex + displayCount
               );
-            })}
+
+              return activeConfigs.map((slot, i) => {
+                // If we are showing fewer than 7, the 'offset' logic changes
+                // The center item in our activeConfigs should always show the 'active' testimonial.
+                // The center index of activeConfigs is Math.floor(displayCount / 2)
+                const centerInSub = Math.floor(displayCount / 2);
+                const offset = i - centerInSub;
+                const tIndex = (((active + offset) % n) + n) % n;
+                const t = testimonials[tIndex];
+
+                return (
+                  <button
+                    key={i}
+                    onClick={() => handleManual(tIndex)}
+                    aria-label={`Show testimonial from ${t.who}`}
+                    suppressHydrationWarning
+                    className="rounded-full overflow-hidden shrink-0 cursor-pointer p-0 border-none transition-all duration-350ms ease-[cubic-bezier(0.4,0,0.2,1)]"
+                    style={{
+                      width: slot.size,
+                      height: slot.size,
+                      opacity: slot.opacity,
+                      transform: `translateY(${slot.translateY}px)`,
+                      border: slot.isCenter
+                        ? "2px solid #2e9ddb"
+                        : `${slot.borderWidth}px solid #ffffff`,
+                      boxShadow: slot.isCenter
+                        ? "0 0 0 3px #2e9ddb, 0 8px 24px -6px rgba(46,157,219,0.5)"
+                        : "0 4px 12px -4px rgba(14,58,92,0.2)",
+                      zIndex: slot.isCenter ? 10 : 0,
+                    }}
+                  >
+                    <Image
+                      src={t.photo}
+                      alt={t.who}
+                      width={120}
+                      height={120}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                );
+              });
+            })()}
           </div>
         </div>
 
@@ -121,9 +139,8 @@ export default function TestimonialsSection() {
                   setAutoKey((k) => k + 1);
                 }}
                 aria-label="Previous testimonial"
-                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center
-                           border-none cursor-pointer hover:bg-brand-2 transition-colors p-0
-                           shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+                suppressHydrationWarning
+                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
               >
                 <span className="text-[24px] leading-none">‹</span>
               </button>
@@ -137,9 +154,8 @@ export default function TestimonialsSection() {
                   setAutoKey((k) => k + 1);
                 }}
                 aria-label="Next testimonial"
-                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center
-                           border-none cursor-pointer hover:bg-brand-2 transition-colors p-0
-                           shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+                suppressHydrationWarning
+                className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
               >
                 <span className="text-[24px] leading-none">›</span>
               </button>
@@ -154,6 +170,7 @@ export default function TestimonialsSection() {
               key={i}
               onClick={() => handleManual(i)}
               aria-label={`Show testimonial ${i + 1}`}
+              suppressHydrationWarning
               className={[
                 "rounded-[4px] border-none p-0 cursor-pointer transition-all duration-200",
                 i === active ? "w-6 h-2 bg-brand" : "w-2 h-2 bg-line-2 hover:bg-ink-4",

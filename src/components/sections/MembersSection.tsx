@@ -123,7 +123,7 @@ export default function MembersSection() {
             Meet the innovators.
           </Typography>
           <Typography variant="body-md" color="ink-3" className="mt-4 max-w-2xl mx-auto">
-            25 category leaders. Each one holds an exclusive seat in their specialty.
+            {members.length} category leaders. Each one holds an exclusive seat in their specialty.
           </Typography>
         </div>
 
@@ -138,6 +138,7 @@ export default function MembersSection() {
                   setFilter(s);
                   setActiveIndex(0);
                 }}
+                suppressHydrationWarning
                 className={cn(
                   "rounded-pill px-5 py-2 transition-all duration-200",
                   isActive
@@ -190,6 +191,7 @@ export default function MembersSection() {
             <div className="flex gap-2">
               <button
                 onClick={() => scrollTo(Math.max(0, activeIndex - 1))}
+                suppressHydrationWarning
                 className="w-10 h-10 rounded-full border border-line bg-white text-brand-deep flex items-center justify-center disabled:opacity-30 transition-all active:scale-95"
                 disabled={activeIndex === 0}
               >
@@ -197,6 +199,7 @@ export default function MembersSection() {
               </button>
               <button
                 onClick={() => scrollTo(Math.min(filtered.length - 1, activeIndex + 1))}
+                suppressHydrationWarning
                 className="w-10 h-10 rounded-full bg-brand-deep text-white flex items-center justify-center disabled:opacity-30 transition-all active:scale-95 shadow-md"
                 disabled={activeIndex === filtered.length - 1}
               >
@@ -206,37 +209,38 @@ export default function MembersSection() {
           </div>
 
           {/* Carousel Image Strip */}
-          <ScrollArea className="w-full">
-            <div
-              ref={thumbScrollRef}
-              className="flex gap-1.5 px-1 py-2 overflow-x-auto scrollbar-none scroll-smooth"
-            >
-              {filtered.map((member, idx) => (
+          <div
+            ref={thumbScrollRef}
+            className="flex gap-1.5 px-1 py-2 overflow-x-auto scrollbar-none scroll-smooth mt-3.5 -mx-1 pt-0.5 pb-1.5"
+          >
+            {filtered.map((member, idx) => {
+              const isActive = activeIndex === idx;
+              return (
                 <button
                   key={member.id}
                   ref={(el) => {
                     thumbRefs.current[idx] = el;
                   }}
                   onClick={() => scrollTo(idx)}
+                  suppressHydrationWarning
                   className={cn(
-                    "relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 transition-all duration-300",
-                    activeIndex === idx
-                      ? "ring-2 ring-brand ring-offset-2 scale-110 opacity-100 z-10"
-                      : "opacity-60 grayscale-[0.5] hover:opacity-100 hover:grayscale-0"
+                    "flex-none w-9 h-9 rounded-full overflow-hidden p-0 transition-all duration-[160ms]",
+                    isActive
+                      ? "border-2 border-brand opacity-100"
+                      : "border-2 border-transparent ring-1 ring-line ring-inset opacity-65"
                   )}
                 >
                   <Image
                     src={member.photo}
                     alt={member.name}
-                    width={48}
-                    height={48}
+                    width={36}
+                    height={36}
                     className="w-full h-full object-cover"
                   />
                 </button>
-              ))}
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
@@ -260,19 +264,23 @@ function MemberCard({ member }: { member: Member }) {
           <span className="w-1.25 h-1.25 rounded-full bg-brand" />
           {member.specialty}
         </div>
-        <CardHeader className="absolute bottom-4 left-4 right-4 flex flex-col p-0 border-none space-y-0 text-left">
-          <CardTitle className="text-white text-4 font-bold tracking-tight m-0 leading-tight">
-            {member.name}
+        <CardHeader className="absolute bottom-4 left-5 right-5 flex flex-col p-0 border-none space-y-0">
+          <CardTitle className="m-0 leading-tight">
+            <Typography as="span" variant="h5" color="white" className="m-0">
+              {member.name}
+            </Typography>
           </CardTitle>
-          <CardDescription className="text-white/85 text-2.5 font-medium italic mt-0.5 m-0">
-            {member.convention}
+          <CardDescription className="mt-0.5 m-0">
+            <Typography as="span" variant="caption" color="white" className="italic m-0">
+              {member.convention}
+            </Typography>
           </CardDescription>
         </CardHeader>
       </div>
 
       {/* Content Section */}
       <CardContent className="p-6 pb-0 flex flex-col flex-1 border-none shadow-none text-left">
-        <div className="flex items-center gap-2 text-ink-3 text-[11px] font-bold mb-4 tracking-wide">
+        <div className="flex items-center gap-2 text-ink-4 text-[11px] font-bold mb-4 tracking-wide uppercase">
           <div className="flex items-center gap-1">
             <MapPin size={11} className="text-brand" />
             {member.location}

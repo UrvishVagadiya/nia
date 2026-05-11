@@ -1,6 +1,7 @@
 "use client";
 import { STATS } from "@/components/constant/Stantband.data";
 import Typography from "../ui/typography";
+import { cn } from "@/lib/utils";
 
 export default function StatBand() {
   return (
@@ -15,18 +16,23 @@ export default function StatBand() {
           }}
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+        <div
+          className="grid gap-6 relative z-10"
+          style={{
+            gridTemplateColumns: `repeat(${STATS.length}, 1fr)`,
+          }}
+        >
           {STATS.map((stat, i) => {
-            let borderClass = "border-l border-white/20 pl-6";
-            if (i === 0) {
-              borderClass = "border-none pl-0";
-            } else if (i === 2) {
-              borderClass =
-                "border-l border-white/20 pl-6 sm:border-none sm:pl-0 lg:border-solid lg:border-l lg:pl-6";
-            }
+            const isFirst = i === 0;
 
             return (
-              <div key={stat.key} className={`text-left ${borderClass}`}>
+              <div
+                key={stat.key}
+                className={cn(
+                  "text-left transition-all duration-300",
+                  !isFirst && "border-l border-white/20 pl-6"
+                )}
+              >
                 <div>
                   <Typography variant="stat" color="gold" className="font-semibold leading-none">
                     {stat.numeral}

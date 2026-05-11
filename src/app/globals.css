@@ -193,21 +193,6 @@
   }
 
   .section-padding {
-    padding-top: 26px;
-    padding-bottom: 26px;
-  }
-}
-
-/* ── Responsive ────────────────────────────────────────────────────── */
-
-@media (max-width: 640px) {
-  .section-container,
-  .hero-container {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .section-padding {
     padding-top: 56px;
     padding-bottom: 56px;
   }

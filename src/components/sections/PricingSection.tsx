@@ -47,6 +47,7 @@ export default function PricingSection() {
           <Switch
             checked={billing === "annual"}
             onCheckedChange={(checked) => setBilling(checked ? "annual" : "monthly")}
+            suppressHydrationWarning
           />
           <span
             className={`text-[13px] font-semibold ${billing === "annual" ? "text-brand-deep" : "text-ink-4"}`}
@@ -63,6 +64,7 @@ export default function PricingSection() {
               <Card
                 key={tier.name}
                 onClick={() => setSelectedCard(tier.name)}
+                suppressHydrationWarning
                 className={`cursor-pointer transition-all duration-300 relative rounded-[18px] p-8 flex flex-col gap-4 border ${
                   isDark
                     ? "bg-brand-deep text-white border-brand-deep lg:-translate-y-3 shadow-[0_20px_40px_-20px_rgba(14,58,92,0.4)]"

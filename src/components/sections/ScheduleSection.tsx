@@ -1,6 +1,6 @@
 "use client";
 
-import { SCHEDULE } from "@/components/constant/ScheduleSection.data";
+import { SCHEDULE, VENUE } from "@/components/constant/ScheduleSection.data";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
@@ -40,7 +40,7 @@ export default function ScheduleSection() {
                 Venue
               </Typography>
               <Typography as="div" variant="body-sm" color="brand-deep">
-                Hyatt Regency, Athwa Lines
+                {VENUE}
               </Typography>
             </div>
           </div>

@@ -31,7 +31,7 @@ export default function FAQSection() {
 
         {/* Right Side (Accordion) */}
         <div className="flex flex-col">
-          <Accordion defaultValue={["item-0"]}>
+          <Accordion defaultValue={["item-0"]} suppressHydrationWarning>
             {FAQ.map((item, index) => (
               <AccordionItem
                 key={index}
