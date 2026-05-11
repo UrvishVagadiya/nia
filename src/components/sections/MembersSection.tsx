@@ -142,7 +142,7 @@ const MembersSection = () => {
               "(min-width: 768px)": { active: false },
             },
           }}
-          className="relative -mx-8 px-8 md:mx-0 md:px-0"
+          className="relative -mx-8 px-8  md:mx-0 md:px-0"
         >
           <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 md:ml-0">
             {filtered.map((member) => (
