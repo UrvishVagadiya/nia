@@ -23,7 +23,10 @@ export default function Navbar() {
           <div className="flex items-center overflow-x-auto no-scrollbar">
             {CHAPTERS.map((ch) => {
               const href = `/${ch.id}`;
-              const isActive = pathname === href || pathname.startsWith(`${href}/`);
+              const isActive =
+                href === "/"
+                  ? pathname === "/"
+                  : pathname === href || pathname.startsWith(`${href}/`);
               return (
                 <Link
                   key={ch.id}
@@ -81,7 +84,10 @@ export default function Navbar() {
             <div className="flex items-center w-full">
               {CHAPTERS.map((ch) => {
                 const href = `/${ch.id}`;
-                const isActive = pathname === href || pathname.startsWith(`${href}/`);
+                const isActive =
+                  href === "/"
+                    ? pathname === "/"
+                    : pathname === href || pathname.startsWith(`${href}/`);
                 return (
                   <Link
                     key={ch.id}

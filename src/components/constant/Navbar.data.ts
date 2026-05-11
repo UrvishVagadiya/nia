@@ -1,5 +1,5 @@
 export const CHAPTERS = [
-  { name: "Innovators", id: "innovators" },
+  { name: "Innovators", id: "" },
   { name: "Superiors", id: "superiors" },
   { name: "Pioneers", id: "pioneers" },
 ] as const;
