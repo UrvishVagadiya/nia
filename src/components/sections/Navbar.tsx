@@ -43,8 +43,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="hidden lg:flex flex-1 items-center justify-end gap-x-6 px-4 overflow-hidden">
-          <div className="flex items-center gap-x-6 overflow-x-auto no-scrollbar">
+        <div className="hidden lg:flex items-center gap-x-6 px-4 overflow-hidden">
+          <div className="flex items-center md:gap-x-4 lg:gap-x-5  no-scrollbar">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
