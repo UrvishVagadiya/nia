@@ -15,7 +15,7 @@ export default function StepsSection() {
             <div className="relative">
               <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-white/15 mb-4.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand" />
-                <Typography variant="eyebrow" color="white">
+                <Typography variant="eyebrow" color="white" className="uppercase">
                   Visit a meeting
                 </Typography>
               </div>
@@ -67,13 +67,18 @@ export default function StepsSection() {
                 <Typography as="div" variant="eyebrow" color="brand-2" className="pb-4">
                   Visitor Pass · Innovators
                 </Typography>
-                <Typography as="div" variant="h4" color="brand-deep" className="mb-2">
+                <Typography
+                  as="div"
+                  variant="h3"
+                  color="brand-deep"
+                  className="mb-2 text-[24px]! font-bold!"
+                >
                   Request a pass
                 </Typography>
               </div>
 
               <label className="flex flex-col gap-1.5">
-                <Typography as="span" variant="caption" color="ink-2">
+                <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
                   Your name
                 </Typography>
                 <input
@@ -84,7 +89,7 @@ export default function StepsSection() {
               </label>
 
               <label className="flex flex-col gap-1.5">
-                <Typography as="span" variant="caption" color="ink-2">
+                <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
                   Your specialty / trade
                 </Typography>
                 <input
@@ -95,7 +100,7 @@ export default function StepsSection() {
               </label>
 
               <label className="flex flex-col gap-1.5">
-                <Typography as="span" variant="caption" color="ink-2">
+                <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
                   Phone (with code)
                 </Typography>
                 <input
@@ -106,7 +111,7 @@ export default function StepsSection() {
               </label>
 
               <label className="flex flex-col gap-1.5">
-                <Typography as="span" variant="caption" color="ink-2">
+                <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold! ">
                   Anything else?
                 </Typography>
                 <textarea
@@ -122,13 +127,18 @@ export default function StepsSection() {
                 suppressHydrationWarning
                 className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors"
               >
-                <Typography as="span" variant="body-sm" color="white">
+                <Typography as="span" variant="body-sm" color="white" className="font-bold!">
                   Submit request
                 </Typography>
                 <span className="font-serif">&rarr;</span>
               </button>
 
-              <Typography as="div" variant="caption" color="ink-4" className="text-center">
+              <Typography
+                as="div"
+                variant="caption"
+                color="ink-4"
+                className="text-center font-semibold"
+              >
                 Replied within 24 hours
               </Typography>
             </form>

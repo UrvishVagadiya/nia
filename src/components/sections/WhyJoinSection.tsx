@@ -105,10 +105,10 @@ export default function WhyJoinSection() {
                 >
                   {displayConfig.svg}
                 </div>
-                <Typography as="h3" variant="h4" color="brand-deep">
+                <Typography as="h4" variant="h4" color="brand-deep" className="font-bold!">
                   {prop.title}
                 </Typography>
-                <Typography variant="body-sm" color="ink-3">
+                <Typography variant="body-sm" color="ink-3" className="text-[13px]!">
                   {prop.body}
                 </Typography>
               </article>
