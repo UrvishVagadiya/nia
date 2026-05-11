@@ -15,6 +15,12 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
 export default function MembersSection() {
   const members = MEMBERS;
@@ -26,19 +32,15 @@ export default function MembersSection() {
 
   const [filter, setFilter] = useState("All");
   const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const thumbScrollRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const isManualScrolling = useRef(false);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
   const isFirstRender = useRef(true);
+  const [api, setApi] = useState<CarouselApi>();
 
   // Filter members based on selected specialty
   const filtered = useMemo(() => {
     return filter === "All" ? members : members.filter((m) => m.specialty === filter);
   }, [filter, members]);
-
   // Sync thumbnail scroll when activeIndex changes
   useEffect(() => {
     if (isFirstRender.current) {
@@ -55,58 +57,26 @@ export default function MembersSection() {
     }
   }, [activeIndex]);
 
-  // Handle manual scroll synchronization
-  const handleScroll = () => {
-    if (isManualScrolling.current || window.innerWidth >= 768) return;
+  // Handle Carousel API state
+  useEffect(() => {
+    if (!api) return;
 
-    const container = scrollRef.current;
-    if (container) {
-      const scrollLeft = container.scrollLeft;
-      const containerCenter = scrollLeft + container.offsetWidth / 2;
+    const onSelect = () => {
+      setActiveIndex(api.selectedScrollSnap());
+    };
 
-      let closestIndex = 0;
-      let minDiff = Infinity;
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
 
-      cardRefs.current.forEach((card, idx) => {
-        if (card) {
-          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-          const diff = Math.abs(cardCenter - containerCenter);
-          if (diff < minDiff) {
-            minDiff = diff;
-            closestIndex = idx;
-          }
-        }
-      });
-
-      if (closestIndex !== activeIndex && closestIndex < filtered.length) {
-        setActiveIndex(closestIndex);
-      }
-    }
-  };
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
 
   const scrollTo = (index: number) => {
-    const container = scrollRef.current;
-    const targetCard = cardRefs.current[index];
-
-    if (container && targetCard) {
-      isManualScrolling.current = true;
-      setActiveIndex(index);
-
-      const targetScrollLeft =
-        targetCard.offsetLeft - container.offsetWidth / 2 + targetCard.offsetWidth / 2;
-
-      container.scrollTo({
-        left: targetScrollLeft,
-        behavior: "smooth",
-      });
-
-      // Clear previous timeout
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-
-      // Re-enable observer after animation
-      scrollTimeout.current = setTimeout(() => {
-        isManualScrolling.current = false;
-      }, 600); // Wait for smooth scroll to finish
+    if (api) {
+      api.scrollTo(index);
     }
   };
 
@@ -136,13 +106,7 @@ export default function MembersSection() {
                 key={s}
                 onClick={() => {
                   setFilter(s);
-                  setActiveIndex(0);
-                  if (scrollRef.current) {
-                    scrollRef.current.scrollTo({ left: 0 });
-                  }
-                  if (thumbScrollRef.current) {
-                    thumbScrollRef.current.scrollTo({ left: 0 });
-                  }
+                  scrollTo(0);
                 }}
                 suppressHydrationWarning
                 className={cn(
@@ -164,29 +128,28 @@ export default function MembersSection() {
           })}
         </div>
 
-        {/* Members List (Responsive: Carousel on Mobile, Grid on Desktop) */}
-        <div className="relative -mx-8 px-8 md:mx-0 md:px-0">
-          <div
-            ref={scrollRef}
-            onScroll={handleScroll}
-            className={cn(
-              "flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-none",
-              "pb-5 -mb-5" // Extra padding to hide scrollbar if it appears
-            )}
-          >
-            {filtered.map((member, i) => (
-              <div
+        <Carousel
+          setApi={setApi}
+          opts={{
+            align: "start",
+            loop: false,
+            breakpoints: {
+              "(min-width: 768px)": { active: false },
+            },
+          }}
+          className="relative -mx-8 px-8 md:mx-0 md:px-0"
+        >
+          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 md:ml-0">
+            {filtered.map((member) => (
+              <CarouselItem
                 key={member.id}
-                ref={(el) => {
-                  cardRefs.current[i] = el;
-                }}
-                className="flex-none w-[78%] max-w-80 md:w-full md:max-w-none snap-center"
+                className="basis-[78%] max-w-80 md:basis-full md:max-w-none md:pl-0"
               >
                 <MemberCard member={member} />
-              </div>
+              </CarouselItem>
             ))}
-          </div>
-        </div>
+          </CarouselContent>
+        </Carousel>
 
         {/* Mobile-only Controls & Pagination */}
         <div className="md:hidden mt-10">
