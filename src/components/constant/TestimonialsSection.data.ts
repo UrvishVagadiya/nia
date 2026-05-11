@@ -23,6 +23,34 @@ export const TESTIMONIALS: Testimonial[] = [
     role: "Shah Designs \u00B7 Architecture",
     photo: pic("f", 2),
   },
+  {
+    quote:
+      "Being part of NIA has given me a new perspective on how to grow my business through structured networking and accountability.",
+    who: "Rohan Choksi",
+    role: "Choksi & Co \u00B7 Retail",
+    photo: pic("m", 0),
+  },
+  {
+    quote:
+      "The quality of conversations here is on a different level. It's not just about work; it's about building a legacy together.",
+    who: "Priya Nanavati",
+    role: "Nanavati Legal \u00B7 Law",
+    photo: pic("f", 1),
+  },
+  {
+    quote:
+      "I found my most reliable supply chain partners within this group. The trust factor is already established.",
+    who: "Vivek Patel",
+    role: "Patel Logistics \u00B7 Supply Chain",
+    photo: pic("m", 1),
+  },
+  {
+    quote:
+      "NIA Innovators is where I go for real advice. These aren't just colleagues; they are my unofficial board of directors.",
+    who: "Nirali Kothari",
+    role: "Kothari Interiors \u00B7 Design",
+    photo: pic("f", 3),
+  },
 ];
 
 export const SLOT_CONFIGS: SlotConfig[] = [

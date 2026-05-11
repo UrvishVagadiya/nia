@@ -4,9 +4,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Typography from "../ui/typography";
-import { HERO_BULLETS } from "@/components/constant/HeroSection.data";
+import { HERO_BULLETS, HERO_IMAGES } from "@/components/constant/HeroSection.data";
+import { MEMBERS } from "@/components/constant/MembersSection.data";
+import { SCHEDULE } from "@/components/constant/ScheduleSection.data";
 
-export default function HeroSection() {
+interface HeroProps {
+  chapterNumber: string;
+  title: React.ReactNode;
+  subtitle: string;
+  mainImage?: string;
+  leaderImage?: string;
+}
+
+export default function HeroSection({
+  chapterNumber,
+  title,
+  subtitle,
+  mainImage = HERO_IMAGES.main,
+  leaderImage = HERO_IMAGES.leader,
+}: HeroProps) {
   return (
     <section className="bg-paper-2">
       <div className="section-container pt-16 px-8 pb-20 grid grid-col-1 md:grid-cols-2 gap-16 items-center">
@@ -15,16 +31,14 @@ export default function HeroSection() {
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
-              NIA Surat · Chapter 01
+              NIA Surat · {chapterNumber}
             </Typography>
           </div>
           <Typography as="h1" variant="h1" color="brand-deep" className="mb-5.5">
-            <span className="italic text-brand font-serif">
-              Surat’s room of trusted professionals.
-            </span>
+            {title}
           </Typography>
           <Typography variant="body-lg" color="ink-2" className="mb-7">
-            25 category leaders. One chair per specialty. No overlap.
+            {subtitle}
           </Typography>
 
           <ul className="list-none p-0 m-0 mb-8 grid grid-cols-2 gap-3">
@@ -62,7 +76,7 @@ export default function HeroSection() {
           <div className="grid grid-cols-[1.15fr_1fr] grid-rows-2 gap-3 aspect-[1.05/1]">
             <div className="row-span-2 rounded-[18px] overflow-hidden bg-paper-3 relative border border-line">
               <Image
-                src="https://images.unsplash.com/photo-1552581234-26160f608093?w=1200&h=700&fit=crop"
+                src={mainImage}
                 alt="Main chapter group"
                 fill
                 priority
@@ -72,7 +86,7 @@ export default function HeroSection() {
             </div>
             <div className="rounded-[18px] overflow-hidden bg-paper-3 border border-line relative">
               <Image
-                src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=500&fit=crop&crop=faces"
+                src={leaderImage}
                 alt="Chapter leader"
                 fill
                 className="object-cover"
@@ -85,7 +99,7 @@ export default function HeroSection() {
               </Typography>
               <div>
                 <Typography as="div" variant="h5" color="white">
-                  Wed, May 13
+                  {SCHEDULE[0].day}, {SCHEDULE[0].date}
                 </Typography>
                 <Typography as="div" variant="caption" color="white" className="opacity-85 mt-1">
                   9:30 — 11:00 AM

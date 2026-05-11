@@ -13,17 +13,17 @@ import {
   GetintoRoom,
 } from "@/components/sections";
 
-export default function Home() {
+export default function PioneersPage() {
   return (
     <main>
       <HeroSection
-        chapterNumber="Chapter 01"
+        chapterNumber="Chapter 03"
         title={
           <span className="italic text-brand font-serif">
-            Surat’s room of trusted professionals.
+            Pioneering the Future of Surat’s Business.
           </span>
         }
-        subtitle="72 category leaders. One chair per specialty. No overlap."
+        subtitle="A mission-driven group of entrepreneurs leading with innovation."
       />
       <StatBand />
       <WhyJoinSection />

@@ -78,6 +78,7 @@ export default function StepsSection() {
                 </Typography>
                 <input
                   placeholder="Full name"
+                  suppressHydrationWarning
                   className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
@@ -88,6 +89,7 @@ export default function StepsSection() {
                 </Typography>
                 <input
                   placeholder="e.g. Textile exports"
+                  suppressHydrationWarning
                   className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
@@ -98,6 +100,7 @@ export default function StepsSection() {
                 </Typography>
                 <input
                   placeholder="+91 …"
+                  suppressHydrationWarning
                   className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
                 />
               </label>
@@ -109,12 +112,14 @@ export default function StepsSection() {
                 <textarea
                   placeholder="Optional context"
                   rows={3}
+                  suppressHydrationWarning
                   className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-y focus:border-brand transition-colors"
                 />
               </label>
 
               <button
                 type="submit"
+                suppressHydrationWarning
                 className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors"
               >
                 <Typography as="span" variant="body-sm" color="white">

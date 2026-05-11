@@ -17,7 +17,8 @@ export default function Footer() {
               alt="NIA Logo"
               width={120}
               height={40}
-              className="invert brightness-0 "
+              className="invert brightness-0 h-auto"
+              style={{ width: "auto" }}
             />
             <Typography
               variant="body-sm"
@@ -34,8 +35,7 @@ export default function Footer() {
               <Typography
                 as="h4"
                 variant="h5"
-                color="white"
-                className="uppercase tracking-[0.14em] mb-4 text-white/40"
+                className="text-[11px] text-white/50 uppercase tracking-[0.12em] mb-4 font-bold"
               >
                 {col.title}
               </Typography>

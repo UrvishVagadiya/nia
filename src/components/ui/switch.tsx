@@ -22,6 +22,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         )}
         onClick={() => onCheckedChange?.(!checked)}
         ref={ref}
+        suppressHydrationWarning
         {...props}
       >
         <span
