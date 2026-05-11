@@ -21,6 +21,7 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 export default function MembersSection() {
   const members = MEMBERS;
@@ -130,9 +131,12 @@ export default function MembersSection() {
 
         <Carousel
           setApi={setApi}
+          plugins={[WheelGesturesPlugin()]}
           opts={{
             align: "start",
             loop: false,
+            dragFree: true,
+            containScroll: "trimSnaps",
             breakpoints: {
               "(min-width: 768px)": { active: false },
             },
