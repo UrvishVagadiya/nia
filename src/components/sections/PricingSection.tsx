@@ -3,9 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import { Switch } from "@/components/ui/switch";
+import Typography from "@/components/ui/typography";
 import { PRICING_TIERS } from "@/components/constant/PricingSection.data";
-import Typography from "../ui/typography";
 
 export default function PricingSection() {
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
@@ -32,28 +31,35 @@ export default function PricingSection() {
         </div>
 
         {/* Toggle */}
-        <div className="flex justify-center items-center gap-4 mb-[40px]">
-          <span
-            className={`text-[13px] font-semibold ${billing === "monthly" ? "text-brand-deep" : "text-ink-4"}`}
-          >
-            <Typography
-              as="span"
-              variant="body-sm"
-              className={billing === "monthly" ? "text-white" : "text-ink-2"}
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex p-1 rounded-pill bg-paper-2 border border-line">
+            <button
+              onClick={() => setBilling("monthly")}
+              className={`px-4.5 py-2 rounded-pill capitalize transition-colors duration-200 ${
+                billing === "monthly"
+                  ? "bg-brand text-white"
+                  : "bg-transparent text-ink-2 hover:text-ink"
+              }`}
             >
-              monthly
-            </Typography>
-          </span>
-          <Switch
-            checked={billing === "annual"}
-            onCheckedChange={(checked) => setBilling(checked ? "annual" : "monthly")}
-            suppressHydrationWarning
-          />
-          <span
-            className={`text-[13px] font-semibold ${billing === "annual" ? "text-brand-deep" : "text-ink-4"}`}
-          >
-            Annual
-          </span>
+              <Typography
+                as="span"
+                variant="body-sm"
+                className={billing === "monthly" ? "text-white" : "text-ink-2"}
+              >
+                monthly
+              </Typography>
+            </button>
+            <button
+              onClick={() => setBilling("annual")}
+              className={`text-[13px] px-4.5 py-2 rounded-pill font-semibold capitalize transition-colors duration-200 ${
+                billing === "annual"
+                  ? "bg-brand text-white"
+                  : "bg-transparent text-ink-2 hover:text-ink"
+              }`}
+            >
+              annual
+            </button>
+          </div>
         </div>
 
         {/* Pricing Grid */}
