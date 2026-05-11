@@ -48,7 +48,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* ── Arc Avatar Row ── */}
-        <div>
+        <div className="overflow-x-hidden">
           <div className="flex justify-center items-end gap-3.5 mb-12 min-h-27.5">
             {(() => {
               const displayCount = Math.min(n, 7);

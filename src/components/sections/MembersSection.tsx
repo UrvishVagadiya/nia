@@ -100,7 +100,7 @@ const MembersSection = () => {
         </div>
 
         {/* Filter buttons */}
-        <div className="flex overflow-x-auto no-scrollbar md:flex-wrap items-center justify-center gap-2 mb-6">
+        <div className="flex overflow-x-auto no-scrollbar md:flex-wrap items-center justify-start md:justify-center gap-2 mb-8 px-8 sm:px-12 md:px-0">
           {specialties.map((s) => {
             const isActive = filter === s;
             return (
@@ -137,18 +137,18 @@ const MembersSection = () => {
             align: "start",
             loop: false,
             dragFree: true,
-            containScroll: "trimSnaps",
+            containScroll: false,
             breakpoints: {
               "(min-width: 768px)": { active: false },
             },
           }}
-          className="relative -mx-8 px-8 md:mx-0 md:px-0"
+          className="relative -mx-8 sm:-mx-12 md:mx-0 px-8 sm:px-12 md:px-0"
         >
-          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 md:ml-0">
+          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 ml-0">
             {filtered.map((member) => (
               <CarouselItem
                 key={member.id}
-                className="basis-[78%] min-w-73 sm:max-w-80 md:basis-full md:max-w-none md:pl-0"
+                className="basis-[82%] min-w-73 sm:max-w-80 md:basis-full md:max-w-none pl-0 pr-4 md:pr-0"
               >
                 <MemberCard member={member} />
               </CarouselItem>
