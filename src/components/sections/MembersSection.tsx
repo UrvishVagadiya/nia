@@ -147,7 +147,7 @@ export default function MembersSection() {
             {filtered.map((member) => (
               <CarouselItem
                 key={member.id}
-                className="basis-[78%] max-w-80 md:basis-full md:max-w-none md:pl-0"
+                className="basis-[78%] min-w-75 sm:max-w-80 md:basis-full md:max-w-none md:pl-0"
               >
                 <MemberCard member={member} />
               </CarouselItem>
