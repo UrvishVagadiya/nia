@@ -24,8 +24,8 @@ export default function HeroSection({
   leaderImage = HERO_IMAGES.leader,
 }: HeroProps) {
   return (
-    <section className="bg-paper-2">
-      <div className="section-container pt-16 px-8 pb-20 grid grid-col-1 md:grid-cols-2 gap-16 items-center">
+    <section className="bg-paper-2 overflow-hidden">
+      <div className="section-container section-padding grid grid-col-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side: Copy */}
         <div>
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">

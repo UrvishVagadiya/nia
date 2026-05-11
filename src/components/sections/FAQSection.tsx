@@ -12,7 +12,7 @@ import { FAQ } from "@/components/constant/FAQSection.data";
 export default function FAQSection() {
   return (
     <section className="bg-paper">
-      <div className="section-container py-22 px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 sm:gap-16">
+      <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 sm:gap-16">
         {/* Left Side (Header) */}
         <div>
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">

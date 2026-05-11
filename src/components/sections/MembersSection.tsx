@@ -111,8 +111,8 @@ export default function MembersSection() {
   };
 
   return (
-    <section id="members" className="bg-paper-2 py-22">
-      <div className="section-container px-4">
+    <section id="members" className="bg-paper-2">
+      <div className="section-container section-padding">
         {/* Heading */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
@@ -128,7 +128,7 @@ export default function MembersSection() {
         </div>
 
         {/* Filter buttons */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+        <div className="flex overflow-x-auto no-scrollbar md:flex-wrap items-center justify-center gap-2 mb-6">
           {specialties.map((s) => {
             const isActive = filter === s;
             return (
@@ -140,7 +140,7 @@ export default function MembersSection() {
                 }}
                 suppressHydrationWarning
                 className={cn(
-                  "rounded-pill px-5 py-2 transition-all duration-200",
+                  "rounded-pill px-5 py-2 transition-all duration-200 shrink-0 mb-1",
                   isActive
                     ? "bg-brand-deep text-white shadow-md"
                     : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md"

@@ -11,7 +11,7 @@ export default function ScheduleSection() {
 
   return (
     <section id="schedule" className="bg-paper-2">
-      <div className="section-container py-22 px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
+      <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
         {/* Left Side (Text content) */}
         <div>
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.25 rounded-pill bg-brand-soft mb-4">
