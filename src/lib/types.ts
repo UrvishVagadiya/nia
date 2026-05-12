@@ -34,8 +34,7 @@ export type BlogPost = {
   preview: string;
   date: string;
   category: string;
-  image: string;
-  link?: string;
+  images: string[];
 };
 
 export type FooterColumn = {

@@ -99,10 +99,8 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
-        {/* ── Testimonial Card wrapper — gives room for the absolute buttons ── */}
-
-        <div className="relative max-w-210 mx-auto px-6 sm:px-8">
-          <div className="bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
+        <div className="max-w-210 mx-auto px-6 sm:px-8">
+          <div className="relative bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
             {/* Name */}
             <Typography as="div" variant="h5" color="brand" className="mb-1 italic">
               {current.who}
@@ -117,36 +115,63 @@ const TestimonialsSection = () => {
             <Typography as="p" variant="body-md" color="ink-2" className="max-w-170 mx-auto">
               &ldquo;{current.quote}&rdquo;
             </Typography>
-          </div>
 
-          {/* Prev arrow — positioned relative to the wrapper so it's vertically centered */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
-            <button
-              onClick={() => {
-                prev();
-                setAutoKey((k) => k + 1);
-              }}
-              aria-label="Previous testimonial"
-              suppressHydrationWarning
-              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
-            >
-              <span className="text-[24px] leading-none">‹</span>
-            </button>
-          </div>
+            {/* ✅ Prev arrow — negative translate pulls it outside the card,
+                but the parent px-6/px-8 wrapper ensures it never overflows the viewport */}
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
+              <button
+                onClick={() => {
+                  prev();
+                  setAutoKey((k) => k + 1);
+                }}
+                aria-label="Previous testimonial"
+                suppressHydrationWarning
+                className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+              >
+                <div className="flex items-center justify-center w-full h-full -ml-0.5">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m15 18-6-6 6-6" />
+                  </svg>
+                </div>
+              </button>
+            </div>
 
-          {/* Next arrow — same pattern on the right */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-            <button
-              onClick={() => {
-                next();
-                setAutoKey((k) => k + 1);
-              }}
-              aria-label="Next testimonial"
-              suppressHydrationWarning
-              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
-            >
-              <span className="text-[24px] leading-none">›</span>
-            </button>
+            {/* ✅ Next arrow — same pattern on the right */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
+              <button
+                onClick={() => {
+                  next();
+                  setAutoKey((k) => k + 1);
+                }}
+                aria-label="Next testimonial"
+                suppressHydrationWarning
+                className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+              >
+                <div className="flex items-center justify-center w-full h-full ml-0.5">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
 

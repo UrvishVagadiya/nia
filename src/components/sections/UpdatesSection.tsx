@@ -1,13 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import Typography from "@/components/ui/typography";
-
 import { BLOG_POSTS } from "../../constant/UpdatesSection.data";
-import { Card, CardContent, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const UpdatesSection = () => {
+  const [imgIdx, setImgIdx] = useState(0);
+
+  useEffect(() => {
+    // Timer to rotate images every 5 seconds
+    const interval = setInterval(() => {
+      setImgIdx((prev) => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="updates" className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
@@ -29,54 +40,56 @@ const UpdatesSection = () => {
 
         {/* Blog grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {BLOG_POSTS.map((post) => (
-            <Card
-              key={post.title}
-              className="bg-white rounded-[18px] border border-line ring-0 overflow-hidden flex flex-col shadow-none py-0! gap-0"
-            >
-              <div className="aspect-16/10 bg-paper-3 relative overflow-hidden">
-                <Image
-                  src={post.image}
-                  alt={post.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute top-3.5 left-3.5 px-3 py-1.25 bg-white rounded-pill">
-                  <Typography as="div" variant="caption" color="brand-2" className="font-bold!">
-                    {post.category}
-                  </Typography>
-                </div>
-              </div>
+          {BLOG_POSTS.map((post) => {
+            // Get the current image using modulo to loop through the array
+            const currentImage = post.images[imgIdx % post.images.length];
 
-              <div className="px-5.5 pt-5 pb-6 flex flex-col gap-2.5 flex-1">
-                <Typography as="div" variant="caption" color="ink-4" className="font-semibold!">
-                  {post.date}
-                </Typography>
-                <CardTitle>
-                  <Typography variant="h4" color="brand-deep" className="text-[18px]! font-bold!">
-                    {post.title}
+            return (
+              <Card
+                key={post.title}
+                className="bg-white rounded-[18px] border border-line ring-0 overflow-hidden flex flex-col shadow-none py-0! gap-0 group"
+              >
+                <div className="aspect-16/10 bg-paper-3 relative overflow-hidden">
+                  {/* Rotating Image with smooth fade */}
+                  <Image
+                    key={currentImage} // Key ensures React treats new images as new elements for animation
+                    src={currentImage}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-all duration-1000 ease-in-out scale-100 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+
+                  {/* Category Badge */}
+                  <div className="absolute top-3.5 left-3.5 px-3 py-1.25 bg-white/90 backdrop-blur-sm rounded-pill z-10">
+                    <Typography as="div" variant="caption" color="brand-2" className="font-bold!">
+                      {post.category}
+                    </Typography>
+                  </div>
+                </div>
+
+                <div className="px-5.5 pt-5 pb-6 flex flex-col gap-2.5 flex-1">
+                  <Typography as="div" variant="caption" color="ink-4" className="font-semibold!">
+                    {post.date}
                   </Typography>
-                </CardTitle>
-                <CardContent className="p-0">
-                  <Typography variant="body-sm" color="ink-3">
-                    {post.preview}
-                  </Typography>
-                </CardContent>
-                <CardFooter className="p-0 mt-1.5">
-                  <Link
-                    href={post.link || "#"}
-                    className="text-brand text-[13px] font-bold items-center gap-1.5 hover:text-brand-2 transition-colors"
-                  >
-                    Read post <span className="font-serif">&rarr;</span>
-                  </Link>
-                </CardFooter>
-              </div>
-            </Card>
-          ))}
+                  <CardTitle>
+                    <Typography variant="h4" color="brand-deep" className="text-[18px]! font-bold!">
+                      {post.title}
+                    </Typography>
+                  </CardTitle>
+                  <CardContent className="p-0">
+                    <Typography variant="body-sm" color="ink-3">
+                      {post.preview}
+                    </Typography>
+                  </CardContent>
+                </div>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 };
+
 export default UpdatesSection;
