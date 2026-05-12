@@ -42,40 +42,128 @@ const ChapterFilterBar: React.FC = () => {
   };
 
   return (
-    <div className="mb-6 flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <h4 className="text-[11px] font-bold uppercase tracking-[0.15em] text-[var(--theme-elevation-400)] m-0">
-          Chapter Filter
-        </h4>
+    <div
+      className="chapter-filter-container"
+      style={{
+        padding: "0 2rem",
+        marginTop: "1.5rem",
+        marginBottom: "1rem",
+      }}
+    >
+      <div
+        style={{
+          background: "var(--theme-elevation-50)",
+          border: "1px solid var(--theme-elevation-150)",
+          borderRadius: "12px",
+          padding: "1rem 1.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "2rem",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.02)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "2rem", flex: 1 }}>
+          <div className="flex items-center gap-2.5" style={{ minWidth: "max-content" }}>
+            <h4
+              style={{
+                fontSize: "11px",
+                fontWeight: "800",
+                textTransform: "uppercase",
+                letterSpacing: "0.15em",
+                color: "var(--theme-elevation-500)",
+                margin: 0,
+              }}
+            >
+              Chapters
+            </h4>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              overflowX: "auto",
+              paddingRight: "1rem",
+            }}
+            className="no-scrollbar"
+          >
+            {/* All Chapters Pill */}
+            <button
+              onClick={() => handleFilter(null)}
+              style={{
+                padding: "6px 16px",
+                borderRadius: "20px",
+                fontSize: "12px",
+                fontWeight: "700",
+                cursor: "pointer",
+                border: "1px solid transparent",
+                whiteSpace: "nowrap",
+                background: !currentChapterId
+                  ? "var(--theme-elevation-800)"
+                  : "var(--theme-elevation-100)",
+                color: !currentChapterId
+                  ? "var(--theme-elevation-0)"
+                  : "var(--theme-elevation-600)",
+                transition: "all 0.2s",
+              }}
+            >
+              All
+            </button>
+
+            {chapters.map((chapter) => {
+              const isActive = currentChapterId === String(chapter.id);
+              return (
+                <button
+                  key={chapter.id}
+                  onClick={() => handleFilter(chapter.id)}
+                  style={{
+                    padding: "6px 16px",
+                    borderRadius: "20px",
+                    fontSize: "12px",
+                    fontWeight: "700",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    border: isActive
+                      ? "1px solid var(--theme-elevation-800)"
+                      : "1px solid var(--theme-elevation-200)",
+                    background: isActive
+                      ? "var(--theme-elevation-800)"
+                      : "var(--theme-elevation-0)",
+                    color: isActive ? "var(--theme-elevation-0)" : "var(--theme-elevation-600)",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  {chapter.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {currentChapterId && (
           <button
             onClick={() => handleFilter(null)}
-            className="text-[11px] font-bold uppercase tracking-wider text-brand hover:text-brand-2 transition-colors cursor-pointer border-none bg-transparent p-0 flex items-center gap-1.5"
+            style={{
+              fontSize: "11px",
+              fontWeight: "800",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+              color: "#ff4d4d", // Bright red for visibility
+              background: "rgba(255, 77, 77, 0.1)",
+              border: "1px solid rgba(255, 77, 77, 0.2)",
+              borderRadius: "6px",
+              padding: "6px 12px",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              transition: "all 0.2s",
+            }}
           >
-            <span className="text-[14px]">×</span> Clear Filter
+            Clear Filter ×
           </button>
         )}
       </div>
-
-      <div className="flex flex-wrap gap-2.5">
-        {chapters.map((chapter) => {
-          const isActive = currentChapterId === String(chapter.id);
-          return (
-            <button
-              key={chapter.id}
-              onClick={() => handleFilter(chapter.id)}
-              className={`px-5 py-2 rounded-pill text-[13px] font-bold transition-all duration-200 cursor-pointer border ${
-                isActive
-                  ? "bg-[var(--theme-text)] text-[var(--theme-base-0)] border-[var(--theme-text)] shadow-lg scale-[1.02]"
-                  : "bg-[var(--theme-elevation-50)] text-[var(--theme-elevation-600)] border-[var(--theme-elevation-200)] hover:border-[var(--theme-elevation-400)] hover:bg-[var(--theme-elevation-100)]"
-              }`}
-            >
-              {chapter.name}
-            </button>
-          );
-        })}
-      </div>
-      <div className="h-[1px] w-full bg-[var(--theme-elevation-150)] mt-2 opacity-50" />
     </div>
   );
 };
