@@ -4,17 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Typography from "../ui/typography";
-import { HERO_BULLETS, HERO_IMAGES } from "@/constant/HeroSection.data";
 import { SCHEDULE } from "@/constant/ScheduleSection.data";
 import type { HeroProps } from "@/lib/types";
 
 const HeroSection = ({
   chapterNumber,
-  title,
+  chapterName,
   subtitle,
-  mainImage = HERO_IMAGES.main,
-  leaderImage = HERO_IMAGES.leader,
+  caption,
+  bullets = [],
+  mainImage,
+  leaderImage,
 }: HeroProps) => {
+  const mainUrl =
+    mainImage || "https://images.unsplash.com/photo-1552581234-26160f608093?w=1200&h=700&fit=crop";
+  const leaderUrl =
+    leaderImage ||
+    "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=500&fit=crop&crop=faces";
+
   return (
     <section className="bg-paper-2 overflow-hidden">
       <div className="section-container section-padding grid grid-col-1 md:grid-cols-2 gap-16 items-center">
@@ -26,15 +33,23 @@ const HeroSection = ({
               NIA Surat · {chapterNumber}
             </Typography>
           </div>
-          <Typography as="h1" variant="h1" color="brand-deep" className="mb-5.5">
-            {title}
+
+          <Typography as="h1" variant="h1" color="brand-deep" className="mb-1">
+            NIA {chapterName}.
           </Typography>
-          <Typography variant="body-lg" color="ink-2" className="mb-7">
+
+          <Typography variant="h1" color="brand-2" className="italic mb-5.5">
             {subtitle}
           </Typography>
 
+          {caption && (
+            <Typography variant="body-lg" color="ink-2" className="mb-7">
+              {caption}
+            </Typography>
+          )}
+
           <ul className="list-none p-0 m-0 mb-8 grid grid-cols-2 gap-3">
-            {HERO_BULLETS.map((item, idx) => (
+            {(bullets || []).map((item, idx) => (
               <li key={idx} className="flex items-center gap-[10px]">
                 <span className="w-[22px] h-[22px] rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
                   <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
@@ -64,11 +79,12 @@ const HeroSection = ({
           </div>
         </div>
 
+        {/* Right Side: Visuals */}
         <div className="relative">
           <div className="grid grid-cols-[1.15fr_1fr] grid-rows-2 gap-3 aspect-[1.05/1]">
-            <div className="row-span-2 rounded-[18px] overflow-hidden bg-paper-3 relative border border-line">
+            <div className="row-span-2 rounded-[18px] overflow-hidden bg-paper-3 relative border border-line w-full h-full">
               <Image
-                src={mainImage}
+                src={mainUrl}
                 alt="Main chapter group"
                 fill
                 priority
@@ -76,9 +92,9 @@ const HeroSection = ({
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
             </div>
-            <div className="rounded-[18px] overflow-hidden bg-paper-3 border border-line relative">
+            <div className="rounded-[18px] overflow-hidden bg-paper-3 border border-line relative w-full h-full">
               <Image
-                src={leaderImage}
+                src={leaderUrl}
                 alt="Chapter leader"
                 fill
                 className="object-cover"
@@ -114,4 +130,5 @@ const HeroSection = ({
     </section>
   );
 };
+
 export default HeroSection;

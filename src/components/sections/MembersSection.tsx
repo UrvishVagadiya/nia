@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { MEMBERS } from "@/constant/MembersSection.data";
 import { Member } from "@/lib/types";
 import { MapPin, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -24,9 +23,11 @@ import {
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import MemberCard from "./MemberCard";
 
-const MembersSection = () => {
-  const members = MEMBERS;
+interface MembersSectionProps {
+  members?: Member[];
+}
 
+const MembersSection = ({ members = [] }: MembersSectionProps) => {
   const specialties = useMemo(() => {
     const set = new Set(members.map((m) => m.specialty));
     return ["All", ...Array.from(set).sort()];
@@ -84,8 +85,7 @@ const MembersSection = () => {
 
   return (
     <section id="members" className="bg-paper-2">
-      <div className="py-11 lg:py-22 md:px-8">
-        {/* Heading */}
+      <div className="py-11 lg:py-22 px-5 md:px-8  md:w-full md:max-w-[1280px] md:mx-auto">
         <div className="text-center mb-10 px-5 lg:px-8">
           <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
@@ -164,7 +164,7 @@ const MembersSection = () => {
 
         {/* Mobile-only Controls & Pagination */}
         <div className="md:hidden mt-10">
-          <div className="flex items-center justify-between mt-4.5 px-1">
+          <div className="flex items-center justify-between mt-4.5 px-3">
             <div className="text-sm font-bold tracking-[0.08em] text-ink-3 uppercase">
               {String(activeIndex + 1).padStart(2, "0")}{" "}
               <span className="text-ink-4">/ {String(filtered.length).padStart(2, "0")}</span>
@@ -192,7 +192,7 @@ const MembersSection = () => {
           {/* Carousel Image Strip */}
           <div
             ref={thumbScrollRef}
-            className="flex gap-1.5 px-1 py-2 overflow-x-auto scrollbar-none scroll-smooth mt-3.5 -mx-1 pt-0.5 pb-1.5"
+            className="flex gap-1.5 px-3 py-2 overflow-x-auto scrollbar-none scroll-smooth mt-3.5 -mx-1 pt-0.5 pb-1.5"
           >
             {filtered.map((member, idx) => {
               const isActive = activeIndex === idx;
@@ -212,7 +212,11 @@ const MembersSection = () => {
                   )}
                 >
                   <Image
-                    src={member.photo}
+                    src={
+                      member.photo_url ||
+                      member.photo ||
+                      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop"
+                    }
                     alt={member.name}
                     width={36}
                     height={36}

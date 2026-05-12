@@ -9,9 +9,20 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { CHAPTERS, NAV_LINKS } from "@/constant/Navbar.data";
 
-const Navbar = () => {
+interface NavbarProps {
+  chapters: { name: string; slug: string }[];
+}
+
+const Navbar = ({ chapters }: NavbarProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+
+  // Sort chapters so 'innovators' is always first (or whichever has id "")
+  const sortedChapters = [...chapters].sort((a, b) => {
+    if (a.slug === "innovators") return -1;
+    if (b.slug === "innovators") return 1;
+    return 0;
+  });
 
   return (
     <header className="sticky py-1.5 top-0 z-50 transition-all duration-300 bg-paper">
@@ -21,15 +32,15 @@ const Navbar = () => {
         </div>
         <div className="hidden sm:flex items-center border border-line rounded-pill bg-paper-3 p-1 shadow-sm overflow-hidden max-w-[400px]">
           <div className="flex items-center overflow-x-auto no-scrollbar">
-            {CHAPTERS.map((ch) => {
-              const href = `/${ch.id}`;
+            {sortedChapters.map((ch) => {
+              const href = ch.slug === "innovators" ? "/" : `/${ch.slug}`;
               const isActive =
                 href === "/"
                   ? pathname === "/"
                   : pathname === href || pathname.startsWith(`${href}/`);
               return (
                 <Link
-                  key={ch.id}
+                  key={ch.slug}
                   href={href}
                   className={cn(
                     "px-4 py-1.5 rounded-pill text-[13px] font-semibold transition-all duration-200 whitespace-nowrap text-center",
@@ -82,15 +93,15 @@ const Navbar = () => {
           {/* Chapter Switcher for Mobile */}
           <div className="flex items-center border border-line rounded-pill bg-paper-3 p-1 shadow-sm overflow-hidden">
             <div className="flex items-center w-full">
-              {CHAPTERS.map((ch) => {
-                const href = `/${ch.id}`;
+              {sortedChapters.map((ch) => {
+                const href = ch.slug === "innovators" ? "/" : `/${ch.slug}`;
                 const isActive =
                   href === "/"
                     ? pathname === "/"
                     : pathname === href || pathname.startsWith(`${href}/`);
                 return (
                   <Link
-                    key={ch.id}
+                    key={ch.slug}
                     href={href}
                     onClick={() => setMobileOpen(false)}
                     className={cn(

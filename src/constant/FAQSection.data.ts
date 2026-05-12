@@ -1,4 +1,4 @@
-import { FAQItem } from "@/lib/types";
+import type { FAQItem } from "@/lib/types";
 export const FAQ: FAQItem[] = [
   {
     q: "How does NIA differ from other networking groups in Surat?",

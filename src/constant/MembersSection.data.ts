@@ -1,4 +1,4 @@
-import { Member } from "@/lib/types";
+import type { Member } from "@/lib/types";
 import { pic } from "./Portraits.image";
 
 export const MEMBERS: Member[] = [

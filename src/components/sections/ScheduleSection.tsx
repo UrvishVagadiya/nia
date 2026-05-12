@@ -4,9 +4,14 @@ import { SCHEDULE, VENUE } from "@/constant/ScheduleSection.data";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
+import { ScheduleItem } from "@/lib/types";
 
-const ScheduleSection = () => {
-  const schedule = SCHEDULE;
+interface ScheduleSectionProps {
+  events?: ScheduleItem[];
+}
+
+const ScheduleSection = ({ events: cmsEvents }: ScheduleSectionProps) => {
+  const schedule = cmsEvents && cmsEvents.length > 0 ? cmsEvents : SCHEDULE;
   const nextMeeting = schedule[0];
 
   return (
@@ -63,12 +68,12 @@ const ScheduleSection = () => {
               {nextMeeting.day}, {nextMeeting.date}
             </div>
 
-            <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty">
+            <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-[45px]">
               {nextMeeting.topic}
             </div>
 
             <Link
-              href="#apply"
+              href="#StepsSection"
               className="bg-brand text-white border border-brand py-3.25 px-5.5 rounded-pill text-[14px] font-semibold inline-flex items-center gap-2.5 w-full justify-center hover:bg-brand-2 transition-colors"
             >
               Request a visitor pass
@@ -97,4 +102,5 @@ const ScheduleSection = () => {
     </section>
   );
 };
+
 export default ScheduleSection;

@@ -1,4 +1,4 @@
-import { Testimonial, SlotConfig } from "@/lib/types";
+import type { Testimonial, SlotConfig } from "@/lib/types";
 import { pic } from "./Portraits.image";
 
 export const TESTIMONIALS: Testimonial[] = [

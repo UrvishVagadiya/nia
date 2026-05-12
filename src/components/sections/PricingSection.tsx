@@ -1,14 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
-import { PRICING_TIERS } from "@/constant/PricingSection.data";
 
-const PricingSection = () => {
+import type { PricingPlan } from "@/lib/types";
+interface PricingSectionProps {
+  plans: PricingPlan[];
+}
+
+const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
   const [selectedCard, setSelectedCard] = useState<string>("Member");
+
+  const tiers = useMemo(() => {
+    // Sort by monthly price to ensure consistent order: 0, then 65k, then 85k
+    const sortedPlans = [...cmsPlans].sort(
+      (a, b) => Number(a.monthlyPrice ?? 0) - Number(b.monthlyPrice ?? 0)
+    );
+
+    return sortedPlans.map((p) => {
+      const mPrice = Number(p.monthlyPrice ?? 0);
+      const aPrice = Number(p.annualPrice ?? 0);
+      return {
+        name: p.name,
+        price: {
+          monthly: `₹${mPrice.toLocaleString("en-IN")}`,
+          annual: `₹${(aPrice / 1000).toFixed(0)}k`,
+        },
+        interval: {
+          monthly: "/ month",
+          annual: `/ year${mPrice && aPrice ? ` · saves ₹${(mPrice * 12 - aPrice).toLocaleString("en-IN")}` : ""}`,
+        },
+        features: Array.isArray(p.features)
+          ? p.features.map((f) => (typeof f === "string" ? f : f.text)).filter((f) => !!f)
+          : [],
+        cta: "Apply to join",
+        popular: p.isPopular || p.name === "Member",
+      };
+    });
+  }, [cmsPlans]);
 
   return (
     <section className="bg-paper">
@@ -64,7 +96,7 @@ const PricingSection = () => {
 
         {/* Pricing Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
-          {PRICING_TIERS.map((tier) => {
+          {tiers.map((tier) => {
             const isDark = selectedCard === tier.name;
             return (
               <Card
@@ -109,7 +141,7 @@ const PricingSection = () => {
                 </Typography>
 
                 <ul className="list-none p-0 m-0 flex flex-col gap-2.5 flex-1">
-                  {tier.features.map((feature, idx) => (
+                  {tier.features.map((feature: string, idx: number) => (
                     <li
                       key={idx}
                       className={`flex items-start gap-2.5 transition-colors duration-300 ${isDark ? "text-white/85" : "text-ink-2"}`}
@@ -138,7 +170,7 @@ const PricingSection = () => {
                 </ul>
 
                 <Link
-                  href="#apply"
+                  href="#StepsSection"
                   onClick={(e) => e.stopPropagation()}
                   className={`py-3.25 px-5.5 rounded-pill inline-flex items-center justify-center gap-2 mt-2.5 transition-colors duration-300 ${
                     isDark

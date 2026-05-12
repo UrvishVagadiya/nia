@@ -5,7 +5,7 @@ import Typography from "@/components/ui/typography";
 
 const StepsSection = () => {
   return (
-    <section className="bg-paper-2 border-t border-line">
+    <section id="StepsSection" className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
         <div className="bg-white rounded-[24px] overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}

@@ -1,4 +1,4 @@
-import { ScheduleItem } from "@/lib/types";
+import type { ScheduleItem } from "@/lib/types";
 
 export const VENUE = "Hyatt Regency, Athwa Lines";
 

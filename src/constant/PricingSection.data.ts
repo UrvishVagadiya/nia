@@ -1,14 +1,10 @@
-export const PRICING_TIERS = [
+import type { PricingPlan } from "@/lib/types";
+export const PRICING_TIERS: PricingPlan[] = [
   {
     name: "Visitor",
-    price: {
-      monthly: "₹0",
-      annual: "₹0",
-    },
-    interval: {
-      monthly: "Per session",
-      annual: "Per session",
-    },
+    monthlyPrice: 0,
+    annualPrice: 0,
+    isPopular: false,
     features: [
       "Attend up to 2 chapter meetings",
       "Full participation in 60-sec updates",
@@ -16,19 +12,12 @@ export const PRICING_TIERS = [
       "Networking over chai post-meeting",
       "Decide if NIA fits before applying",
     ],
-    cta: "Book a visit",
-    popular: false,
   },
   {
     name: "Member",
-    price: {
-      monthly: "₹6k",
-      annual: "₹65k",
-    },
-    interval: {
-      monthly: "Per month",
-      annual: "Per year · saves ₹7k",
-    },
+    monthlyPrice: 6000,
+    annualPrice: 65000,
+    isPopular: true,
     features: [
       "Exclusive seat in your specialty",
       "Weekly chapter meeting (52/year)",
@@ -37,19 +26,12 @@ export const PRICING_TIERS = [
       "Quarterly cross-chapter mixers",
       "Six-month ROI commitment",
     ],
-    cta: "Apply for membership",
-    popular: true,
   },
   {
     name: "Founding Member",
-    price: {
-      monthly: "₹8k",
-      annual: "₹85k",
-    },
-    interval: {
-      monthly: "Per month",
-      annual: "Per year · cap of 5",
-    },
+    monthlyPrice: 8000,
+    annualPrice: 85000,
+    isPopular: false,
     features: [
       "Everything in Member",
       "Voice in chapter governance",
@@ -58,7 +40,5 @@ export const PRICING_TIERS = [
       "Speaking slots at NIA Surat events",
       "Recognised in all chapter materials",
     ],
-    cta: "Speak to Sreyansh",
-    popular: false,
   },
 ];

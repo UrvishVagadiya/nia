@@ -20,11 +20,32 @@ export const metadata: Metadata = {
     "NIA Surat is a paid, invite-only business referral community. Three weekly chapters — Innovators, Superiors, Pioneers — 72 business owners, one mission: to be the most-trusted referral room in Surat.",
 };
 
-export default function RootLayout({
+import { getAllChapters } from "@/lib/payload";
+import type { Chapter } from "@/lib/types";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let chapters: { name: string; slug: string }[] = [];
+  try {
+    const all = await getAllChapters();
+    chapters = Array.isArray(all) ? all.map((c) => ({ name: c.name, slug: c.slug })) : [];
+  } catch (error) {
+    console.error("Error fetching chapters for Navbar:", error);
+  }
+
+  // Fallback to defaults if CMS is empty or connection fails
+  const navbarChapters: { name: string; slug: string }[] =
+    chapters.length > 0
+      ? chapters
+      : [
+          { name: "Innovators", slug: "innovators" },
+          { name: "Superiors", slug: "superiors" },
+          { name: "Pioneers", slug: "pioneers" },
+        ];
+
   return (
     <html
       lang="en"
@@ -33,7 +54,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          <Navbar />
+          <Navbar chapters={navbarChapters} />
           {children}
           <Footer />
         </Providers>

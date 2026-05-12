@@ -2,37 +2,46 @@
 
 import Image from "next/image";
 import Typography from "@/components/ui/typography";
+import { LeaderProps } from "@/lib/types";
 
-const leader = {
-  name: "Sreyansh Jain",
-  title: "Group Leader · Community Builder",
-  specialty: "Diamond Trading",
-  tenure: "Since 2023",
-  bio: "Third-generation diamond trader and a believer that trust compounds faster than capital. Sreyansh founded the Innovators chapter to give Surat’s professionals a room where referrals come from genuine relationships, not transactions.",
-  photo:
-    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&h=750&fit=crop&crop=faces",
-};
+const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
+  if (!cmsLeader) return null;
 
-const LeaderSection = () => {
-  const stats = [
-    { label: "SPECIALTY", value: leader.specialty },
-    { label: "TENURE", value: leader.tenure },
-    { label: "LEADS", value: "3 chapters" },
-  ];
+  const chapterName = chapter?.name || "Chapter";
 
+  const leader = {
+    name: cmsLeader.name,
+    title: cmsLeader.role,
+    bio: cmsLeader.quote,
+    photo: cmsLeader.photo_url,
+    specialty: cmsLeader.specialty || "Chapter Leader",
+    tenure: cmsLeader.tenure || "Founding Member",
+  };
   return (
     <section id="leader" className="bg-paper">
       <div className="section-container section-padding">
         <div className="leader-grid flex flex-col md:flex-row gap-16 items-center">
           {/* Portrait with gradient overlay */}
           <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-105 sm:flex-none">
-            <Image
-              src={leader.photo}
-              alt={leader.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 980px) 90vw, 480px"
-            />
+            {leader.photo ? (
+              <Image
+                src={leader.photo}
+                alt={leader.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 980px) 90vw, 480px"
+                priority
+                onError={(e) => {
+                  console.error(`Failed to load image for ${leader.name}:`, e);
+                }}
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-paper-2 to-paper-3 flex items-center justify-center">
+                <Typography variant="body-sm" color="ink-4">
+                  No image available
+                </Typography>
+              </div>
+            )}
             {/* Gradient overlay */}
             <div
               className="absolute inset-x-0 bottom-0 pt-15 px-5.5 pb-5.5"
@@ -43,7 +52,7 @@ const LeaderSection = () => {
                 variant="eyebrow"
                 className="block font-bold! tracking-[0.12em] text-[11px]! text-white!"
               >
-                Group Leader · Innovators
+                Group Leader · {chapterName}
               </Typography>
               <Typography
                 as="div"
@@ -73,7 +82,7 @@ const LeaderSection = () => {
               color="brand-deep"
               className="mb-6 [text-balance] text-[48px]!"
             >
-              Led by <span className="heading-italic-brand">Sreyansh</span>.
+              Led by <span className="heading-italic-brand">{leader.name.split(" ")[0]}</span>.
               <br />
               Vouched for by every seat in the room.
             </Typography>
@@ -83,31 +92,64 @@ const LeaderSection = () => {
               {leader.bio}
             </Typography>
 
-            {/* Stat strip */}
+            {/* Stats from leader and chapter */}
             <div className="grid grid-cols-3 border border-line rounded-[14px] overflow-hidden bg-paper-2 max-w-135">
-              {stats.map((stat, i) => (
-                <div
-                  key={stat.label}
-                  className={`px-4.5 py-4 ${i < stats.length - 1 ? "border-r border-line" : ""}`}
+              <div className="px-4.5 py-4 border-r border-line">
+                <Typography
+                  as="span"
+                  variant="eyebrow"
+                  color="ink-4"
+                  className="block font-bold! text-[#8b95a4]! mb-1.5"
                 >
-                  <Typography
-                    as="span"
-                    variant="eyebrow"
-                    color="ink-4"
-                    className="block font-bold! text-[#8b95a4]! mb-1.5"
-                  >
-                    {stat.label}
-                  </Typography>
-                  <Typography
-                    as="span"
-                    variant="body-sm"
-                    color="brand-deep"
-                    className="block font-bold!"
-                  >
-                    {stat.value}
-                  </Typography>
-                </div>
-              ))}
+                  Specialty
+                </Typography>
+                <Typography
+                  as="span"
+                  variant="body-sm"
+                  color="brand-deep"
+                  className="block font-bold!"
+                >
+                  {leader.specialty}
+                </Typography>
+              </div>
+
+              <div className="px-4.5 py-4 border-r border-line">
+                <Typography
+                  as="span"
+                  variant="eyebrow"
+                  color="ink-4"
+                  className="block font-bold! text-[#8b95a4]! mb-1.5"
+                >
+                  Tenure
+                </Typography>
+                <Typography
+                  as="span"
+                  variant="body-sm"
+                  color="brand-deep"
+                  className="block font-bold!"
+                >
+                  {leader.tenure}
+                </Typography>
+              </div>
+
+              <div className="px-4.5 py-4">
+                <Typography
+                  as="span"
+                  variant="eyebrow"
+                  color="ink-4"
+                  className="block font-bold! text-[#8b95a4]! mb-1.5"
+                >
+                  Chapter
+                </Typography>
+                <Typography
+                  as="span"
+                  variant="body-sm"
+                  color="brand-deep"
+                  className="block font-bold!"
+                >
+                  {chapterName}
+                </Typography>
+              </div>
             </div>
           </div>
         </div>
@@ -115,4 +157,5 @@ const LeaderSection = () => {
     </section>
   );
 };
+
 export default LeaderSection;

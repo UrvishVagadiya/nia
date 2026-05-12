@@ -1,12 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Typography from "@/components/ui/typography";
 import { TESTIMONIALS, SLOT_CONFIGS } from "@/constant/TestimonialsSection.data";
+import { Testimonial } from "@/lib/types";
 
-const TestimonialsSection = () => {
-  const testimonials = TESTIMONIALS;
+interface TestimonialsSectionProps {
+  testimonials?: Testimonial[];
+}
+
+const TestimonialsSection = ({ testimonials: cmsTestimonials }: TestimonialsSectionProps) => {
+  // Use CMS testimonials if provided, otherwise fallback to static constants
+  const testimonials = useMemo(() => {
+    if (cmsTestimonials && cmsTestimonials.length > 0) {
+      return cmsTestimonials;
+    }
+    return TESTIMONIALS;
+  }, [cmsTestimonials]);
+
   const [active, setActive] = useState(0);
   const n = testimonials.length;
 
@@ -26,9 +38,10 @@ const TestimonialsSection = () => {
 
   const current = testimonials[active];
 
+  if (!current) return null;
+
   return (
     <section className="bg-paper">
-      {/* ✅ Remove overflow-x-hidden from section — it clips the arrow buttons */}
       <div className="section-container section-padding">
         {/* ── Heading ── */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
@@ -85,13 +98,15 @@ const TestimonialsSection = () => {
                       zIndex: slot.isCenter ? 10 : 0,
                     }}
                   >
-                    <Image
-                      src={t.photo}
-                      alt={t.who}
-                      width={120}
-                      height={120}
-                      className="w-full h-full object-cover"
-                    />
+                    {t.photo && (
+                      <Image
+                        src={t.photo}
+                        alt={t.who}
+                        width={120}
+                        height={120}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </button>
                 );
               });
@@ -99,8 +114,9 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
-        <div className="max-w-210 mx-auto px-6 sm:px-8">
-          <div className="relative bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
+        {/* ── Testimonial Card wrapper ── */}
+        <div className="relative max-w-210 mx-auto px-6 sm:px-8">
+          <div className="bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
             {/* Name */}
             <Typography as="div" variant="h5" color="brand" className="mb-1 italic">
               {current.who}
@@ -115,63 +131,36 @@ const TestimonialsSection = () => {
             <Typography as="p" variant="body-md" color="ink-2" className="max-w-170 mx-auto">
               &ldquo;{current.quote}&rdquo;
             </Typography>
+          </div>
 
-            {/* ✅ Prev arrow — negative translate pulls it outside the card,
-                but the parent px-6/px-8 wrapper ensures it never overflows the viewport */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
-              <button
-                onClick={() => {
-                  prev();
-                  setAutoKey((k) => k + 1);
-                }}
-                aria-label="Previous testimonial"
-                suppressHydrationWarning
-                className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
-              >
-                <div className="flex items-center justify-center w-full h-full -ml-0.5">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                </div>
-              </button>
-            </div>
+          {/* Prev arrow */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
+            <button
+              onClick={() => {
+                prev();
+                setAutoKey((k) => k + 1);
+              }}
+              aria-label="Previous testimonial"
+              suppressHydrationWarning
+              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+            >
+              <span className="text-[24px] leading-none">‹</span>
+            </button>
+          </div>
 
-            {/* ✅ Next arrow — same pattern on the right */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-              <button
-                onClick={() => {
-                  next();
-                  setAutoKey((k) => k + 1);
-                }}
-                aria-label="Next testimonial"
-                suppressHydrationWarning
-                className="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
-              >
-                <div className="flex items-center justify-center w-full h-full ml-0.5">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
-                </div>
-              </button>
-            </div>
+          {/* Next arrow */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
+            <button
+              onClick={() => {
+                next();
+                setAutoKey((k) => k + 1);
+              }}
+              aria-label="Next testimonial"
+              suppressHydrationWarning
+              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
+            >
+              <span className="text-[24px] leading-none">›</span>
+            </button>
           </div>
         </div>
 
@@ -194,4 +183,5 @@ const TestimonialsSection = () => {
     </section>
   );
 };
+
 export default TestimonialsSection;
