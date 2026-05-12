@@ -2,27 +2,60 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { CHAPTERS, NAV_LINKS } from "@/constant/Navbar.data";
+import { NAV_LINKS } from "@/constant/Navbar.data";
 
 interface NavbarProps {
   chapters: { name: string; slug: string }[];
+  currentChapterSlug?: string;
+  host: string;
 }
 
-const Navbar = ({ chapters }: NavbarProps) => {
+const Navbar = ({ chapters, currentChapterSlug, host }: NavbarProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
 
-  // Sort chapters so 'innovators' is always first (or whichever has id "")
+  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
+
+  // Sort chapters so root chapter is always first, others alphabetically
   const sortedChapters = [...chapters].sort((a, b) => {
-    if (a.slug === "innovators") return -1;
-    if (b.slug === "innovators") return 1;
-    return 0;
+    if (a.slug === rootChapter) return -1;
+    if (b.slug === rootChapter) return 1;
+    return a.name.localeCompare(b.name);
   });
+
+  // Helper to build subdomain URLs
+  const getSubdomainUrl = (slug: string) => {
+    // Protocol is usually https in prod, http in dev
+    const protocol = host.includes("localhost") ? "http" : "https";
+
+    // Define production domain
+    const productionDomain = "nia-surat.propelius.tech";
+
+    // Determine the base domain without any current subdomain
+    let baseDomain = host;
+    if (host.includes(productionDomain)) {
+      baseDomain = productionDomain;
+    } else if (host.includes("localhost")) {
+      // If host is 'pioneers.localhost:3000', base is 'localhost:3000'
+      baseDomain = host.split(".").pop()?.includes("localhost")
+        ? host.split(".").slice(-1)[0]
+        : host.split(".").slice(-2).join(".");
+
+      // Simpler for localhost:
+      if (host.includes("localhost:3000")) baseDomain = "localhost:3000";
+    }
+
+    // rootChapter is the root domain
+    if (slug === rootChapter) {
+      return `${protocol}://${baseDomain}/`;
+    }
+
+    return `${protocol}://${slug}.${baseDomain}/`;
+  };
 
   return (
     <header className="sticky py-1.5 top-0 z-50 transition-all duration-300 bg-paper">
@@ -33,13 +66,11 @@ const Navbar = ({ chapters }: NavbarProps) => {
         <div className="hidden sm:flex items-center border border-line rounded-pill bg-paper-3 p-1 shadow-sm overflow-hidden max-w-[400px]">
           <div className="flex items-center overflow-x-auto no-scrollbar">
             {sortedChapters.map((ch) => {
-              const href = ch.slug === "innovators" ? "/" : `/${ch.slug}`;
-              const isActive =
-                href === "/"
-                  ? pathname === "/"
-                  : pathname === href || pathname.startsWith(`${href}/`);
+              const isActive = ch.slug === currentChapterSlug;
+              const href = getSubdomainUrl(ch.slug);
+
               return (
-                <Link
+                <a
                   key={ch.slug}
                   href={href}
                   className={cn(
@@ -48,7 +79,7 @@ const Navbar = ({ chapters }: NavbarProps) => {
                   )}
                 >
                   {ch.name}
-                </Link>
+                </a>
               );
             })}
           </div>
@@ -94,13 +125,11 @@ const Navbar = ({ chapters }: NavbarProps) => {
           <div className="flex items-center border border-line rounded-pill bg-paper-3 p-1 shadow-sm overflow-hidden">
             <div className="flex items-center w-full">
               {sortedChapters.map((ch) => {
-                const href = ch.slug === "innovators" ? "/" : `/${ch.slug}`;
-                const isActive =
-                  href === "/"
-                    ? pathname === "/"
-                    : pathname === href || pathname.startsWith(`${href}/`);
+                const isActive = ch.slug === currentChapterSlug;
+                const href = getSubdomainUrl(ch.slug);
+
                 return (
-                  <Link
+                  <a
                     key={ch.slug}
                     href={href}
                     onClick={() => setMobileOpen(false)}
@@ -110,7 +139,7 @@ const Navbar = ({ chapters }: NavbarProps) => {
                     )}
                   >
                     {ch.name}
-                  </Link>
+                  </a>
                 );
               })}
             </div>
@@ -144,4 +173,5 @@ const Navbar = ({ chapters }: NavbarProps) => {
     </header>
   );
 };
+
 export default Navbar;

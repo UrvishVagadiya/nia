@@ -1,3 +1,5 @@
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { getChapterBySlug } from "@/lib/payload";
 import {
   HeroSection,
@@ -15,47 +17,55 @@ import {
 } from "@/components/sections";
 
 export default async function Home() {
-  // Fetch the default chapter (innovators) from Payload CMS
-  const chapter = await getChapterBySlug("innovators");
+  // Get subdomain from headers (set in middleware)
+  const headersList = await headers();
+  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
+  const subdomain = headersList.get("x-subdomain") || rootChapter;
 
-  // If CMS is empty or record is missing, show the static version with fallbacks
-  // (All components now have fallbacks internally)
+  // Normalize subdomain
+  const chapterSlug = subdomain === "www" || !subdomain ? rootChapter : subdomain;
+
+  // Fetch the chapter data from Payload CMS
+  const chapter = await getChapterBySlug(chapterSlug);
+
+  // If chapter not found, return 404
+  if (!chapter) {
+    notFound();
+  }
 
   return (
     <main className="overflow-hidden">
       <HeroSection
-        chapterNumber={chapter?.chapterNumber || "Chapter 01"}
-        chapterName={chapter?.name || "Innovators"}
-        subtitle={chapter?.hero?.subtitle || "Surat’s room of trusted professionals."}
-        caption={
-          chapter?.hero.caption || "25 category leaders. One chair per specialty. No overlap."
-        }
-        bullets={chapter?.hero.bullets?.map((b) => b.text) || []}
-        mainImage={chapter?.hero.mainImage}
-        leaderImage={chapter?.hero.leaderImage}
+        chapterNumber={chapter.chapterNumber || ""}
+        chapterName={chapter.name}
+        subtitle={chapter.hero?.subtitle || ""}
+        caption={chapter.hero?.caption || ""}
+        bullets={chapter.hero?.bullets?.map((b) => b.text) || []}
+        mainImage={chapter.hero?.mainImage}
+        leaderImage={chapter.hero?.leaderImage}
       />
 
-      <StatBand stats={chapter?.stats} />
+      <StatBand stats={chapter.stats} />
 
       <WhyJoinSection />
 
       <GetintoRoom />
 
-      <LeaderSection leader={chapter?.leader} chapter={chapter} />
+      <LeaderSection leader={chapter.leader} chapter={chapter} />
 
-      <MembersSection members={chapter?.members} />
+      <MembersSection members={chapter.members} />
 
-      <TestimonialsSection testimonials={chapter?.testimonials} />
+      <TestimonialsSection testimonials={chapter.testimonials} />
 
-      <ScheduleSection events={chapter?.events} />
+      <ScheduleSection chapterSlug={chapterSlug} />
 
-      <PricingSection plans={chapter?.pricing || []} />
+      <PricingSection plans={chapter.pricing || []} />
 
       <UpdatesSection />
 
       <FAQSection />
 
-      <StepsSection />
+      <StepsSection chapterSlug={chapterSlug} chapterName={chapter.name} venue={chapter.venue} />
     </main>
   );
 }

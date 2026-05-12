@@ -42,11 +42,15 @@ export default async function SuperiorsPage() {
       <LeaderSection leader={chapter?.leader} chapter={chapter} />
       <MembersSection members={chapter?.members} />
       <TestimonialsSection testimonials={chapter?.testimonials} />
-      <ScheduleSection events={chapter?.events} />
+      <ScheduleSection chapterSlug={chapter?.slug || "superiors"} />
       <PricingSection plans={chapter?.pricing || []} />
       <UpdatesSection />
       <FAQSection />
-      <StepsSection />
+      <StepsSection
+        chapterSlug={chapter?.slug || "superiors"}
+        chapterName={chapter?.name || "Superiors"}
+        venue={chapter?.venue}
+      />
     </main>
   );
 }

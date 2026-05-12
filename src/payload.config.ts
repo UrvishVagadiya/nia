@@ -56,7 +56,9 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: true,
+        media: {
+          disablePayloadAccessControl: true,
+        },
       },
       bucket: process.env.S3_BUCKET || "",
       config: {
@@ -64,7 +66,7 @@ export default buildConfig({
           accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
         },
-        region: process.env.S3_REGION || "ap-southeast-1",
+        region: process.env.S3_REGION || "ap-northeast-1",
         endpoint: process.env.S3_ENDPOINT || "",
         forcePathStyle: true,
       },

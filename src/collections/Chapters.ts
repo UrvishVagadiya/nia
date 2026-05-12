@@ -56,6 +56,15 @@ export const Chapters: CollectionConfig = {
                     placeholder: "Chapter 01",
                   },
                 },
+                {
+                  name: "venue",
+                  type: "text",
+                  required: false,
+                  admin: {
+                    width: "33%",
+                    placeholder: "Hyatt Regency, Athwa Lines",
+                  },
+                },
               ],
             },
           ],
@@ -97,19 +106,19 @@ export const Chapters: CollectionConfig = {
                     {
                       name: "mainImage",
                       type: "text",
-                      label: "Main Image (URL or Media Path)",
+                      label: "Main Hero Image (URL)",
                       admin: {
                         width: "50%",
-                        description: "Paste Unsplash URL or upload to Media and paste path here.",
+                        description: "Paste an Unsplash URL or a link from the Media collection.",
                       },
                     },
                     {
                       name: "leaderImage",
                       type: "text",
-                      label: "Leader Image (URL or Media Path)",
+                      label: "Leader Secondary Image (URL)",
                       admin: {
                         width: "50%",
-                        description: "Paste Unsplash URL or upload to Media and paste path here.",
+                        description: "Paste a URL for the secondary leader image.",
                       },
                     },
                   ],

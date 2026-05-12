@@ -101,7 +101,7 @@ export default async function ChapterPage({ params }: PageProps) {
       <TestimonialsSection testimonials={chapter.testimonials} />
 
       {/* Chapter-specific Schedule/Events */}
-      <ScheduleSection events={chapter.events} />
+      <ScheduleSection chapterSlug={chapter.slug} />
 
       {/* Pricing Plans for this chapter */}
       <PricingSection plans={chapter.pricing} />
@@ -110,7 +110,7 @@ export default async function ChapterPage({ params }: PageProps) {
 
       <FAQSection />
 
-      <StepsSection />
+      <StepsSection chapterSlug={chapter.slug} chapterName={chapter.name} venue={chapter.venue} />
     </main>
   );
 }

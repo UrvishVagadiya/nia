@@ -5,7 +5,6 @@ export type Member = {
   company: string;
   specialty: string;
   oneliner: string;
-  photo?: string; // URL or static import
   photo_url?: string;
   location?: string;
   joined?: string;
@@ -69,6 +68,7 @@ export interface ScheduleItem {
   day: string;
   date: string;
   topic: string;
+  venue?: string;
   rsvps: number;
 }
 
@@ -87,6 +87,7 @@ export interface Chapter {
   name: string;
   slug: string;
   chapterNumber: string;
+  venue?: string;
   hero: {
     title: string;
     subtitle: string;
@@ -118,4 +119,15 @@ export interface Leader {
 export interface LeaderProps {
   leader?: Leader | null;
   chapter?: Chapter | null;
+}
+
+export interface ChapterSummary {
+  id: string | number;
+  name: string;
+  slug: string;
+  venue?: string;
+}
+
+export interface PayloadListResponse<T> {
+  docs: T[];
 }

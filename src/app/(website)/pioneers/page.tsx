@@ -42,11 +42,15 @@ export default async function PioneersPage() {
       <LeaderSection leader={chapter?.leader} chapter={chapter} />
       <MembersSection members={chapter?.members} />
       <TestimonialsSection testimonials={chapter?.testimonials} />
-      <ScheduleSection events={chapter?.events} />
+      <ScheduleSection chapterSlug={chapter?.slug || "pioneers"} />
       <PricingSection plans={chapter?.pricing || []} />
       <UpdatesSection />
       <FAQSection />
-      <StepsSection />
+      <StepsSection
+        chapterSlug={chapter?.slug || "pioneers"}
+        chapterName={chapter?.name || "Pioneers"}
+        venue={chapter?.venue}
+      />
     </main>
   );
 }

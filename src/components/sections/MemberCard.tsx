@@ -12,7 +12,6 @@ const MemberCard = ({ member }: { member: Member }) => {
         <Image
           src={
             member.photo_url ||
-            member.photo ||
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop"
           }
           alt={member.name}

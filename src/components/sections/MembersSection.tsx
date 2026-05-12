@@ -3,17 +3,9 @@
 import Image from "next/image";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Member } from "@/lib/types";
-import { MapPin, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Typography from "@/components/ui/typography";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -146,7 +138,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
           }}
           className="relative w-full overflow-hidden"
         >
-          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 ml-0">
+          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-2 ml-0">
             {filtered.map((member, index) => (
               <CarouselItem
                 key={member.id}
@@ -214,7 +206,6 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
                   <Image
                     src={
                       member.photo_url ||
-                      member.photo ||
                       "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop"
                     }
                     alt={member.name}

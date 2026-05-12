@@ -1,18 +1,63 @@
 "use client";
 
-import { SCHEDULE, VENUE } from "@/constant/ScheduleSection.data";
+import { useEffect, useState } from "react";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
-import { ScheduleItem } from "@/lib/types";
+import type { ChapterSummary, PayloadListResponse, ScheduleItem } from "@/lib/types";
 
 interface ScheduleSectionProps {
-  events?: ScheduleItem[];
+  chapterSlug?: string;
 }
 
-const ScheduleSection = ({ events: cmsEvents }: ScheduleSectionProps) => {
-  const schedule = cmsEvents && cmsEvents.length > 0 ? cmsEvents : SCHEDULE;
-  const nextMeeting = schedule[0];
+const ScheduleSection = ({ chapterSlug }: ScheduleSectionProps) => {
+  const [selectedChapter, setSelectedChapter] = useState<ChapterSummary | null>(null);
+  const [events, setEvents] = useState<ScheduleItem[]>([]);
+  const [loadingEvents, setLoadingEvents] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
+
+  useEffect(() => {
+    const loadChapter = async () => {
+      const res = await fetch("/api/chapters?limit=100");
+      const data = (await res.json()) as PayloadListResponse<ChapterSummary>;
+      const docs = Array.isArray(data.docs) ? data.docs : [];
+
+      const initialSlug = chapterSlug || "innovators";
+      const initial = docs.find((c) => c.slug === initialSlug) || docs[0] || null;
+      setSelectedChapter(initial);
+    };
+    loadChapter();
+  }, [chapterSlug]);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      if (!selectedChapter?.id) {
+        setEvents([]);
+        return;
+      }
+      setLoadingEvents(true);
+      try {
+        const res = await fetch(
+          `/api/events?limit=100&where[chapter][equals]=${selectedChapter.id}`
+        );
+        const data = (await res.json()) as PayloadListResponse<ScheduleItem>;
+        const docs = Array.isArray(data.docs) ? data.docs : [];
+        setEvents(docs);
+        if (docs.length > 0) {
+          setSelectedEvent(docs[0]);
+        }
+      } finally {
+        setLoadingEvents(false);
+      }
+    };
+    loadEvents();
+  }, [selectedChapter]);
+
+  const activeEvent = selectedEvent ||
+    events[0] || { day: "", date: "", topic: "", rsvps: 0, venue: "" };
+  const chapterVenue = selectedChapter?.venue || "";
+  const displayVenue = activeEvent.venue || chapterVenue;
+  const selectedSlug = selectedChapter?.slug || chapterSlug || "innovators";
 
   return (
     <section id="schedule" className="bg-paper-2">
@@ -45,7 +90,7 @@ const ScheduleSection = ({ events: cmsEvents }: ScheduleSectionProps) => {
                 Venue
               </Typography>
               <Typography as="div" variant="body-sm" color="brand-deep" className="font-bold!">
-                {VENUE}
+                {displayVenue || "—"}
               </Typography>
             </div>
           </div>
@@ -54,26 +99,32 @@ const ScheduleSection = ({ events: cmsEvents }: ScheduleSectionProps) => {
         {/* Right Side (Cards) */}
         <div>
           {/* Main Next Meeting Card */}
-          <div className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden">
+          <div className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden transition-all duration-300">
             <div className="flex justify-between items-start mb-6">
               <span className="px-3 py-1.25 bg-brand text-white rounded-pill text-[11px] font-bold tracking-[0.08em] uppercase">
-                Next meeting
+                {selectedEvent && events.indexOf(selectedEvent) === 0
+                  ? "Next meeting"
+                  : "Selected meeting"}
               </span>
               <span className="text-[11px] text-white/70 font-semibold tracking-[0.04em]">
-                {nextMeeting.rsvps} {" RSVP'd"}
+                {activeEvent.rsvps} {" RSVP'd"}
               </span>
             </div>
 
             <div className="font-serif text-[clamp(36px,4vw,52px)] leading-none font-semibold tracking-[-0.02em] mb-4">
-              {nextMeeting.day}, {nextMeeting.date}
+              {activeEvent.day}, {activeEvent.date}
             </div>
 
             <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-[45px]">
-              {nextMeeting.topic}
+              {activeEvent.topic}
             </div>
 
             <Link
-              href="#StepsSection"
+              href={
+                selectedSlug && activeEvent.date
+                  ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&day=${encodeURIComponent(activeEvent.day)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
+                  : "#StepsSection"
+              }
               className="bg-brand text-white border border-brand py-3.25 px-5.5 rounded-pill text-[14px] font-semibold inline-flex items-center gap-2.5 w-full justify-center hover:bg-brand-2 transition-colors"
             >
               Request a visitor pass
@@ -85,18 +136,35 @@ const ScheduleSection = ({ events: cmsEvents }: ScheduleSectionProps) => {
 
           {/* Sub Cards Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {schedule.map((item, index) => {
+            {events.map((item, index) => {
               const label = index === 0 ? "Up next" : `Wk ${index + 1}`;
+              const isActive = selectedEvent === item;
               return (
-                <div key={index} className="bg-white border border-line rounded-md py-3 px-3.5">
-                  <div className="text-[10px] text-ink-4 uppercase tracking-[0.08em] font-bold">
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setSelectedEvent(item)}
+                  className={`text-left bg-white border rounded-md py-3 px-3.5 transition-all duration-200 ${
+                    isActive
+                      ? "border-brand shadow-sm ring-1 ring-brand/20"
+                      : "border-line hover:border-brand/40"
+                  }`}
+                >
+                  <div
+                    className={`text-[10px] uppercase tracking-[0.08em] font-bold ${isActive ? "text-brand" : "text-ink-4"}`}
+                  >
                     {label}
                   </div>
-                  <div className="text-[15px] mt-1 font-bold text-brand-deep">{item.date}</div>
-                </div>
+                  <div
+                    className={`text-[15px] mt-1 font-bold ${isActive ? "text-brand" : "text-brand-deep"}`}
+                  >
+                    {item.date}
+                  </div>
+                </button>
               );
             })}
           </div>
+          {loadingEvents && <div className="text-[12px] text-ink-4 mt-2">Loading schedule...</div>}
         </div>
       </div>
     </section>

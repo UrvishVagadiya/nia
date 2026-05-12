@@ -8,3 +8,15 @@ export const SCHEDULE: ScheduleItem[] = [
   { day: "Wed", date: "May 27", topic: "Guest Speaker: Export Finance", rsvps: 20 },
   { day: "Wed", date: "Jun 3", topic: "Quarterly Review & Planning", rsvps: 24 },
 ];
+
+export const CHAPTER_VENUES: Record<string, string> = {
+  innovators: "Hyatt Regency, Athwa Lines",
+  superiors: "HEY, Athwa GATE",
+  pioneers: "Hyatt Surat,  Lines",
+};
+
+export const CHAPTER_SCHEDULES: Record<string, ScheduleItem[]> = {
+  innovators: SCHEDULE,
+  superiors: SCHEDULE,
+  pioneers: SCHEDULE,
+};

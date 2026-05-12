@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Footer, Navbar } from "@/components/sections";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,14 +21,19 @@ export const metadata: Metadata = {
     "NIA Surat is a paid, invite-only business referral community. Three weekly chapters — Innovators, Superiors, Pioneers — 72 business owners, one mission: to be the most-trusted referral room in Surat.",
 };
 
+import { headers } from "next/headers";
 import { getAllChapters } from "@/lib/payload";
-import type { Chapter } from "@/lib/types";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
+  const currentChapterSlug = headersList.get("x-subdomain") || rootChapter;
+  const host = headersList.get("host") || "";
+
   let chapters: { name: string; slug: string }[] = [];
   try {
     const all = await getAllChapters();
@@ -54,8 +60,9 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Providers>
-          <Navbar chapters={navbarChapters} />
+          <Navbar chapters={navbarChapters} currentChapterSlug={currentChapterSlug} host={host} />
           {children}
+          <Toaster />
           <Footer />
         </Providers>
       </body>

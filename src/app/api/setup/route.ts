@@ -25,7 +25,7 @@ export async function GET() {
       });
 
       if (existing.totalDocs === 0) {
-        const created = await payload.create({
+        await payload.create({
           collection: "chapters",
           data: {
             ...chapter,

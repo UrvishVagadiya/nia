@@ -1,9 +1,145 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import emailjs from "@emailjs/browser";
+import { Check, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
 
-const StepsSection = () => {
+type VisitorFormValues = {
+  name: string;
+  email: string;
+  specialty: string;
+  phone: string;
+  notes: string;
+  chapterId: string;
+  chapterName: string;
+  chapterSlug: string;
+  venue: string;
+  meetingDay: string;
+  meetingDate: string;
+  meetingTopic: string;
+};
+
+interface StepsSectionProps {
+  chapterSlug?: string;
+  chapterName?: string;
+  venue?: string;
+}
+
+const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) => {
+  const searchParams = useSearchParams();
+  const queryChapter = searchParams.get("chapter") || "";
+  const queryVenue = searchParams.get("venue") || "";
+  const queryDay = searchParams.get("day") || "";
+  const queryDate = searchParams.get("date") || "";
+  const queryTopic = searchParams.get("topic") || "";
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<VisitorFormValues>({
+    defaultValues: {
+      name: "",
+      email: "",
+      specialty: "",
+      phone: "",
+      notes: "",
+      chapterId: "",
+      chapterName: "",
+      chapterSlug: "",
+      venue: "",
+      meetingDay: "",
+      meetingDate: "",
+      meetingTopic: "",
+    },
+  });
+
+  const currentChapterName = watch("chapterName");
+
+  useEffect(() => {
+    const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
+    const fallbackSlug = chapterSlug || queryChapter || rootChapter;
+    const fallbackName =
+      chapterName || fallbackSlug.charAt(0).toUpperCase() + fallbackSlug.slice(1);
+    const fallbackVenue = venue || queryVenue || "";
+
+    setValue("chapterId", "");
+    setValue("chapterName", fallbackName);
+    setValue("chapterSlug", fallbackSlug);
+    setValue("venue", fallbackVenue);
+  }, [chapterSlug, chapterName, venue, queryChapter, queryVenue, setValue]);
+
+  useEffect(() => {
+    if (!queryDay && !queryDate && !queryTopic) return;
+    setValue("meetingDay", queryDay);
+    setValue("meetingDate", queryDate);
+    setValue("meetingTopic", queryTopic);
+  }, [queryDay, queryDate, queryTopic, setValue]);
+
+  const onSubmit = async (values: VisitorFormValues) => {
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    const mailTo = process.env.NEXT_PUBLIC_MAIL_TO || "";
+
+    if (!serviceId || !templateId || !publicKey) {
+      toast.error("Email service configuration missing.");
+      return;
+    }
+
+    const templateParams = {
+      to_email: mailTo,
+      user_name: values.name,
+      user_phone: values.phone,
+      user_specialty: values.specialty,
+      user_notes: values.notes,
+      chapter_name: values.chapterName,
+      chapter_slug: values.chapterSlug,
+      venue: values.venue,
+      meeting_day: values.meetingDay,
+      meeting_date: values.meetingDate,
+      meeting_topic: values.meetingTopic,
+      name: values.name, // Matches {{name}} in From Name
+      email: values.email, // Matches {{email}} in Reply To
+    };
+
+    console.log("Sending EmailJS request with params:", templateParams);
+
+    const sendEmail = emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+    toast.promise(sendEmail, {
+      loading: "Sending your request...",
+      success: (res) => {
+        console.log("EmailJS Success:", res);
+        reset({
+          name: "",
+          email: "",
+          specialty: "",
+          phone: "",
+          notes: "",
+          chapterName: values.chapterName,
+          chapterSlug: values.chapterSlug,
+          venue: values.venue,
+        });
+        return "Request sent! We'll reply within 24 hours.";
+      },
+      error: (err) => {
+        const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
+        console.error("EmailJS Error:", err);
+        return `Could not send: ${err?.text || "Unknown error"}`;
+      },
+    });
+  };
+
+  const chapterLabel = currentChapterName || "Innovators";
+
   return (
     <section id="StepsSection" className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
@@ -62,10 +198,10 @@ const StepsSection = () => {
 
           {/* Right Side (Form) */}
           <div className="p-[44px_36px]">
-            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <Typography as="div" variant="eyebrow" color="brand-2" className="pb-4">
-                  Visitor Pass · Innovators
+                  Visitor Pass · {chapterLabel}
                 </Typography>
                 <Typography
                   as="div"
@@ -75,40 +211,92 @@ const StepsSection = () => {
                 >
                   Request a pass
                 </Typography>
+
+                {(watch("meetingDate") || watch("meetingTopic")) && (
+                  <div className="mb-2 p-3.5 bg-brand-soft rounded-[10px] border border-brand/20">
+                    <Typography
+                      variant="caption"
+                      color="brand-2"
+                      className="uppercase mb-1 font-bold!"
+                    >
+                      Selected Meeting
+                    </Typography>
+                    <div className="flex flex-col gap-0.5">
+                      <Typography variant="body-sm" color="brand-deep" className="font-bold!">
+                        {watch("meetingDay")}, {watch("meetingDate")}
+                      </Typography>
+                      <Typography variant="caption" color="ink-3" className="italic">
+                        {watch("meetingTopic")}
+                      </Typography>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <label className="flex flex-col gap-1.5">
-                <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
-                  Your name
-                </Typography>
-                <input
-                  placeholder="Full name"
-                  suppressHydrationWarning
-                  className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none resize-none focus:border-brand transition-colors"
-                />
-              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-1.5">
+                  <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
+                    Your name
+                  </Typography>
+                  <input
+                    placeholder="Full name"
+                    suppressHydrationWarning
+                    {...register("name", { required: true })}
+                    className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none focus:border-brand transition-colors"
+                  />
+                  {errors.name && (
+                    <span className="text-[12px] text-red-600">Name is required.</span>
+                  )}
+                </label>
 
-              <label className="flex flex-col gap-1.5">
-                <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
-                  Your specialty / trade
-                </Typography>
-                <input
-                  placeholder="e.g. Textile exports"
-                  suppressHydrationWarning
-                  className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
-                />
-              </label>
+                <label className="flex flex-col gap-1.5">
+                  <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
+                    Email address
+                  </Typography>
+                  <input
+                    placeholder="name@company.com"
+                    type="email"
+                    suppressHydrationWarning
+                    {...register("email", { required: true })}
+                    className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none focus:border-brand transition-colors"
+                  />
+                  {errors.email && (
+                    <span className="text-[12px] text-red-600">Email is required.</span>
+                  )}
+                </label>
+              </div>
 
-              <label className="flex flex-col gap-1.5">
-                <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
-                  Phone (with code)
-                </Typography>
-                <input
-                  placeholder="+91 …"
-                  suppressHydrationWarning
-                  className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-none focus:border-brand transition-colors"
-                />
-              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-1.5">
+                  <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
+                    Your specialty / trade
+                  </Typography>
+                  <input
+                    placeholder="e.g. Textile exports"
+                    suppressHydrationWarning
+                    {...register("specialty", { required: true })}
+                    className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none focus:border-brand transition-colors"
+                  />
+                  {errors.specialty && (
+                    <span className="text-[12px] text-red-600">Specialty is required.</span>
+                  )}
+                </label>
+
+                <label className="flex flex-col gap-1.5">
+                  <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
+                    Phone (with code)
+                  </Typography>
+                  <input
+                    placeholder="+91 …"
+                    suppressHydrationWarning
+                    {...register("phone", { required: true })}
+                    className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none focus:border-brand transition-colors"
+                  />
+                  {errors.phone && (
+                    <span className="text-[12px] text-red-600">Phone is required.</span>
+                  )}
+                </label>
+              </div>
 
               <label className="flex flex-col gap-1.5">
                 <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold! ">
@@ -118,19 +306,33 @@ const StepsSection = () => {
                   placeholder="Optional context"
                   rows={3}
                   suppressHydrationWarning
+                  {...register("notes")}
                   className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none resize-y focus:border-brand transition-colors"
                 />
               </label>
 
+              <input type="hidden" {...register("chapterId")} />
+              <input type="hidden" {...register("chapterName")} />
+              <input type="hidden" {...register("chapterSlug")} />
+              <input type="hidden" {...register("venue")} />
+              <input type="hidden" {...register("meetingDay")} />
+              <input type="hidden" {...register("meetingDate")} />
+              <input type="hidden" {...register("meetingTopic")} />
+
               <button
                 type="submit"
                 suppressHydrationWarning
-                className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors"
+                disabled={isSubmitting}
+                className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors disabled:opacity-70"
               >
                 <Typography as="span" variant="body-sm" color="white" className="font-bold!">
-                  Submit request
+                  {isSubmitting ? "Sending..." : "Submit request"}
                 </Typography>
-                <span className="font-serif">&rarr;</span>
+                {isSubmitting ? (
+                  <Loader2 className="animate-spin" size={16} />
+                ) : (
+                  <span className="font-serif">&rarr;</span>
+                )}
               </button>
 
               <Typography
@@ -148,4 +350,5 @@ const StepsSection = () => {
     </section>
   );
 };
+
 export default StepsSection;

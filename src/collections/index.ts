@@ -49,7 +49,7 @@ export const Leaders: CollectionConfig = {
       type: "text",
       label: "Photo URL",
       admin: {
-        description: "Upload image, drag & drop, or paste S3/bucket URL",
+        description: "Paste a URL for the leader photo.",
       },
     },
     { name: "specialty", type: "text" },
@@ -77,7 +77,7 @@ export const Testimonials: CollectionConfig = {
     { name: "who", type: "text", required: true },
     { name: "role", type: "text" },
     { name: "quote", type: "textarea", required: true },
-    { name: "photo", type: "upload", relationTo: "media" },
+    { name: "photo", type: "text", label: "Photo URL" },
     {
       name: "isGlobal",
       type: "checkbox",
@@ -148,20 +148,47 @@ export const Events: CollectionConfig = {
   admin: {
     useAsTitle: "topic",
     group: "Schedule",
+    components: {
+      beforeList: ["@/components/admin/ChapterFilterBar"],
+    },
   },
   access: {
     read: () => true,
   },
   fields: [
-    { name: "day", type: "text", required: true },
-    { name: "date", type: "text", required: true },
-    { name: "topic", type: "text", required: true },
-    { name: "rsvps", type: "number" },
     {
       name: "chapter",
       type: "relationship",
       relationTo: "chapters",
       required: true,
+      hasMany: false,
+    },
+    {
+      name: "day",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "date",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "topic",
+      type: "text",
+      required: true,
+    },
+    {
+      name: "venue",
+      type: "text",
+      label: "Venue",
+      required: false,
+    },
+    {
+      name: "rsvps",
+      type: "number",
+      required: true,
+      defaultValue: 0,
     },
   ],
 };
