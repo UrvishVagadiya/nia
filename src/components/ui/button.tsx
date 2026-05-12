@@ -2,6 +2,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 
 const buttonVariants = cva(
   "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -81,8 +82,8 @@ function Button({
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </span> */}
-          <span className="w-6 h-6 rounded-full bg-white/20 text-white grid place-items-center text-[12px]">
-            &rarr;
+          <span className="w-6 h-6 rounded-full bg-white/20 text-white grid place-items-center">
+            <ArrowRight size={14} />
           </span>
         </>
       ) : (

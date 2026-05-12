@@ -3,69 +3,27 @@
 import { VALUE_PROPS } from "@/constant/WhyJoinSection.data";
 import Typography from "@/components/ui/typography";
 
-const CUSTOM_ICONS: Record<string, { svg: React.ReactNode; colorClass: string; bgClass: string }> =
+import { Users, ShieldCheck, IndianRupee, Award } from "lucide-react";
+
+const CUSTOM_ICONS: Record<string, { icon: React.ReactNode; colorClass: string; bgClass: string }> =
   {
     Users: {
-      svg: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.4 7.2 17.9l.9-5.4L4.2 8.7l5.4-.8z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinejoin="round"
-          ></path>
-        </svg>
-      ),
+      icon: <Users size={22} strokeWidth={1.6} />,
       colorClass: "text-[#8b5cf6]",
       bgClass: "bg-tint-lavender",
     },
     ShieldCheck: {
-      svg: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-          ></path>
-          <path
-            d="M9 12l2 2 4-4"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></path>
-        </svg>
-      ),
+      icon: <ShieldCheck size={22} strokeWidth={1.6} />,
       colorClass: "text-[#ea580c]",
-      bgClass: "bg-tint-butter", // The previous mapping used butter for this to match the HTML color rgb(253, 238, 220)
+      bgClass: "bg-tint-butter",
     },
     IndianRupee: {
-      svg: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6"></circle>
-          <path
-            d="M9 9h6M9 12h6M9 15h4"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          ></path>
-        </svg>
-      ),
+      icon: <IndianRupee size={22} strokeWidth={1.6} />,
       colorClass: "text-[#dc2626]",
       bgClass: "bg-tint-blush",
     },
     Award: {
-      svg: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="9" r="3.5" stroke="currentColor" strokeWidth="1.6"></circle>
-          <path
-            d="M5 20a7 7 0 0114 0"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          ></path>
-        </svg>
-      ),
+      icon: <Award size={22} strokeWidth={1.6} />,
       colorClass: "text-[#15803d]",
       bgClass: "bg-tint-mint",
     },
@@ -85,7 +43,7 @@ const WhyJoinSection = () => {
           <Typography as="h2" variant="h2" color="brand-deep">
             Why join us?
           </Typography>
-          <Typography variant="body-md" color="ink-3" className="max-w-155">
+          <Typography variant="body-md" color="ink-3" className="mt-3 md:mt-5 max-w-155">
             NIA is built differently — three chapters, exclusive categories, and a structure that
             makes referrals predictable, not coincidental.
           </Typography>
@@ -103,7 +61,7 @@ const WhyJoinSection = () => {
                 <div
                   className={`w-13 h-13 rounded-full bg-white flex items-center justify-center shrink-0 shadow-[0_6px_16px_-8px_rgba(14,58,92,0.18)] ${displayConfig.colorClass}`}
                 >
-                  {displayConfig.svg}
+                  {displayConfig.icon}
                 </div>
                 <Typography as="h4" variant="h4" color="brand-deep" className="font-bold!">
                   {prop.title}

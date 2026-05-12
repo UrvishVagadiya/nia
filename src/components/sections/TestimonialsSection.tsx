@@ -3,22 +3,16 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Typography from "@/components/ui/typography";
-import { TESTIMONIALS, SLOT_CONFIGS } from "@/constant/TestimonialsSection.data";
+import { SLOT_CONFIGS } from "@/constant/TestimonialsSection.data";
 import { Testimonial } from "@/lib/types";
+
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface TestimonialsSectionProps {
   testimonials?: Testimonial[];
 }
 
-const TestimonialsSection = ({ testimonials: cmsTestimonials }: TestimonialsSectionProps) => {
-  // Use CMS testimonials if provided, otherwise fallback to static constants
-  const testimonials = useMemo(() => {
-    if (cmsTestimonials && cmsTestimonials.length > 0) {
-      return cmsTestimonials;
-    }
-    return TESTIMONIALS;
-  }, [cmsTestimonials]);
-
+const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) => {
   const [active, setActive] = useState(0);
   const n = testimonials.length;
 
@@ -38,13 +32,13 @@ const TestimonialsSection = ({ testimonials: cmsTestimonials }: TestimonialsSect
 
   const current = testimonials[active];
 
-  if (!current) return null;
+  if (n === 0 || !current) return null;
 
   return (
     <section className="bg-paper">
-      <div className="section-container section-padding">
+      <div className="md:section-container! section-padding">
         {/* ── Heading ── */}
-        <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
+        <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-5 md:mx-auto">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-soft mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
@@ -115,7 +109,7 @@ const TestimonialsSection = ({ testimonials: cmsTestimonials }: TestimonialsSect
         </div>
 
         {/* ── Testimonial Card wrapper ── */}
-        <div className="relative max-w-210 mx-auto px-6 sm:px-8">
+        <div className="relative max-w-210 mx-5 md:mx-auto">
           <div className="bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
             {/* Name */}
             <Typography as="div" variant="h5" color="brand" className="mb-1 italic">
@@ -134,7 +128,7 @@ const TestimonialsSection = ({ testimonials: cmsTestimonials }: TestimonialsSect
           </div>
 
           {/* Prev arrow */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
+          <div className="pl-2 absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
             <button
               onClick={() => {
                 prev();
@@ -144,12 +138,12 @@ const TestimonialsSection = ({ testimonials: cmsTestimonials }: TestimonialsSect
               suppressHydrationWarning
               className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
             >
-              <span className="text-[24px] leading-none">‹</span>
+              <ChevronLeft size={20} />
             </button>
           </div>
 
           {/* Next arrow */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
+          <div className="pr-2 absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
             <button
               onClick={() => {
                 next();
@@ -159,7 +153,7 @@ const TestimonialsSection = ({ testimonials: cmsTestimonials }: TestimonialsSect
               suppressHydrationWarning
               className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
             >
-              <span className="text-[24px] leading-none">›</span>
+              <ChevronRight size={20} />
             </button>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
 
 import type { PricingPlan } from "@/lib/types";
+import { ArrowBigRight, ArrowRight } from "lucide-react";
 interface PricingSectionProps {
   plans: PricingPlan[];
 }
@@ -43,7 +44,7 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
   }, [cmsPlans]);
 
   return (
-    <section className="bg-paper">
+    <section id="membership" className="bg-paper">
       <div className="section-container section-padding">
         {/* Header */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
@@ -185,7 +186,9 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
                   >
                     {tier.cta}
                   </Typography>
-                  <span className=" ml-0.5">→</span>
+                  <span className=" ml-0.5">
+                    <ArrowRight size={15} />
+                  </span>
                 </Link>
               </Card>
             );

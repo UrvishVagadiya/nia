@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
 import type { ChapterSummary, PayloadListResponse, ScheduleItem } from "@/lib/types";
@@ -125,12 +125,10 @@ const ScheduleSection = ({ chapterSlug }: ScheduleSectionProps) => {
                   ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&day=${encodeURIComponent(activeEvent.day)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
                   : "#StepsSection"
               }
-              className="bg-brand text-white border border-brand py-3.25 px-5.5 rounded-pill text-[14px] font-semibold inline-flex items-center gap-2.5 w-full justify-center hover:bg-brand-2 transition-colors"
+              className="bg-brand text-white border border-brand text-center py-3.25 px-5.5 rounded-pill text-[14px] font-semibold inline-flex items-center gap-2.5 w-full justify-center hover:bg-brand-2 transition-colors"
             >
-              Request a visitor pass
-              <span className="w-6 h-6 rounded-full bg-white/20 text-white grid place-items-center text-[12px]">
-                &rarr;
-              </span>
+              <span className="flex items-center justify-center">Request a visitor pass</span>
+              <ArrowRight size={15} />
             </Link>
           </div>
 

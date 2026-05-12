@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import emailjs from "@emailjs/browser";
-import { Check, Loader2 } from "lucide-react";
+import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
 
@@ -331,7 +331,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" size={16} />
                 ) : (
-                  <span className="font-serif">&rarr;</span>
+                  <ArrowRight size={16} />
                 )}
               </button>
 

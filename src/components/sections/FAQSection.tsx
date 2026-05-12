@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { FAQ } from "@/constant/FAQSection.data";
+import { Plus } from "lucide-react";
 
 const FAQSection = () => {
   return (
@@ -48,7 +49,7 @@ const FAQSection = () => {
                     {item.q}
                   </Typography>
                   <span className="w-7.5 h-7.5 rounded-full grid place-items-center shrink-0 text-[18px] leading-none font-semibold transition-all duration-200 bg-paper-2 text-brand-deep group-aria-expanded/accordion-trigger:rotate-45 group-aria-expanded/accordion-trigger:bg-brand group-aria-expanded/accordion-trigger:text-white">
-                    +
+                    <Plus size={12} strokeWidth={3} />
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="pb-6">

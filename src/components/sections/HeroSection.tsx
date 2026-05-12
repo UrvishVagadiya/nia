@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Check, ArrowRight } from "lucide-react";
 import Typography from "../ui/typography";
 import { SCHEDULE } from "@/constant/ScheduleSection.data";
 import type { HeroProps } from "@/lib/types";
@@ -52,15 +53,7 @@ const HeroSection = ({
             {(bullets || []).map((item, idx) => (
               <li key={idx} className="flex items-center gap-[10px]">
                 <span className="w-[22px] h-[22px] rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M2 6.5L4.5 9L10 3.5"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <Check size={12} strokeWidth={3} />
                 </span>
                 <Typography variant="body-sm" color="ink-2" className="text-[14.5px]!">
                   {item}
@@ -121,9 +114,7 @@ const HeroSection = ({
             className="absolute top-4 right-4 bg-brand-deep text-white py-2.5 px-4 rounded-pill text-[12.5px] font-semibold shadow-[0_8px_24px_-8px_rgba(14,58,92,0.4)] inline-flex items-center gap-2 hover:bg-brand-deep/90 transition-colors"
           >
             View Schedule
-            <span className="w-4.5 h-4.5 rounded-full bg-brand grid place-items-center text-[9px]">
-              &rarr;
-            </span>
+            <ArrowRight size={14} />
           </Link>
         </div>
       </div>

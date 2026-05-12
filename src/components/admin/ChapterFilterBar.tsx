@@ -29,16 +29,22 @@ const ChapterFilterBar: React.FC = () => {
       });
   }, []);
 
-  const currentChapterId = searchParams.get("where[chapter][equals]");
+  const currentChapterId = searchParams.get("where[chapter][equals]") || null;
 
   const handleFilter = (id: string | null) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(Array.from(searchParams.entries()));
+
     if (id) {
       params.set("where[chapter][equals]", id);
     } else {
       params.delete("where[chapter][equals]");
     }
-    router.push(`${pathname}?${params.toString()}`);
+
+    // Always reset to page 1 when filter changes
+    params.delete("page");
+
+    const newQuery = params.toString();
+    router.push(`${pathname}${newQuery ? `?${newQuery}` : ""}`);
   };
 
   return (
@@ -150,7 +156,7 @@ const ChapterFilterBar: React.FC = () => {
               fontWeight: "800",
               textTransform: "uppercase",
               letterSpacing: "0.05em",
-              color: "#ff4d4d", // Bright red for visibility
+              color: "#ff4d4d",
               background: "rgba(255, 77, 77, 0.1)",
               border: "1px solid rgba(255, 77, 77, 0.2)",
               borderRadius: "6px",

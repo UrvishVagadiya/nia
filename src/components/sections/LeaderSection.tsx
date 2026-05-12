@@ -94,62 +94,34 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
 
             {/* Stats from leader and chapter */}
             <div className="grid grid-cols-3 border border-line rounded-[14px] overflow-hidden bg-paper-2 max-w-135">
-              <div className="px-4.5 py-4 border-r border-line">
-                <Typography
-                  as="span"
-                  variant="eyebrow"
-                  color="ink-4"
-                  className="block font-bold! text-[#8b95a4]! mb-1.5"
+              {[
+                { label: "Specialty", value: leader.specialty },
+                { label: "Tenure", value: leader.tenure },
+                { label: "Chapter", value: chapterName },
+              ].map((item, index) => (
+                <div
+                  key={item.label}
+                  className={`px-4.5 py-4 ${index !== 2 ? "border-r border-line" : ""}`}
                 >
-                  Specialty
-                </Typography>
-                <Typography
-                  as="span"
-                  variant="body-sm"
-                  color="brand-deep"
-                  className="block font-bold!"
-                >
-                  {leader.specialty}
-                </Typography>
-              </div>
+                  <Typography
+                    as="span"
+                    variant="eyebrow"
+                    color="ink-4"
+                    className="block font-bold! text-[#8b95a4]! mb-1.5"
+                  >
+                    {item.label}
+                  </Typography>
 
-              <div className="px-4.5 py-4 border-r border-line">
-                <Typography
-                  as="span"
-                  variant="eyebrow"
-                  color="ink-4"
-                  className="block font-bold! text-[#8b95a4]! mb-1.5"
-                >
-                  Tenure
-                </Typography>
-                <Typography
-                  as="span"
-                  variant="body-sm"
-                  color="brand-deep"
-                  className="block font-bold!"
-                >
-                  {leader.tenure}
-                </Typography>
-              </div>
-
-              <div className="px-4.5 py-4">
-                <Typography
-                  as="span"
-                  variant="eyebrow"
-                  color="ink-4"
-                  className="block font-bold! text-[#8b95a4]! mb-1.5"
-                >
-                  Chapter
-                </Typography>
-                <Typography
-                  as="span"
-                  variant="body-sm"
-                  color="brand-deep"
-                  className="block font-bold!"
-                >
-                  {chapterName}
-                </Typography>
-              </div>
+                  <Typography
+                    as="span"
+                    variant="body-sm"
+                    color="brand-deep"
+                    className="block font-bold! text-[12px]!"
+                  >
+                    {item.value}
+                  </Typography>
+                </div>
+              ))}
             </div>
           </div>
         </div>

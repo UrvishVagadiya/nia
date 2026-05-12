@@ -16,34 +16,39 @@ export const config = {
 };
 
 export function middleware(req: NextRequest) {
+  const url = req.nextUrl.clone();
   const host = req.headers.get("host") || "";
 
   // Define your production domain
   const productionDomain = "nia-surat.propelius.tech";
+  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
 
   // Extract subdomain
-  // For local: innovator.localhost:3000 -> innovator
-  // For production: innovator.nia-surat.propelius.tech -> innovator
   let subdomain = "";
-
   if (host.includes("localhost")) {
     subdomain = host.replace(".localhost:3000", "");
+    // If it's just localhost:3000, redirect to innovator.localhost:3000
+    if (subdomain === "localhost:3000") {
+      url.host = `innovator.localhost:3000`;
+      return NextResponse.redirect(url);
+    }
   } else {
     subdomain = host.replace(`.${productionDomain}`, "");
+    // If it's the naked production domain, redirect to innovator subdomain
+    if (subdomain === productionDomain || subdomain === host || !subdomain) {
+      url.host = `innovator.${productionDomain}`;
+      return NextResponse.redirect(url);
+    }
   }
 
-  // If the subdomain is just the domain itself or empty, it's the root chapter
-  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
-  if (subdomain === host || subdomain === productionDomain || !subdomain) {
-    subdomain = rootChapter;
+  // Map 'innovator' subdomain to 'innovators' slug if needed
+  if (subdomain === "innovator") {
+    subdomain = "innovators";
   }
 
   // Create a new response and set the subdomain header
   const response = NextResponse.next();
   response.headers.set("x-subdomain", subdomain);
-
-  // You can also rewrite internally if you want a clean dynamic route structure
-  // But since you asked for headers, we'll stick to that for now.
 
   return response;
 }

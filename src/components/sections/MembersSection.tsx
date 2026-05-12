@@ -77,7 +77,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
 
   return (
     <section id="members" className="bg-paper-2">
-      <div className="py-11 lg:py-22 px-5 md:px-8  md:w-full md:max-w-[1280px] md:mx-auto">
+      <div className="py-11 lg:py-22 md:px-5  md:w-full md:max-w-[1280px] lg:mx-auto">
         <div className="text-center mb-10 px-5 lg:px-8">
           <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
@@ -138,7 +138,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
           }}
           className="relative w-full overflow-hidden"
         >
-          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-2 ml-0">
+          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-4 ml-0">
             {filtered.map((member, index) => (
               <CarouselItem
                 key={member.id}
