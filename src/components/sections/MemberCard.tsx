@@ -11,7 +11,7 @@ const MemberCard = ({ member }: { member: Member }) => {
       <div className="relative h-72 sm:h-80 w-full shrink-0 bg-paper-3">
         <Image
           src={
-            member.photo_url ||
+            (typeof member.photo === "object" ? member.photo.url : member.photo) ||
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400&h=400&fit=crop"
           }
           alt={member.name}

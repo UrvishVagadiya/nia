@@ -33,7 +33,7 @@ const StatBand = ({ stats: cmsStats }: StatBandProps) => {
                 key={stat.key}
                 className={cn(
                   "min-w-0 transition-all duration-300 flex flex-col justify-center py-6 lg:flex-1 lg:basis-0 text-center",
-                  !isFirst && "lg:border-l lg:border-white/20"
+                  !isFirst && "alg:border-l lg:border-white/20"
                 )}
               >
                 <div className="flex flex-col items-center justify-center px-6">

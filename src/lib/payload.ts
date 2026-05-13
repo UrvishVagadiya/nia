@@ -12,7 +12,6 @@ type ChapterSummaryDoc = {
 type MediaDoc = {
   url?: string;
 };
-type TestimonialDocShape = Record<string, string | number | undefined>;
 type ChapterDoc = {
   id: string | number;
   name: string;
@@ -21,15 +20,66 @@ type ChapterDoc = {
   venue?: string;
   hero?: {
     mainImage?: string | MediaDoc;
-    mainImage_url?: string;
     leaderImage?: string | MediaDoc;
-    leaderImage_url?: string;
     title?: string;
     subtitle?: string;
     caption?: string;
     bullets?: { text: string }[];
   };
   stats?: { label: string; value: string }[];
+};
+
+type LeaderDoc = {
+  id: string | number;
+  name: string;
+  role: string;
+  quote?: string;
+  photo?: string | MediaDoc;
+  specialty?: string;
+  tenure?: string;
+  chapter?: string | number | ChapterSummaryDoc;
+};
+
+type MemberDoc = {
+  id: string | number;
+  name: string;
+  specialty: string;
+  company: string;
+  convention?: string;
+  oneliner?: string;
+  photo?: string | MediaDoc;
+  location?: string;
+  joined?: string;
+  chapter?: string | number | ChapterSummaryDoc;
+};
+
+type TestimonialDoc = {
+  id: string | number;
+  quote: string;
+  testimonialType: "member" | "leader" | "external";
+  member?: string | number | MemberDoc;
+  leader?: string | number | LeaderDoc;
+  who?: string;
+  role?: string;
+  photo?: string | MediaDoc;
+  photoUrl?: string;
+  isGlobal?: boolean;
+  chapter?: string | number | ChapterSummaryDoc;
+};
+
+type EventDoc = {
+  id: string | number;
+  day: string;
+  date: string;
+  topic: string;
+  venue?: string;
+  rsvps?: number;
+};
+
+type GalleryDoc = {
+  id: string | number;
+  image?: string | MediaDoc;
+  url?: string;
 };
 
 // Get all chapters with only name/slug/venue (for Navbar + forms)
@@ -98,12 +148,10 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
     }),
   ]);
 
-  const chapterData = result.docs[0] as ChapterDoc;
-  const eventDocs = events.docs as Record<string, string | number | undefined>[];
-  const testimonialDocs = testimonials.docs as (TestimonialDocShape & {
-    photo?: string | MediaDoc;
-  })[];
-  const galleryDocs = gallery.docs as { image?: string | MediaDoc; url?: string }[];
+  const chapterData = result.docs[0] as unknown as ChapterDoc;
+  const eventDocs = events.docs as unknown as EventDoc[];
+  const testimonialDocs = testimonials.docs as unknown as TestimonialDoc[];
+  const galleryDocs = gallery.docs as unknown as GalleryDoc[];
 
   const getImageUrl = (img: string | MediaDoc | undefined | null): string => {
     if (!img) return "";
@@ -126,9 +174,27 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       leaderImage: getImageUrl(chapterData.hero?.leaderImage),
     },
     stats: Array.isArray(chapterData.stats) ? chapterData.stats : [],
-    leader: (leader.docs[0] as Leader) || null,
-    members: (members.docs as Member[]) || [],
-    pricing: (pricing.docs as PricingPlan[]) || [],
+    leader: leader.docs[0]
+      ? {
+          ...(leader.docs[0] as unknown as LeaderDoc),
+          id: String(leader.docs[0].id),
+          photo: getImageUrl((leader.docs[0] as unknown as LeaderDoc).photo),
+          chapter_id: chapterData.id,
+          quote: String((leader.docs[0] as unknown as LeaderDoc).quote || ""),
+        }
+      : undefined,
+    members: (members.docs as unknown as MemberDoc[]).map((m) => ({
+      ...m,
+      id: String(m.id),
+      photo: getImageUrl(m.photo),
+    })) as Member[],
+    pricing:
+      (pricing.docs as unknown as PricingPlan[]).map((p) => ({
+        ...p,
+        features: Array.isArray(p.features)
+          ? p.features.map((f) => (typeof f === "string" ? f : f.text))
+          : [],
+      })) || [],
     events: Array.isArray(eventDocs)
       ? eventDocs.map((e) => ({
           day: String(e.day || ""),
@@ -139,12 +205,31 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
         }))
       : [],
     testimonials: Array.isArray(testimonialDocs)
-      ? testimonialDocs.map((t) => ({
-          quote: String(t.quote || ""),
-          who: String(t.who || ""),
-          role: String(t.role || ""),
-          photo: getImageUrl(t.photo),
-        }))
+      ? testimonialDocs.map((t) => {
+          const type = t.testimonialType || "external";
+          let who = String(t.who || "");
+          let role = String(t.role || "");
+          let photo = t.photoUrl || getImageUrl(t.photo);
+
+          if (type === "member" && t.member && typeof t.member === "object") {
+            const m = t.member as MemberDoc;
+            who = m.name || who;
+            role = m.specialty || role;
+            photo = photo || getImageUrl(m.photo);
+          } else if (type === "leader" && t.leader && typeof t.leader === "object") {
+            const l = t.leader as LeaderDoc;
+            who = l.name || who;
+            role = l.role || role;
+            photo = photo || getImageUrl(l.photo);
+          }
+
+          return {
+            quote: String(t.quote || ""),
+            who,
+            role,
+            photo,
+          };
+        })
       : [],
     gallery: Array.isArray(galleryDocs)
       ? galleryDocs.map((g) => getImageUrl(g.image) || g.url || "")

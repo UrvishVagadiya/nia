@@ -18,9 +18,10 @@ const HeroSection = ({
   leaderImage,
 }: HeroProps) => {
   const mainUrl =
-    mainImage || "https://images.unsplash.com/photo-1552581234-26160f608093?w=1200&h=700&fit=crop";
+    (typeof mainImage === "object" ? mainImage.url : mainImage) ||
+    "https://images.unsplash.com/photo-1552581234-26160f608093?w=1200&h=700&fit=crop";
   const leaderUrl =
-    leaderImage ||
+    (typeof leaderImage === "object" ? leaderImage.url : leaderImage) ||
     "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=500&fit=crop&crop=faces";
 
   return (

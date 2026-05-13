@@ -94,7 +94,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
                   >
                     {t.photo && (
                       <Image
-                        src={t.photo}
+                        src={typeof t.photo === "object" ? t.photo.url : t.photo}
                         alt={t.who}
                         width={120}
                         height={120}

@@ -7,7 +7,12 @@ import { s3Storage } from "@payloadcms/storage-s3";
 
 import { Chapters } from "@/collections/Chapters";
 import { Media } from "@/collections/Media";
-import { Members, Leaders, Testimonials, PricingPlans, Events, Gallery } from "@/collections";
+import { Members } from "@/collections/Members";
+import { Leaders } from "@/collections/Leaders";
+import { Testimonials } from "@/collections/Testimonials";
+import { PricingPlans } from "@/collections/PricingPlans";
+import { Events } from "@/collections/Events";
+import { Gallery } from "@/collections/Gallery";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -54,6 +59,7 @@ export default buildConfig({
     },
   }),
   plugins: [
+    /*
     s3Storage({
       collections: {
         media: {
@@ -71,5 +77,6 @@ export default buildConfig({
         forcePathStyle: true,
       },
     }),
+    */
   ],
 });

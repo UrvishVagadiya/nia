@@ -1,4 +1,6 @@
 import { CollectionConfig } from "payload";
+import formatSlug from "../../hooks/formatSlug";
+import { revalidateChapter } from "../../hooks/revalidateChapter";
 
 export const Chapters: CollectionConfig = {
   slug: "chapters",
@@ -6,6 +8,9 @@ export const Chapters: CollectionConfig = {
     useAsTitle: "name",
     group: "Chapter Data",
     defaultColumns: ["name", "slug", "chapterNumber"],
+  },
+  hooks: {
+    afterChange: [revalidateChapter],
   },
   access: {
     read: () => true,
@@ -46,6 +51,9 @@ export const Chapters: CollectionConfig = {
                     width: "33%",
                     description: "Used in the URL (e.g. innovators, superiors)",
                   },
+                  hooks: {
+                    beforeValidate: [formatSlug("name")],
+                  },
                 },
                 {
                   name: "chapterNumber",
@@ -82,13 +90,13 @@ export const Chapters: CollectionConfig = {
                     {
                       name: "title",
                       type: "text",
-                      required: true,
+                      required: false,
                       admin: { width: "50%" },
                     },
                     {
                       name: "subtitle",
                       type: "textarea",
-                      required: true,
+                      required: false,
                       admin: { width: "50%" },
                     },
                   ],
@@ -105,20 +113,24 @@ export const Chapters: CollectionConfig = {
                   fields: [
                     {
                       name: "mainImage",
-                      type: "text",
-                      label: "Main Hero Image (URL)",
+                      type: "upload",
+                      relationTo: "media",
+                      label: "Main Hero Image",
+                      required: false,
                       admin: {
                         width: "50%",
-                        description: "Paste an Unsplash URL or a link from the Media collection.",
+                        description: "Select an image from the Media collection.",
                       },
                     },
                     {
                       name: "leaderImage",
-                      type: "text",
-                      label: "Leader Secondary Image (URL)",
+                      type: "upload",
+                      relationTo: "media",
+                      label: "Leader Secondary Image",
+                      required: false,
                       admin: {
                         width: "50%",
-                        description: "Paste a URL for the secondary leader image.",
+                        description: "Select a secondary image from the Media collection.",
                       },
                     },
                   ],

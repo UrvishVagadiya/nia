@@ -1,3 +1,11 @@
+export interface Media {
+  id: string;
+  url: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+}
+
 export type Member = {
   id: string;
   name: string;
@@ -5,7 +13,7 @@ export type Member = {
   company: string;
   specialty: string;
   oneliner: string;
-  photo_url?: string;
+  photo?: string | Media;
   location?: string;
   joined?: string;
 };
@@ -24,7 +32,7 @@ export type Testimonial = {
   quote: string;
   who: string;
   role: string;
-  photo: string;
+  photo: string | Media;
 };
 
 export type FAQItem = {
@@ -77,8 +85,8 @@ export interface HeroProps {
   subtitle: string;
   caption?: string;
   bullets?: string[];
-  mainImage?: string;
-  leaderImage?: string;
+  mainImage?: string | Media;
+  leaderImage?: string | Media;
 }
 
 export interface Chapter {
@@ -92,8 +100,8 @@ export interface Chapter {
     subtitle: string;
     caption?: string;
     bullets?: { text: string }[];
-    mainImage?: string;
-    leaderImage?: string;
+    mainImage?: string | Media;
+    leaderImage?: string | Media;
   };
   stats: { label: string; value: string }[];
   leader?: Leader;
@@ -109,7 +117,7 @@ export interface Leader {
   name: string;
   role: string;
   quote: string;
-  photo_url?: string;
+  photo?: string | Media;
   specialty?: string;
   tenure?: string;
   chapter_id: string | number;

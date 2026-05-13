@@ -8,6 +8,11 @@ import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
 
+// Initialize EmailJS
+if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+  emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+}
+
 type VisitorFormValues = {
   name: string;
   email: string;
@@ -66,11 +71,17 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
   useEffect(() => {
     const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
     const fallbackSlug = chapterSlug || queryChapter || rootChapter;
+
+    // Capitalize slug words for fallback name (e.g. "superiors" -> "Superiors")
     const fallbackName =
-      chapterName || fallbackSlug.charAt(0).toUpperCase() + fallbackSlug.slice(1);
+      chapterName ||
+      fallbackSlug
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
     const fallbackVenue = venue || queryVenue || "";
 
-    setValue("chapterId", "");
     setValue("chapterName", fallbackName);
     setValue("chapterSlug", fallbackSlug);
     setValue("venue", fallbackVenue);
@@ -138,7 +149,9 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
     });
   };
 
-  const chapterLabel = currentChapterName || "Innovators";
+  const chapterLabel =
+    currentChapterName ||
+    (chapterSlug ? chapterSlug.charAt(0).toUpperCase() + chapterSlug.slice(1) : "Innovators");
 
   return (
     <section id="StepsSection" className="bg-paper-2 border-t border-line">

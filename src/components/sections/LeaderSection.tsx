@@ -13,7 +13,7 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
     name: cmsLeader.name,
     title: cmsLeader.role,
     bio: cmsLeader.quote,
-    photo_url: cmsLeader.photo_url,
+    photo: typeof cmsLeader.photo === "object" ? cmsLeader.photo.url : cmsLeader.photo,
     specialty: cmsLeader.specialty || "Chapter Leader",
     tenure: cmsLeader.tenure || "Founding Member",
   };
@@ -23,9 +23,9 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
         <div className="leader-grid flex flex-col md:flex-row gap-16 items-center">
           {/* Portrait with gradient overlay */}
           <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-105 sm:flex-none">
-            {leader.photo_url ? (
+            {leader.photo ? (
               <Image
-                src={leader.photo_url}
+                src={leader.photo}
                 alt={leader.name}
                 fill
                 className="object-cover"

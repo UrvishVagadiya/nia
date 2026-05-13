@@ -19,12 +19,9 @@ const ChapterFilterBar: React.FC = () => {
     fetch("/api/chapters?limit=100")
       .then((res) => res.json())
       .then((data) => {
-        const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
-        const sorted = (data.docs || []).sort((a: Chapter, b: Chapter) => {
-          if (a.slug === rootChapter) return -1;
-          if (b.slug === rootChapter) return 1;
-          return a.name.localeCompare(b.name);
-        });
+        const sorted = (data.docs || []).sort((a: Chapter, b: Chapter) =>
+          a.name.localeCompare(b.name)
+        );
         setChapters(sorted);
       });
   }, []);

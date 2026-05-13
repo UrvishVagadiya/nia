@@ -19,14 +19,8 @@ interface NavbarProps {
 const Navbar = ({ chapters, currentChapterSlug, host }: NavbarProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
-
-  // Sort chapters so root chapter is always first, others alphabetically
-  const sortedChapters = [...chapters].sort((a, b) => {
-    if (a.slug === rootChapter) return -1;
-    if (b.slug === rootChapter) return 1;
-    return a.name.localeCompare(b.name);
-  });
+  // Sort chapters alphabetically
+  const sortedChapters = [...chapters].sort((a, b) => a.name.localeCompare(b.name));
 
   // Helper to build subdomain URLs
   const getSubdomainUrl = (slug: string) => {

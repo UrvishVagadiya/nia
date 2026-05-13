@@ -30,8 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersList = await headers();
-  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
-  const currentChapterSlug = headersList.get("x-subdomain") || rootChapter;
+  const currentChapterSlug = headersList.get("x-subdomain") || "innovators";
   const host = headersList.get("host") || "";
 
   let chapters: { name: string; slug: string }[] = [];
@@ -58,7 +57,7 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
     >
-      <body className="min-h-full flex flex-col">
+      <body suppressHydrationWarning={true} className="min-h-full flex flex-col">
         <Providers>
           <Navbar chapters={navbarChapters} currentChapterSlug={currentChapterSlug} host={host} />
           {children}

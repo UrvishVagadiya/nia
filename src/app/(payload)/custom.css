@@ -1,0 +1,27 @@
+/* Custom Admin Styles */
+
+/* 
+  Target the login button loading state.
+  Payload 3 uses modern CSS classes. 
+  We'll target the button in the login form.
+*/
+
+form.login__form button[type="submit"]:disabled {
+  position: relative;
+  color: transparent !important;
+}
+
+form.login__form button[type="submit"]:disabled::after {
+  content: "Logging in...";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  /* Adjust based on theme */
+  font-weight: bold;
+}

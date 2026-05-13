@@ -21,24 +21,23 @@ export function middleware(req: NextRequest) {
 
   // Define your production domain
   const productionDomain = "nia-surat.propelius.tech";
-  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
 
   // Extract subdomain
   let subdomain = "";
   if (host.includes("localhost")) {
-    subdomain = host.replace(".localhost:3000", "");
     // If it's just localhost:3000, redirect to innovator.localhost:3000
-    if (subdomain === "localhost:3000") {
+    if (host === "localhost:3000") {
       url.host = `innovator.localhost:3000`;
       return NextResponse.redirect(url);
     }
+    subdomain = host.replace(".localhost:3000", "");
   } else {
-    subdomain = host.replace(`.${productionDomain}`, "");
     // If it's the naked production domain, redirect to innovator subdomain
-    if (subdomain === productionDomain || subdomain === host || !subdomain) {
+    if (host === productionDomain || host === `www.${productionDomain}`) {
       url.host = `innovator.${productionDomain}`;
       return NextResponse.redirect(url);
     }
+    subdomain = host.replace(`.${productionDomain}`, "");
   }
 
   // Map 'innovator' subdomain to 'innovators' slug if needed

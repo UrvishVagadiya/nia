@@ -19,11 +19,7 @@ import {
 export default async function Home() {
   // Get subdomain from headers (set in middleware)
   const headersList = await headers();
-  const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
-  const subdomain = headersList.get("x-subdomain") || rootChapter;
-
-  // Normalize subdomain
-  const chapterSlug = subdomain === "www" || !subdomain ? rootChapter : subdomain;
+  const chapterSlug = headersList.get("x-subdomain") || "innovators";
 
   // Fetch the chapter data from Payload CMS
   const chapter = await getChapterBySlug(chapterSlug);
