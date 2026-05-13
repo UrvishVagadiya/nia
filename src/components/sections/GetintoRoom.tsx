@@ -45,7 +45,7 @@ const GetintoRoom = () => {
             {/* Steps Timeline */}
             <div className="flex flex-col relative">
               {/* Connecting Line */}
-              <div className="absolute left-5 top-5 bottom-5 w-px bg-line-2 z-0"></div>
+              <div className="absolute left-5.75 top-5 bottom-5 w-px bg-line-2 z-0"></div>
 
               {GETINTOROOM_STEPS.map((step, index) => (
                 <div

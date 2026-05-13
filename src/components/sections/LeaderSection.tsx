@@ -80,7 +80,7 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
               as="h2"
               variant="h2"
               color="brand-deep"
-              className="mb-6 [text-balance] text-[48px]!"
+              className="mb-6 [text-balance] md:text-[48px]!"
             >
               Led by <span className="heading-italic-brand">{leader.name.split(" ")[0]}</span>.
               <br />

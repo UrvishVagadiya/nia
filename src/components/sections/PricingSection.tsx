@@ -11,6 +11,13 @@ interface PricingSectionProps {
   plans: PricingPlan[];
 }
 
+const formatPrice = (num: number) => {
+  if (num >= 1000) {
+    return `₹${(num / 1000).toFixed(0)}k`;
+  }
+  return `₹${num.toLocaleString("en-IN")}`;
+};
+
 const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
   const [selectedCard, setSelectedCard] = useState<string>("Member");
@@ -24,15 +31,19 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
     return sortedPlans.map((p) => {
       const mPrice = Number(p.monthlyPrice ?? 0);
       const aPrice = Number(p.annualPrice ?? 0);
+
+      const savings = mPrice && aPrice ? mPrice * 12 - aPrice : 0;
+      const savingsText = savings > 0 ? ` · saves ₹${savings.toLocaleString("en-IN")}` : "";
+
       return {
         name: p.name,
         price: {
-          monthly: `₹${mPrice.toLocaleString("en-IN")}`,
-          annual: `₹${(aPrice / 1000).toFixed(0)}k`,
+          monthly: formatPrice(mPrice),
+          annual: formatPrice(aPrice),
         },
         interval: {
           monthly: "/ month",
-          annual: `/ year${mPrice && aPrice ? ` · saves ₹${(mPrice * 12 - aPrice).toLocaleString("en-IN")}` : ""}`,
+          annual: `/ year${savingsText}`,
         },
         features: Array.isArray(p.features)
           ? p.features.map((f) => (typeof f === "string" ? f : f.text)).filter((f) => !!f)

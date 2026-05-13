@@ -5,13 +5,11 @@ import { useState, useEffect } from "react";
 import Typography from "@/components/ui/typography";
 import { BLOG_POSTS } from "../../constant/UpdatesSection.data";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
 const UpdatesSection = () => {
   const [imgIdx, setImgIdx] = useState(0);
 
   useEffect(() => {
-    // Timer to rotate images every 5 seconds
     const interval = setInterval(() => {
       setImgIdx((prev) => prev + 1);
     }, 5000);
@@ -50,18 +48,31 @@ const UpdatesSection = () => {
                 className="bg-white rounded-[18px] border border-line ring-0 overflow-hidden flex flex-col shadow-none py-0! gap-0 group"
               >
                 <div className="aspect-16/10 bg-paper-3 relative overflow-hidden">
-                  {/* Rotating Image with smooth fade */}
-                  <Image
-                    key={currentImage} // Key ensures React treats new images as new elements for animation
-                    src={currentImage}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-all duration-1000 ease-in-out scale-100 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
+                  {post.images.map((image, index) => {
+                    const isActive = index === imgIdx % post.images.length;
+
+                    return (
+                      <Image
+                        key={image}
+                        src={image}
+                        alt={post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className={`
+                          object-cover absolute inset-0
+                          /* Use transition-all to handle both opacity and transform at once */
+                          transition-all duration-1000 ease-in-out
+                          /* Keep the scale on the group-hover */
+                          group-hover:scale-110
+                          /* Toggle visibility using opacity and z-index */
+                          ${isActive ? "opacity-100 z-10" : "opacity-0 z-0"}
+                        `}
+                      />
+                    );
+                  })}
 
                   {/* Category Badge */}
-                  <div className="absolute top-3.5 left-3.5 px-3 py-1.25 bg-white/90 backdrop-blur-sm rounded-pill z-10">
+                  <div className="absolute top-3.5 left-3.5 px-3 py-1.25 bg-white/90 backdrop-blur-sm rounded-pill z-20">
                     <Typography as="div" variant="caption" color="brand-2" className="font-bold!">
                       {post.category}
                     </Typography>
