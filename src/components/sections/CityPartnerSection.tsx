@@ -7,10 +7,10 @@ import cityPartnerTwo from "../../../media/anjali_shah_1778648726831.jpg";
 
 const CityPartnerSection = () => {
   return (
-    <section className="bg-paper border-b border-line/70 overflow-hidden">
+    <section id="cityPartner" className="bg-paper border-b border-line/70 overflow-hidden">
       {/* --- Content Grid Section --- */}
       <div className="section-container section-padding">
-        <div className="flex flex-col items-center text-center justify-center mx-auto pb-16 px-5">
+        <div className="flex flex-col items-center text-center justify-center mx-auto pb-10 md:pb-16">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft w-fit mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
@@ -24,16 +24,16 @@ const CityPartnerSection = () => {
             <span className="heading-italic-brand">It changes how you move inside them.</span>
           </Typography>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-10 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-8 md:gap-10 lg:gap-14 items-center">
           {/* Left Column: Visuals */}
           <div className="relative">
             {/* Decorative Blurs */}
             <div className="absolute -left-6 top-8 h-36 w-36 rounded-full bg-brand-soft/70 blur-3xl" />
             <div className="absolute -right-3 -bottom-5 h-28 w-28 rounded-full bg-paper-2 blur-2xl" />
 
-            <div className="relative grid grid-cols-[1.08fr_0.92fr] gap-4 items-stretch">
+            <div className="relative grid grid-cols-1 sm:grid-cols-[1.08fr_0.92fr] gap-4 items-stretch">
               {/* Partner One (Sreyansh) */}
-              <div className="relative min-h-115 overflow-hidden rounded-3xl border border-line bg-paper shadow-card">
+              <div className="relative min-h-80 sm:min-h-115 overflow-hidden rounded-3xl border border-line bg-paper shadow-card">
                 <Image
                   src={cityPartnerOne}
                   alt="Sreyansh Jain portrait"
@@ -57,7 +57,7 @@ const CityPartnerSection = () => {
 
               {/* Partner Two & Badge Column */}
               <div className="flex flex-col gap-4 justify-between">
-                <div className="relative flex-1 overflow-hidden rounded-3xl border border-line bg-paper shadow-card min-h-55">
+                <div className="relative flex-1 overflow-hidden rounded-3xl border border-line bg-paper shadow-card min-h-80 sm:min-h-55">
                   <Image
                     src={cityPartnerTwo}
                     alt="Anup portrait"
@@ -97,31 +97,27 @@ const CityPartnerSection = () => {
           </div>
 
           {/* Right Column: Narrative Content */}
-          <div className="flex flex-col gap-2 lg:pl-4 text-justify">
-            <div className="space-y-4 max-w-160">
-              <Typography variant="body-md" color="ink-2" className="font-semibold!">
+          <div className="flex flex-col gap-2 lg:pl-4 text-left">
+            <div className="space-y-4 max-w-160 mx-auto lg:mx-0">
+              <Typography variant="body-md" color="ink-2">
                 At NIA Surat, we believe networking is far more than referrals and meetings. The
                 right room, with the right mindset and people, has the power to shape your vision,
                 elevate your standards, and transform both personal and business growth.
               </Typography>
 
-              <Typography variant="body-md" color="ink-2" className="font-semibold!">
+              <Typography variant="body-md" color="ink-2">
                 Our vision with NIA Surat is to build a community of growth-driven individuals who
                 uplift each other, share opportunities, discuss challenges openly, and grow
                 together. A space where collaboration feels natural, relationships are genuine, and
                 conversations go beyond business.
               </Typography>
 
-              <Typography variant="body-md" color="ink-2" className="font-semibold!">
+              <Typography variant="body-md" color="ink-2">
                 Through Network in Action, we are committed to creating an ecosystem that inspires
                 growth, learning, leadership, and meaningful connections.
               </Typography>
 
-              <Typography
-                variant="body-md"
-                color="ink-2"
-                className="mb-5 max-w-145 font-semibold! mt-2"
-              >
+              <Typography variant="body-md" color="ink-2" className="mb-5 max-w-145 mt-2">
                 Thank you all the existing NIA members for being a part of this journey.
               </Typography>
 
