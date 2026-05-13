@@ -71,7 +71,7 @@ const ScheduleSection = ({ chapterSlug }: ScheduleSectionProps) => {
             </Typography>
           </div>
 
-          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4 text-[48px]!">
+          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4 md:text-[48px]!">
             Every Wednesday <span className="italic font-serif text-brand">at 9:30</span>
           </Typography>
 

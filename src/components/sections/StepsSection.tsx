@@ -158,7 +158,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
       <div className="section-container section-padding">
         <div className="bg-white rounded-[24px] overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}
-          <div className="bg-brand-deep text-white p-[52px_44px] relative overflow-hidden">
+          <div className="bg-brand-deep text-white p-[52px_36px] md:p-[52px_44px] relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(46,157,219,0.25),transparent_50%)] pointer-events-none"></div>
 
             <div className="relative">

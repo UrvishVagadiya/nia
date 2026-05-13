@@ -15,6 +15,7 @@ import {
   FAQSection,
   GetintoRoom,
 } from "@/components/sections";
+import CityPartnerSection from "@/components/sections/CityPartnerSection";
 
 export default async function Home() {
   // Get subdomain from headers (set in middleware)
@@ -31,6 +32,7 @@ export default async function Home() {
 
   return (
     <main className="overflow-hidden">
+      <CityPartnerSection />
       <HeroSection
         chapterNumber={chapter.chapterNumber || ""}
         chapterName={chapter.name}
