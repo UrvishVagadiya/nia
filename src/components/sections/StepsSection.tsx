@@ -3,38 +3,13 @@
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import emailjs from "@emailjs/browser";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
 
-// Initialize EmailJS
-if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
-  emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-}
+import { StepsSectionProps, VisitorFormValues } from "@/lib/types";
 
-type VisitorFormValues = {
-  name: string;
-  email: string;
-  specialty: string;
-  phone: string;
-  notes: string;
-  chapterId: string;
-  chapterName: string;
-  chapterSlug: string;
-  venue: string;
-  meetingDay: string;
-  meetingDate: string;
-  meetingTopic: string;
-};
-
-interface StepsSectionProps {
-  chapterSlug?: string;
-  chapterName?: string;
-  venue?: string;
-}
-
-const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) => {
+const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSectionProps) => {
   const searchParams = useSearchParams();
   const queryChapter = searchParams.get("chapter") || "";
   const queryVenue = searchParams.get("venue") || "";
@@ -56,7 +31,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
       specialty: "",
       phone: "",
       notes: "",
-      chapterId: "",
+      chapterId: chapterId || "",
       chapterName: "",
       chapterSlug: "",
       venue: "",
@@ -67,6 +42,10 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
   });
 
   const currentChapterName = watch("chapterName");
+
+  useEffect(() => {
+    if (chapterId) setValue("chapterId", chapterId);
+  }, [chapterId, setValue]);
 
   useEffect(() => {
     const fallbackSlug = chapterSlug || queryChapter || "innovators";
@@ -94,56 +73,66 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
   }, [queryDay, queryDate, queryTopic, setValue]);
 
   const onSubmit = async (values: VisitorFormValues) => {
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-    const mailTo = process.env.NEXT_PUBLIC_MAIL_TO || "";
-
-    if (!serviceId || !templateId || !publicKey) {
-      toast.error("Email service configuration missing.");
+    if (!values.chapterId) {
+      toast.error("Chapter information is missing. Please refresh the page.");
       return;
     }
 
-    const templateParams = {
-      to_email: mailTo,
-      user_name: values.name,
-      user_phone: values.phone,
-      user_specialty: values.specialty,
-      user_notes: values.notes,
-      chapter_name: values.chapterName,
-      chapter_slug: values.chapterSlug,
-      venue: values.venue,
-      meeting_day: values.meetingDay,
-      meeting_date: values.meetingDate,
-      meeting_topic: values.meetingTopic,
-      name: values.name, // Matches {{name}} in From Name
-      email: values.email, // Matches {{email}} in Reply To
+    const payloadData = {
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      specialty: values.specialty,
+      notes: values.notes,
+      chapter: values.chapterId,
+      meetingDetails: {
+        day: values.meetingDay,
+        date: values.meetingDate,
+        topic: values.meetingTopic,
+        venue: values.venue,
+      },
     };
 
-    console.log("Sending EmailJS request with params:", templateParams);
+    const submitRequest = async () => {
+      const response = await fetch("/api/inquiries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payloadData),
+      });
 
-    const sendEmail = emailjs.send(serviceId, templateId, templateParams, publicKey);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.errors?.[0]?.message || "Failed to submit request");
+      }
 
-    toast.promise(sendEmail, {
+      return response.json();
+    };
+
+    // Use toast.promise and await it so isSubmitting works correctly
+    await toast.promise(submitRequest(), {
       loading: "Sending your request...",
-      success: (res) => {
-        console.log("EmailJS Success:", res);
+      success: () => {
         reset({
           name: "",
           email: "",
           specialty: "",
           phone: "",
           notes: "",
+          chapterId: values.chapterId,
           chapterName: values.chapterName,
           chapterSlug: values.chapterSlug,
           venue: values.venue,
         });
         return "Request sent! We'll reply within 24 hours.";
       },
-      error: (err) => {
-        console.error("EmailJS Error:", err);
-        return `Could not send: ${err?.text || "Unknown error"}`;
+      error: (err: unknown) => {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        console.error("Submission Error:", err);
+        return `Could not send: ${message}`;
       },
+      style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
     });
   };
 
@@ -337,7 +326,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
                 className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors disabled:opacity-70"
               >
                 <Typography as="span" variant="body-sm" color="white" className="font-bold!">
-                  {isSubmitting ? "Sending..." : "Submit request"}
+                  {isSubmitting ? "Submitting..." : "Submit request"}
                 </Typography>
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" size={16} />

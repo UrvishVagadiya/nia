@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
-import { notFound } from "next/navigation";
-import { getChapterBySlug } from "@/lib/payload";
+import { notFound, redirect } from "next/navigation";
+import { getChapterBySlug, getAllChapters } from "@/lib/payload";
 import {
   HeroSection,
   StatBand,
@@ -20,7 +20,29 @@ import CityPartnerSection from "@/components/sections/CityPartnerSection";
 export default async function Home() {
   // Get subdomain from headers (set in middleware)
   const headersList = await headers();
-  const chapterSlug = headersList.get("x-subdomain") || "innovators";
+  const host = headersList.get("host") || "";
+  const subdomain = headersList.get("x-subdomain");
+
+  // If no subdomain is present, dynamically redirect to the first available chapter
+  const chapters = await getAllChapters();
+  if (!subdomain) {
+    if (chapters && chapters.length > 0) {
+      const firstChapterSlug = chapters[0].slug;
+
+      // Determine the base domain for redirection
+      let redirectUrl = "";
+      if (host.includes("localhost")) {
+        redirectUrl = `http://${firstChapterSlug}.localhost:3000`;
+      } else {
+        const productionDomain = "nia-surat.propelius.tech";
+        redirectUrl = `https://${firstChapterSlug}.${productionDomain}`;
+      }
+
+      redirect(redirectUrl);
+    }
+  }
+
+  const chapterSlug = subdomain || chapters[0]?.slug || "innovators";
 
   // Fetch the chapter data from Payload CMS
   const chapter = await getChapterBySlug(chapterSlug);
@@ -68,7 +90,12 @@ export default async function Home() {
 
       <FAQSection />
 
-      <StepsSection chapterSlug={chapterSlug} chapterName={chapter.name} venue={chapter.venue} />
+      <StepsSection
+        chapterId={chapter.id}
+        chapterSlug={chapterSlug}
+        chapterName={chapter.name}
+        venue={chapter.venue}
+      />
     </main>
   );
 }

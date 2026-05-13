@@ -30,16 +30,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersList = await headers();
-  const currentChapterSlug = headersList.get("x-subdomain") || "innovators";
-  const host = headersList.get("host") || "";
+  const subdomain = headersList.get("x-subdomain");
+  const chapters = await getAllChapters();
+  const currentChapterSlug = subdomain || chapters[0]?.slug || "innovators";
 
-  let chapters: { name: string; slug: string }[] = [];
-  try {
-    const all = await getAllChapters();
-    chapters = Array.isArray(all) ? all.map((c) => ({ name: c.name, slug: c.slug })) : [];
-  } catch (error) {
-    console.error("Error fetching chapters for Navbar:", error);
-  }
+  const host = headersList.get("host") || "";
 
   // Fallback to defaults if CMS is empty or connection fails
   const navbarChapters: { name: string; slug: string }[] =

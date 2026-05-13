@@ -4,13 +4,7 @@ import { useState } from "react";
 import { ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
-import type { ScheduleItem } from "@/lib/types";
-
-interface ScheduleSectionProps {
-  chapterSlug?: string;
-  events?: ScheduleItem[];
-  chapterVenue?: string;
-}
+import { ScheduleItem, ScheduleSectionProps } from "@/lib/types";
 
 const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: ScheduleSectionProps) => {
   const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
@@ -23,6 +17,8 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
     events[0] || { day: "", date: "", topic: "", rsvps: 0, venue: "" };
   const displayVenue = activeEvent.venue || chapterVenue;
   const selectedSlug = chapterSlug || "innovators";
+
+  if (!events || events.length === 0) return null;
 
   return (
     <section id="schedule" className="bg-paper-2">

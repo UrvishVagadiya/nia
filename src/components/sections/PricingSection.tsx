@@ -4,12 +4,8 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
-
-import type { PricingPlan } from "@/lib/types";
-import { ArrowBigRight, ArrowRight } from "lucide-react";
-interface PricingSectionProps {
-  plans: PricingPlan[];
-}
+import { PricingPlan, PricingSectionProps } from "@/lib/types";
+import { ArrowRight } from "lucide-react";
 
 const formatPrice = (num: number) => {
   if (num >= 1000) {
@@ -19,13 +15,22 @@ const formatPrice = (num: number) => {
 };
 
 const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
+  // Find the popular plan name to set as initial state
+  const initialSelected = useMemo(() => {
+    if (!cmsPlans || cmsPlans.length === 0) return "";
+    const popular = cmsPlans.find((p) => p.isPopular);
+    return popular ? popular.name : cmsPlans[0].name;
+  }, [cmsPlans]);
+
   const [billing, setBilling] = useState<"monthly" | "annual">("annual");
-  const [selectedCard, setSelectedCard] = useState<string>("Member");
+  const [selectedCard, setSelectedCard] = useState<string>(initialSelected);
 
   const tiers = useMemo(() => {
-    // Sort by monthly price to ensure consistent order: 0, then 65k, then 85k
+    if (!cmsPlans) return [];
+
+    // Sort by annual price to ensure consistent order
     const sortedPlans = [...cmsPlans].sort(
-      (a, b) => Number(a.monthlyPrice ?? 0) - Number(b.monthlyPrice ?? 0)
+      (a, b) => Number(a.annualPrice ?? 0) - Number(b.annualPrice ?? 0)
     );
 
     return sortedPlans.map((p) => {
@@ -49,10 +54,12 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
           ? p.features.map((f) => (typeof f === "string" ? f : f.text)).filter((f) => !!f)
           : [],
         cta: "Apply to join",
-        popular: p.isPopular || p.name === "Member",
+        popular: p.isPopular,
       };
     });
   }, [cmsPlans]);
+
+  if (!cmsPlans || cmsPlans.length === 0) return null;
 
   return (
     <section id="membership" className="bg-paper">

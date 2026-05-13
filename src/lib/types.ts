@@ -1,3 +1,5 @@
+import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
+
 export interface Media {
   id: string;
   url: string;
@@ -137,4 +139,67 @@ export interface ChapterSummary {
 
 export interface PayloadListResponse<T> {
   docs: T[];
+}
+
+// Carousel Types
+export type CarouselApi = UseEmblaCarouselType[1];
+export type UseCarouselParameters = Parameters<typeof useEmblaCarousel>[0];
+
+export interface CarouselProps {
+  opts?: UseCarouselParameters;
+  plugins?: Parameters<typeof useEmblaCarousel>[1];
+  orientation?: "horizontal" | "vertical";
+  setApi?: (api: CarouselApi) => void;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export type CarouselContextProps = {
+  carouselRef: ReturnType<typeof useEmblaCarousel>[0];
+  api: CarouselApi;
+  scrollPrev: () => void;
+  scrollNext: () => void;
+  canScrollPrev: boolean;
+  canScrollNext: boolean;
+} & CarouselProps;
+
+// Section Component Props
+export interface PricingSectionProps {
+  plans: PricingPlan[];
+}
+
+export interface MembersSectionProps {
+  members?: Member[];
+}
+
+export interface ScheduleSectionProps {
+  chapterSlug?: string;
+  events?: ScheduleItem[];
+  chapterVenue?: string;
+}
+
+export interface StepsSectionProps {
+  chapterId: string | number;
+  chapterSlug: string;
+  chapterName: string;
+  venue?: string;
+}
+
+export interface VisitorFormValues {
+  name: string;
+  email: string;
+  specialty: string;
+  phone: string;
+  notes: string;
+  chapterId: string | number;
+  chapterName: string;
+  chapterSlug: string;
+  venue: string;
+  meetingDay: string;
+  meetingDate: string;
+  meetingTopic: string;
+}
+
+export interface StatBandProps {
+  stats?: { label: string; value: string }[];
 }
