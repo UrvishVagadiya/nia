@@ -110,7 +110,12 @@ export default async function ChapterPage({ params }: PageProps) {
 
       <FAQSection />
 
-      <StepsSection chapterSlug={chapter.slug} chapterName={chapter.name} venue={chapter.venue} />
+      <StepsSection
+        chapterId={chapter.id}
+        chapterSlug={chapter.slug}
+        chapterName={chapter.name}
+        venue={chapter.venue}
+      />
     </main>
   );
 }

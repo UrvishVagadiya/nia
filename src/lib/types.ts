@@ -179,9 +179,9 @@ export interface ScheduleSectionProps {
 }
 
 export interface StepsSectionProps {
-  chapterId: string | number;
-  chapterSlug: string;
-  chapterName: string;
+  chapterId?: string | number;
+  chapterSlug?: string;
+  chapterName?: string;
   venue?: string;
 }
 
