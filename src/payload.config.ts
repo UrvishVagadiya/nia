@@ -13,6 +13,10 @@ import { Testimonials } from "@/collections/Testimonials";
 import { PricingPlans } from "@/collections/PricingPlans";
 import { Events } from "@/collections/Events";
 import { Gallery } from "@/collections/Gallery";
+import { MembersMedia } from "@/collections/Members/MembersMedia";
+import { LeadersMedia } from "@/collections/Leaders/LeadersMedia";
+import { TestimonialsMedia } from "@/collections/Testimonials/TestimonialsMedia";
+import { GalleryMedia } from "@/collections/Gallery/GalleryMedia";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -28,6 +32,11 @@ export default buildConfig({
     api: "/api",
   },
   collections: [
+    Media,
+    MembersMedia,
+    LeadersMedia,
+    TestimonialsMedia,
+    GalleryMedia,
     Chapters,
     Leaders,
     Members,
@@ -35,7 +44,6 @@ export default buildConfig({
     Testimonials,
     Events,
     Gallery,
-    Media,
     {
       slug: "users",
       auth: true,
@@ -59,24 +67,105 @@ export default buildConfig({
     },
   }),
   plugins: [
-    /*
     s3Storage({
       collections: {
         media: {
           disablePayloadAccessControl: true,
+          generateFileURL: ({ filename }) => {
+            return `https://${process.env.SUPABASE_PROJECT_ID}.storage.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET_HEROES || "heroes"}/${filename}`;
+          },
         },
       },
-      bucket: process.env.S3_BUCKET || "",
+      bucket: process.env.S3_BUCKET_HEROES || "heroes",
       config: {
         credentials: {
           accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
         },
-        region: process.env.S3_REGION || "ap-northeast-1",
+        region: process.env.S3_REGION || "us-east-1",
         endpoint: process.env.S3_ENDPOINT || "",
         forcePathStyle: true,
       },
     }),
-    */
+    s3Storage({
+      collections: {
+        "members-media": {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename }) => {
+            return `https://${process.env.SUPABASE_PROJECT_ID}.storage.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET_MEMBERS || "members"}/${filename}`;
+          },
+        },
+      },
+      bucket: process.env.S3_BUCKET_MEMBERS || "members",
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+        },
+        region: process.env.S3_REGION || "us-east-1",
+        endpoint: process.env.S3_ENDPOINT || "",
+        forcePathStyle: true,
+      },
+    }),
+    s3Storage({
+      collections: {
+        "leaders-media": {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename }) => {
+            return `https://${process.env.SUPABASE_PROJECT_ID}.storage.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET_LEADERS || "leaders"}/${filename}`;
+          },
+        },
+      },
+      bucket: process.env.S3_BUCKET_LEADERS || "leaders",
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+        },
+        region: process.env.S3_REGION || "us-east-1",
+        endpoint: process.env.S3_ENDPOINT || "",
+        forcePathStyle: true,
+      },
+    }),
+    s3Storage({
+      collections: {
+        "testimonials-media": {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename }) => {
+            return `https://${process.env.SUPABASE_PROJECT_ID}.storage.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET_TESTIMONIALS || "testimonials"}/${filename}`;
+          },
+        },
+      },
+      bucket: process.env.S3_BUCKET_TESTIMONIALS || "testimonials",
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+        },
+        region: process.env.S3_REGION || "us-east-1",
+        endpoint: process.env.S3_ENDPOINT || "",
+        forcePathStyle: true,
+      },
+    }),
+    s3Storage({
+      collections: {
+        "gallery-media": {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename }) => {
+            return `https://${process.env.SUPABASE_PROJECT_ID}.storage.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET_GALLERY || "gallery"}/${filename}`;
+          },
+        },
+      },
+      bucket: process.env.S3_BUCKET_GALLERY || "gallery",
+      config: {
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+        },
+        region: process.env.S3_REGION || "us-east-1",
+        endpoint: process.env.S3_ENDPOINT || "",
+        forcePathStyle: true,
+      },
+    }),
   ],
 });

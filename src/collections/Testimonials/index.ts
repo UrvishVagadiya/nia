@@ -5,7 +5,7 @@ export const Testimonials: CollectionConfig = {
   admin: {
     useAsTitle: "quote",
     group: "Social Proof",
-    defaultColumns: ["quote", "testimonialType", "chapter"],
+    defaultColumns: ["quote", "testimonialType", "member", "leader"],
   },
   access: {
     read: () => true,
@@ -19,7 +19,7 @@ export const Testimonials: CollectionConfig = {
       options: [
         { label: "Member", value: "member" },
         { label: "Leader", value: "leader" },
-        { label: "External / Other", value: "external" },
+        { label: "Other", value: "external" },
       ],
       admin: {},
     },
@@ -70,9 +70,10 @@ export const Testimonials: CollectionConfig = {
     {
       name: "photo",
       type: "upload",
-      relationTo: "media",
+      relationTo: "testimonials-media",
       label: "Photo (Manual Override)",
       admin: {
+        condition: (data) => data.testimonialType === "external",
         description: "Only needed if not using a linked member/leader, or to override their photo.",
       },
     },
@@ -81,6 +82,7 @@ export const Testimonials: CollectionConfig = {
       type: "text",
       label: "Photo URL (External Override)",
       admin: {
+        condition: (data) => data.testimonialType === "external",
         description: "Direct URL to an image (e.g. Unsplash). Takes precedence if provided.",
       },
     },

@@ -25,13 +25,28 @@ export const Members: CollectionConfig = {
     { name: "convention", type: "text" },
     { name: "oneliner", type: "textarea" },
     {
-      name: "photo",
-      type: "upload",
-      relationTo: "media",
-      label: "Member Photo",
-      admin: {
-        description: "Select the member's photo from the Media collection.",
-      },
+      type: "row",
+      fields: [
+        {
+          name: "photo",
+          type: "upload",
+          relationTo: "members-media",
+          label: "Member Photo (Upload)",
+          admin: {
+            width: "50%",
+            description: "Upload a file to Supabase. This is preferred for optimization.",
+          },
+        },
+        {
+          name: "photoURL",
+          type: "text",
+          label: "Member Photo (Direct URL)",
+          admin: {
+            width: "50%",
+            description: "Or paste a direct Supabase/Unsplash URL here.",
+          },
+        },
+      ],
     },
     { name: "location", type: "text" },
     { name: "joined", type: "text" },

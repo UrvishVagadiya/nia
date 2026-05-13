@@ -1,4 +1,4 @@
-import { Chapter, Leader, Member, PricingPlan } from "./types";
+import { Chapter, Member, PricingPlan } from "./types";
 import { getPayload } from "payload";
 import config from "@/payload.config";
 
@@ -35,6 +35,7 @@ type LeaderDoc = {
   role: string;
   quote?: string;
   photo?: string | MediaDoc;
+  photoURL?: string;
   specialty?: string;
   tenure?: string;
   chapter?: string | number | ChapterSummaryDoc;
@@ -48,6 +49,7 @@ type MemberDoc = {
   convention?: string;
   oneliner?: string;
   photo?: string | MediaDoc;
+  photoURL?: string;
   location?: string;
   joined?: string;
   chapter?: string | number | ChapterSummaryDoc;
@@ -62,6 +64,7 @@ type TestimonialDoc = {
   who?: string;
   role?: string;
   photo?: string | MediaDoc;
+  photoURL?: string;
   photoUrl?: string;
   isGlobal?: boolean;
   chapter?: string | number | ChapterSummaryDoc;
@@ -103,7 +106,6 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
         equals: slug,
       },
     },
-    depth: 2, // Populate leader, members, etc.
   });
 
   if (result.docs.length === 0) return null;
@@ -117,21 +119,25 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       collection: "leaders",
       where: { chapter: { equals: chapter.id } },
       limit: 100,
+      depth: 2,
     }),
     payload.find({
       collection: "members",
       where: { chapter: { equals: chapter.id } },
       limit: 100,
+      depth: 2,
     }),
     payload.find({
       collection: "pricing-plans",
       where: { chapter: { equals: chapter.id } },
       limit: 100,
+      depth: 2,
     }),
     payload.find({
       collection: "events",
       where: { chapter: { equals: chapter.id } },
       limit: 100,
+      depth: 2,
     }),
     payload.find({
       collection: "testimonials",
@@ -139,12 +145,14 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
         or: [{ chapter: { equals: chapter.id } }, { isGlobal: { equals: true } }],
       },
       limit: 100,
+      depth: 2,
     }),
     payload.find({
       collection: "gallery",
       where: { chapter: { equals: chapter.id } },
       sort: "order",
       limit: 100,
+      depth: 2,
     }),
   ]);
 
@@ -178,7 +186,9 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       ? {
           ...(leader.docs[0] as unknown as LeaderDoc),
           id: String(leader.docs[0].id),
-          photo: getImageUrl((leader.docs[0] as unknown as LeaderDoc).photo),
+          photo:
+            (leader.docs[0] as unknown as LeaderDoc).photoURL ||
+            getImageUrl((leader.docs[0] as unknown as LeaderDoc).photo),
           chapter_id: chapterData.id,
           quote: String((leader.docs[0] as unknown as LeaderDoc).quote || ""),
         }
@@ -186,7 +196,7 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
     members: (members.docs as unknown as MemberDoc[]).map((m) => ({
       ...m,
       id: String(m.id),
-      photo: getImageUrl(m.photo),
+      photo: m.photoURL || getImageUrl(m.photo),
     })) as Member[],
     pricing:
       (pricing.docs as unknown as PricingPlan[]).map((p) => ({
@@ -209,18 +219,18 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
           const type = t.testimonialType || "external";
           let who = String(t.who || "");
           let role = String(t.role || "");
-          let photo = t.photoUrl || getImageUrl(t.photo);
+          let photo = t.photoURL || t.photoUrl || getImageUrl(t.photo);
 
           if (type === "member" && t.member && typeof t.member === "object") {
             const m = t.member as MemberDoc;
             who = m.name || who;
             role = m.specialty || role;
-            photo = photo || getImageUrl(m.photo);
+            photo = photo || m.photoURL || getImageUrl(m.photo);
           } else if (type === "leader" && t.leader && typeof t.leader === "object") {
             const l = t.leader as LeaderDoc;
             who = l.name || who;
             role = l.role || role;
-            photo = photo || getImageUrl(l.photo);
+            photo = photo || l.photoURL || getImageUrl(l.photo);
           }
 
           return {

@@ -14,13 +14,28 @@ export const Leaders: CollectionConfig = {
     { name: "role", type: "text", required: true },
     { name: "quote", type: "textarea" },
     {
-      name: "photo",
-      type: "upload",
-      relationTo: "media",
-      label: "Leader Photo",
-      admin: {
-        description: "Select the leader's photo from the Media collection.",
-      },
+      type: "row",
+      fields: [
+        {
+          name: "photo",
+          type: "upload",
+          relationTo: "leaders-media",
+          label: "Leader Photo (Upload)",
+          admin: {
+            width: "50%",
+            description: "Upload a file to Supabase.",
+          },
+        },
+        {
+          name: "photoURL",
+          type: "text",
+          label: "Leader Photo (Direct URL)",
+          admin: {
+            width: "50%",
+            description: "Or paste a direct URL here.",
+          },
+        },
+      ],
     },
     { name: "specialty", type: "text" },
     { name: "tenure", type: "text" },

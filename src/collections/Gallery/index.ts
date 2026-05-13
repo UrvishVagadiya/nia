@@ -9,7 +9,7 @@ export const Gallery: CollectionConfig = {
     read: () => true,
   },
   fields: [
-    { name: "image", type: "upload", relationTo: "media", required: true },
+    { name: "image", type: "upload", relationTo: "gallery-media", required: true },
     { name: "order", type: "number" },
     {
       name: "chapter",

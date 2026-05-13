@@ -1,63 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
-import type { ChapterSummary, PayloadListResponse, ScheduleItem } from "@/lib/types";
+import type { ScheduleItem } from "@/lib/types";
 
 interface ScheduleSectionProps {
   chapterSlug?: string;
+  events?: ScheduleItem[];
+  chapterVenue?: string;
 }
 
-const ScheduleSection = ({ chapterSlug }: ScheduleSectionProps) => {
-  const [selectedChapter, setSelectedChapter] = useState<ChapterSummary | null>(null);
-  const [events, setEvents] = useState<ScheduleItem[]>([]);
-  const [loadingEvents, setLoadingEvents] = useState(false);
+const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: ScheduleSectionProps) => {
   const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
 
-  useEffect(() => {
-    const loadChapter = async () => {
-      const res = await fetch("/api/chapters?limit=100");
-      const data = (await res.json()) as PayloadListResponse<ChapterSummary>;
-      const docs = Array.isArray(data.docs) ? data.docs : [];
-
-      const initialSlug = chapterSlug || "innovators";
-      const initial = docs.find((c) => c.slug === initialSlug) || docs[0] || null;
-      setSelectedChapter(initial);
-    };
-    loadChapter();
-  }, [chapterSlug]);
-
-  useEffect(() => {
-    const loadEvents = async () => {
-      if (!selectedChapter?.id) {
-        setEvents([]);
-        return;
-      }
-      setLoadingEvents(true);
-      try {
-        const res = await fetch(
-          `/api/events?limit=100&where[chapter][equals]=${selectedChapter.id}`
-        );
-        const data = (await res.json()) as PayloadListResponse<ScheduleItem>;
-        const docs = Array.isArray(data.docs) ? data.docs : [];
-        setEvents(docs);
-        if (docs.length > 0) {
-          setSelectedEvent(docs[0]);
-        }
-      } finally {
-        setLoadingEvents(false);
-      }
-    };
-    loadEvents();
-  }, [selectedChapter]);
-
   const activeEvent = selectedEvent ||
-    events[0] || { day: "", date: "", topic: "", rsvps: 0, venue: "" };
-  const chapterVenue = selectedChapter?.venue || "";
+    events[0] || { day: "—", date: "—", topic: "No upcoming meetings", rsvps: 0, venue: "" };
   const displayVenue = activeEvent.venue || chapterVenue;
-  const selectedSlug = selectedChapter?.slug || chapterSlug || "innovators";
+  const selectedSlug = chapterSlug || "innovators";
 
   return (
     <section id="schedule" className="bg-paper-2">
@@ -162,7 +123,6 @@ const ScheduleSection = ({ chapterSlug }: ScheduleSectionProps) => {
               );
             })}
           </div>
-          {loadingEvents && <div className="text-[12px] text-ink-4 mt-2">Loading schedule...</div>}
         </div>
       </div>
     </section>

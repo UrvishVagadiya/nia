@@ -1,19 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import emailjs from "@emailjs/browser";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
 
-// Initialize EmailJS
-if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
-  emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+interface StepsSectionProps {
+  chapterSlug?: string;
+  chapterName?: string;
+  venue?: string;
 }
 
-type VisitorFormValues = {
+interface VisitorFormValues {
   name: string;
   email: string;
   specialty: string;
@@ -26,18 +25,10 @@ type VisitorFormValues = {
   meetingDay: string;
   meetingDate: string;
   meetingTopic: string;
-};
-
-interface StepsSectionProps {
-  chapterSlug?: string;
-  chapterName?: string;
-  venue?: string;
 }
 
 const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) => {
   const searchParams = useSearchParams();
-  const queryChapter = searchParams.get("chapter") || "";
-  const queryVenue = searchParams.get("venue") || "";
   const queryDay = searchParams.get("day") || "";
   const queryDate = searchParams.get("date") || "";
   const queryTopic = searchParams.get("topic") || "";
@@ -45,9 +36,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
   const {
     register,
     handleSubmit,
-    setValue,
     watch,
-    reset,
     formState: { errors, isSubmitting },
   } = useForm<VisitorFormValues>({
     defaultValues: {
@@ -57,101 +46,19 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
       phone: "",
       notes: "",
       chapterId: "",
-      chapterName: "",
-      chapterSlug: "",
-      venue: "",
-      meetingDay: "",
-      meetingDate: "",
-      meetingTopic: "",
+      chapterName: chapterName || "",
+      chapterSlug: chapterSlug || "",
+      venue: venue || "",
+      meetingDay: queryDay,
+      meetingDate: queryDate,
+      meetingTopic: queryTopic,
     },
   });
 
-  const currentChapterName = watch("chapterName");
-
-  useEffect(() => {
-    const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
-    const fallbackSlug = chapterSlug || queryChapter || rootChapter;
-
-    // Capitalize slug words for fallback name (e.g. "superiors" -> "Superiors")
-    const fallbackName =
-      chapterName ||
-      fallbackSlug
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-
-    const fallbackVenue = venue || queryVenue || "";
-
-    setValue("chapterName", fallbackName);
-    setValue("chapterSlug", fallbackSlug);
-    setValue("venue", fallbackVenue);
-  }, [chapterSlug, chapterName, venue, queryChapter, queryVenue, setValue]);
-
-  useEffect(() => {
-    if (!queryDay && !queryDate && !queryTopic) return;
-    setValue("meetingDay", queryDay);
-    setValue("meetingDate", queryDate);
-    setValue("meetingTopic", queryTopic);
-  }, [queryDay, queryDate, queryTopic, setValue]);
-
   const onSubmit = async (values: VisitorFormValues) => {
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-    const mailTo = process.env.NEXT_PUBLIC_MAIL_TO || "";
-
-    if (!serviceId || !templateId || !publicKey) {
-      toast.error("Email service configuration missing.");
-      return;
-    }
-
-    const templateParams = {
-      to_email: mailTo,
-      user_name: values.name,
-      user_phone: values.phone,
-      user_specialty: values.specialty,
-      user_notes: values.notes,
-      chapter_name: values.chapterName,
-      chapter_slug: values.chapterSlug,
-      venue: values.venue,
-      meeting_day: values.meetingDay,
-      meeting_date: values.meetingDate,
-      meeting_topic: values.meetingTopic,
-      name: values.name, // Matches {{name}} in From Name
-      email: values.email, // Matches {{email}} in Reply To
-    };
-
-    console.log("Sending EmailJS request with params:", templateParams);
-
-    const sendEmail = emailjs.send(serviceId, templateId, templateParams, publicKey);
-
-    toast.promise(sendEmail, {
-      loading: "Sending your request...",
-      success: (res) => {
-        console.log("EmailJS Success:", res);
-        reset({
-          name: "",
-          email: "",
-          specialty: "",
-          phone: "",
-          notes: "",
-          chapterName: values.chapterName,
-          chapterSlug: values.chapterSlug,
-          venue: values.venue,
-        });
-        return "Request sent! We'll reply within 24 hours.";
-      },
-      error: (err) => {
-        const rootChapter = process.env.NEXT_PUBLIC_ROOT_CHAPTER_SLUG || "innovators";
-        console.error("EmailJS Error:", err);
-        return `Could not send: ${err?.text || "Unknown error"}`;
-      },
-    });
+    console.log("Form submitted:", values);
+    toast.success("Thank you for your interest! We will contact you soon.");
   };
-
-  const chapterLabel =
-    currentChapterName ||
-    (chapterSlug ? chapterSlug.charAt(0).toUpperCase() + chapterSlug.slice(1) : "Innovators");
 
   return (
     <section id="StepsSection" className="bg-paper-2 border-t border-line">
@@ -214,7 +121,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <Typography as="div" variant="eyebrow" color="brand-2" className="pb-4">
-                  Visitor Pass · {chapterLabel}
+                  Visitor Pass · {chapterName}
                 </Typography>
                 <Typography
                   as="div"
@@ -246,7 +153,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <label className="flex flex-col gap-1.5">
                   <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
                     Your name
@@ -279,7 +186,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
                 </label>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <label className="flex flex-col gap-1.5">
                   <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
                     Your specialty / trade

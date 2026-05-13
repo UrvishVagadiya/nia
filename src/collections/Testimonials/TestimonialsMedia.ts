@@ -1,7 +1,7 @@
 import { CollectionConfig } from "payload";
 
-export const Media: CollectionConfig = {
-  slug: "media",
+export const TestimonialsMedia: CollectionConfig = {
+  slug: "testimonials-media",
   upload: true,
   admin: {
     group: "Media Content",
@@ -15,7 +15,7 @@ export const Media: CollectionConfig = {
       name: "alt",
       type: "text",
       required: false,
-      defaultValue: "NIA Media Asset",
+      defaultValue: "Testimonial Photo",
     },
   ],
 };
