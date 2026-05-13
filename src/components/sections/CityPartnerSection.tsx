@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import Typography from "@/components/ui/typography";
-import cityPartnerOne from "../../../media/sreyansh_patel_1778647721522.jpg";
-import cityPartnerTwo from "../../../media/anjali_shah_1778648726831.jpg";
 
 const CityPartnerSection = () => {
   return (
@@ -35,7 +33,7 @@ const CityPartnerSection = () => {
               {/* Partner One (Sreyansh) */}
               <div className="relative min-h-80 sm:min-h-115 overflow-hidden rounded-3xl border border-line bg-paper shadow-card">
                 <Image
-                  src={cityPartnerOne}
+                  src="https://images.unsplash.com/flagged/photo-1577973371814-78b04a45ce5e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHx2aXN1YWwtc2VhcmNofDI5fHx8ZW58MHx8fHx8"
                   alt="Sreyansh Jain portrait"
                   fill
                   priority
@@ -59,7 +57,7 @@ const CityPartnerSection = () => {
               <div className="flex flex-col gap-4 justify-between">
                 <div className="relative flex-1 overflow-hidden rounded-3xl border border-line bg-paper shadow-card min-h-80 sm:min-h-55">
                   <Image
-                    src={cityPartnerTwo}
+                    src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=500&fit=crop&crop=faces"
                     alt="Anup portrait"
                     fill
                     sizes="(max-width: 1024px) 100vw, 30vw"
