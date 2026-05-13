@@ -56,9 +56,10 @@ export default async function Home() {
       <TestimonialsSection testimonials={chapter.testimonials} />
 
       <ScheduleSection
+        key={chapterSlug}
         chapterSlug={chapterSlug}
-        events={chapter.events}
-        chapterVenue={chapter.venue}
+        events={chapter.events || []}
+        chapterVenue={chapter.venue || ""}
       />
 
       <PricingSection plans={chapter.pricing || []} />
