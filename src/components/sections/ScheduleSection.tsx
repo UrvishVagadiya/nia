@@ -15,8 +15,12 @@ interface ScheduleSectionProps {
 const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: ScheduleSectionProps) => {
   const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
 
+  // If no event is selected, or the selected event is not in the current events list,
+  // we could derive the active event. But to keep the "selected" state interactive,
+  // we'll just use a fallback in the render logic.
+
   const activeEvent = selectedEvent ||
-    events[0] || { day: "—", date: "—", topic: "No upcoming meetings", rsvps: 0, venue: "" };
+    events[0] || { day: "", date: "", topic: "", rsvps: 0, venue: "" };
   const displayVenue = activeEvent.venue || chapterVenue;
   const selectedSlug = chapterSlug || "innovators";
 
@@ -32,7 +36,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
             </Typography>
           </div>
 
-          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4 md:text-[48px]!">
+          <Typography as="h2" variant="h2" color="brand-deep" className="mb-4 text-[48px]!">
             Every Wednesday <span className="italic font-serif text-brand">at 9:30</span>
           </Typography>
 

@@ -4,6 +4,7 @@ import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import { s3Storage } from "@payloadcms/storage-s3";
+import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 
 import { Chapters } from "@/collections/Chapters";
 import { Media } from "@/collections/Media";
@@ -65,6 +66,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
     },
+  }),
+  email: nodemailerAdapter({
+    defaultFromAddress: "admin@niasurat.com",
+    defaultFromName: "NIA Surat",
   }),
   plugins: [
     s3Storage({
@@ -162,7 +167,7 @@ export default buildConfig({
           accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
         },
-        region: process.env.S3_REGION || "us-east-1",
+        region: process.env.S3_REGION || "ap-southeast-1",
         endpoint: process.env.S3_ENDPOINT || "",
         forcePathStyle: true,
       },

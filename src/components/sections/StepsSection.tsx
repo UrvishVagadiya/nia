@@ -1,18 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
+import emailjs from "@emailjs/browser";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
 
-interface StepsSectionProps {
-  chapterSlug?: string;
-  chapterName?: string;
-  venue?: string;
+// Initialize EmailJS
+if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+  emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
 }
 
-interface VisitorFormValues {
+type VisitorFormValues = {
   name: string;
   email: string;
   specialty: string;
@@ -25,10 +26,18 @@ interface VisitorFormValues {
   meetingDay: string;
   meetingDate: string;
   meetingTopic: string;
+};
+
+interface StepsSectionProps {
+  chapterSlug?: string;
+  chapterName?: string;
+  venue?: string;
 }
 
 const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) => {
   const searchParams = useSearchParams();
+  const queryChapter = searchParams.get("chapter") || "";
+  const queryVenue = searchParams.get("venue") || "";
   const queryDay = searchParams.get("day") || "";
   const queryDate = searchParams.get("date") || "";
   const queryTopic = searchParams.get("topic") || "";
@@ -36,7 +45,9 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<VisitorFormValues>({
     defaultValues: {
@@ -46,26 +57,106 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
       phone: "",
       notes: "",
       chapterId: "",
-      chapterName: chapterName || "",
-      chapterSlug: chapterSlug || "",
-      venue: venue || "",
-      meetingDay: queryDay,
-      meetingDate: queryDate,
-      meetingTopic: queryTopic,
+      chapterName: "",
+      chapterSlug: "",
+      venue: "",
+      meetingDay: "",
+      meetingDate: "",
+      meetingTopic: "",
     },
   });
 
+  const currentChapterName = watch("chapterName");
+
+  useEffect(() => {
+    const fallbackSlug = chapterSlug || queryChapter || "innovators";
+
+    // Capitalize slug words for fallback name (e.g. "superiors" -> "Superiors")
+    const fallbackName =
+      chapterName ||
+      fallbackSlug
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+    const fallbackVenue = venue || queryVenue || "";
+
+    setValue("chapterName", fallbackName);
+    setValue("chapterSlug", fallbackSlug);
+    setValue("venue", fallbackVenue);
+  }, [chapterSlug, chapterName, venue, queryChapter, queryVenue, setValue]);
+
+  useEffect(() => {
+    if (!queryDay && !queryDate && !queryTopic) return;
+    setValue("meetingDay", queryDay);
+    setValue("meetingDate", queryDate);
+    setValue("meetingTopic", queryTopic);
+  }, [queryDay, queryDate, queryTopic, setValue]);
+
   const onSubmit = async (values: VisitorFormValues) => {
-    console.log("Form submitted:", values);
-    toast.success("Thank you for your interest! We will contact you soon.");
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    const mailTo = process.env.NEXT_PUBLIC_MAIL_TO || "";
+
+    if (!serviceId || !templateId || !publicKey) {
+      toast.error("Email service configuration missing.");
+      return;
+    }
+
+    const templateParams = {
+      to_email: mailTo,
+      user_name: values.name,
+      user_phone: values.phone,
+      user_specialty: values.specialty,
+      user_notes: values.notes,
+      chapter_name: values.chapterName,
+      chapter_slug: values.chapterSlug,
+      venue: values.venue,
+      meeting_day: values.meetingDay,
+      meeting_date: values.meetingDate,
+      meeting_topic: values.meetingTopic,
+      name: values.name, // Matches {{name}} in From Name
+      email: values.email, // Matches {{email}} in Reply To
+    };
+
+    console.log("Sending EmailJS request with params:", templateParams);
+
+    const sendEmail = emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+    toast.promise(sendEmail, {
+      loading: "Sending your request...",
+      success: (res) => {
+        console.log("EmailJS Success:", res);
+        reset({
+          name: "",
+          email: "",
+          specialty: "",
+          phone: "",
+          notes: "",
+          chapterName: values.chapterName,
+          chapterSlug: values.chapterSlug,
+          venue: values.venue,
+        });
+        return "Request sent! We'll reply within 24 hours.";
+      },
+      error: (err) => {
+        console.error("EmailJS Error:", err);
+        return `Could not send: ${err?.text || "Unknown error"}`;
+      },
+    });
   };
+
+  const chapterLabel =
+    currentChapterName ||
+    (chapterSlug ? chapterSlug.charAt(0).toUpperCase() + chapterSlug.slice(1) : "Innovators");
 
   return (
     <section id="StepsSection" className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
         <div className="bg-white rounded-[24px] overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}
-          <div className="bg-brand-deep text-white p-[52px_36px] md:p-[52px_44px] relative overflow-hidden">
+          <div className="bg-brand-deep text-white p-[52px_44px] relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(46,157,219,0.25),transparent_50%)] pointer-events-none"></div>
 
             <div className="relative">
@@ -121,7 +212,7 @@ const StepsSection = ({ chapterSlug, chapterName, venue }: StepsSectionProps) =>
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <Typography as="div" variant="eyebrow" color="brand-2" className="pb-4">
-                  Visitor Pass · {chapterName}
+                  Visitor Pass · {chapterLabel}
                 </Typography>
                 <Typography
                   as="div"
