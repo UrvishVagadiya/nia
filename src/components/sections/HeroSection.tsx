@@ -52,8 +52,8 @@ const HeroSection = ({
 
           <ul className="list-none p-0 m-0 mb-8 grid grid-cols-2 gap-3">
             {(bullets || []).map((item, idx) => (
-              <li key={idx} className="flex items-center gap-[10px]">
-                <span className="w-[22px] h-[22px] rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
+              <li key={idx} className="flex items-center gap-2.5">
+                <span className="w-5.5 h-5.5 rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
                   <Check size={12} strokeWidth={3} />
                 </span>
                 <Typography variant="body-sm" color="ink-2" className="text-[14.5px]!">

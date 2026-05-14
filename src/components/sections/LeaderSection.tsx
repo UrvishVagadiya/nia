@@ -38,7 +38,7 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
                 }}
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-paper-2 to-paper-3 flex items-center justify-center">
+              <div className="w-full h-full bg-linear-to-br from-paper-2 to-paper-3 flex items-center justify-center">
                 <Typography variant="body-sm" color="ink-4">
                   No image available
                 </Typography>
