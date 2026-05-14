@@ -15,8 +15,7 @@ export const config = {
   ],
 };
 
-export function middleware(req: NextRequest) {
-  const url = req.nextUrl.clone();
+export default function proxy(req: NextRequest) {
   const host = req.headers.get("host") || "";
 
   // Define your production domain
@@ -25,24 +24,15 @@ export function middleware(req: NextRequest) {
   // Extract subdomain
   let subdomain = "";
   if (host.includes("localhost")) {
-    // If it's just localhost:3000, redirect to innovator.localhost:3000
-    if (host === "localhost:3000") {
-      url.host = `innovator.localhost:3000`;
-      return NextResponse.redirect(url);
+    // If it's localhost:3000, subdomain is empty
+    if (host !== "localhost:3000") {
+      subdomain = host.replace(".localhost:3000", "");
     }
-    subdomain = host.replace(".localhost:3000", "");
   } else {
-    // If it's the naked production domain, redirect to innovator subdomain
-    if (host === productionDomain || host === `www.${productionDomain}`) {
-      url.host = `innovator.${productionDomain}`;
-      return NextResponse.redirect(url);
+    // If it's the naked production domain, subdomain is empty
+    if (host !== productionDomain && host !== `www.${productionDomain}`) {
+      subdomain = host.replace(`.${productionDomain}`, "");
     }
-    subdomain = host.replace(`.${productionDomain}`, "");
-  }
-
-  // Map 'innovator' subdomain to 'innovators' slug if needed
-  if (subdomain === "innovator") {
-    subdomain = "innovators";
   }
 
   // Create a new response and set the subdomain header

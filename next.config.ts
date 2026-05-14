@@ -3,14 +3,18 @@ import { withPayload } from "@payloadcms/next/withPayload";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "ddpnyfrddiyolkdzsqnx.storage.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
     ],
-    domains: ["ddpnyfrddiyolkdzsqnx.storage.supabase.co", "unsplash.com", "images.unsplash.com"],
   },
 };
 

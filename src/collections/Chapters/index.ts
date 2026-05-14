@@ -73,6 +73,16 @@ export const Chapters: CollectionConfig = {
                     placeholder: "Hyatt Regency, Athwa Lines",
                   },
                 },
+                {
+                  name: "email",
+                  type: "email",
+                  required: false,
+                  admin: {
+                    width: "33%",
+                    placeholder: "chapter@niasurat.com",
+                    description: "Emails for this chapter will be sent to this address.",
+                  },
+                },
               ],
             },
           ],

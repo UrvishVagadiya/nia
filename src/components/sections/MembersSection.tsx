@@ -2,22 +2,13 @@
 
 import Image from "next/image";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Member } from "@/lib/types";
+import { Member, MembersSectionProps, CarouselApi } from "@/lib/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Typography from "@/components/ui/typography";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import MemberCard from "./MemberCard";
-
-interface MembersSectionProps {
-  members?: Member[];
-}
 
 const MembersSection = ({ members = [] }: MembersSectionProps) => {
   const specialties = useMemo(() => {
@@ -74,6 +65,8 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
       api.scrollTo(index);
     }
   };
+
+  if (!members || members.length === 0) return null;
 
   return (
     <section id="members" className="bg-paper-2">

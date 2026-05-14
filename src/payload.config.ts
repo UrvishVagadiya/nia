@@ -18,6 +18,7 @@ import { MembersMedia } from "@/collections/Members/MembersMedia";
 import { LeadersMedia } from "@/collections/Leaders/LeadersMedia";
 import { TestimonialsMedia } from "@/collections/Testimonials/TestimonialsMedia";
 import { GalleryMedia } from "@/collections/Gallery/GalleryMedia";
+import { Inquiries } from "@/collections/Inquiries";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -29,6 +30,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  cors: [process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000"].filter(Boolean),
   routes: {
     api: "/api",
   },
@@ -45,6 +47,7 @@ export default buildConfig({
     Testimonials,
     Events,
     Gallery,
+    Inquiries,
     {
       slug: "users",
       auth: true,
@@ -68,8 +71,16 @@ export default buildConfig({
     },
   }),
   email: nodemailerAdapter({
-    defaultFromAddress: "admin@niasurat.com",
+    defaultFromAddress: process.env.SMTP_FROM_ADDRESS || "admin@niasurat.com",
     defaultFromName: "NIA Surat",
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT) || 587,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    },
   }),
   plugins: [
     s3Storage({

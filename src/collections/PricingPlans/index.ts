@@ -5,6 +5,11 @@ export const PricingPlans: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Financials",
+    defaultColumns: ["name", "chapter", "monthlyPrice", "annualPrice"],
+    listSearchableFields: ["name"],
+    components: {
+      beforeList: ["@/components/admin/ChapterFilterBar"],
+    },
   },
   access: {
     read: () => true,
