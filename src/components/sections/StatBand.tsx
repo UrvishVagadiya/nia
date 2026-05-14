@@ -1,6 +1,16 @@
+// "use client";
+
+// import Typography from "../ui/typography";
+// import { cn } from "@/lib/utils";
+
+// import { StatBandProps } from "@/lib/types";
+
+// const StatBand = ({ stats: cmsStats }: StatBandProps) => {
+//   const items = cmsStats?.length
+//     ? cmsStats.map((s, idx) => ({ key: idx, numeral: s.value, label: s.label }))
+//     : [];
 "use client";
 
-import { STATS } from "@/constant/Stantband.data";
 import Typography from "../ui/typography";
 import { cn } from "@/lib/utils";
 
@@ -9,7 +19,9 @@ import { StatBandProps } from "@/lib/types";
 const StatBand = ({ stats: cmsStats }: StatBandProps) => {
   const items = cmsStats?.length
     ? cmsStats.map((s, idx) => ({ key: idx, numeral: s.value, label: s.label }))
-    : STATS;
+    : [];
+
+  if (items.length === 0) return null;
 
   return (
     <section className="bg-paper-2 px-4 pb-12 lg:px-8 lg:pb-20 overflow-hidden">

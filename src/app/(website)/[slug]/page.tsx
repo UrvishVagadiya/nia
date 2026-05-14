@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getChapterBySlug } from "@/lib/payload";
+import { getNextEvent } from "@/hooks/getNextEvent";
 import {
   HeroSection,
   StatBand,
@@ -72,6 +73,9 @@ export default async function ChapterPage({ params }: PageProps) {
     );
   }
 
+  // Determine the next upcoming event from the chapter events (shared util)
+  const nextEvent = getNextEvent(chapter.events || []);
+
   return (
     <main>
       <HeroSection
@@ -82,6 +86,7 @@ export default async function ChapterPage({ params }: PageProps) {
         bullets={chapter.hero?.bullets?.map((b) => b.text) || []}
         mainImage={chapter.hero?.mainImage}
         leaderImage={chapter.hero?.leaderImage}
+        nextEvent={nextEvent}
       />
 
       {/* Stat Band - Mapping Supabase data to labels/values */}

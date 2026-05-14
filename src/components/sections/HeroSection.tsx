@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight } from "lucide-react";
 import Typography from "../ui/typography";
-import { SCHEDULE } from "@/constant/ScheduleSection.data";
 import type { HeroProps } from "@/lib/types";
 
 const HeroSection = ({
@@ -16,6 +15,7 @@ const HeroSection = ({
   bullets = [],
   mainImage,
   leaderImage,
+  nextEvent,
 }: HeroProps) => {
   const mainUrl =
     (typeof mainImage === "object" ? mainImage.url : mainImage) ||
@@ -101,7 +101,7 @@ const HeroSection = ({
               </Typography>
               <div>
                 <Typography as="div" variant="h5" color="white">
-                  {SCHEDULE[0].day}, {SCHEDULE[0].date}
+                  {nextEvent ? `${nextEvent.day}, ${nextEvent.date}` : "TBA"}
                 </Typography>
                 <Typography as="div" variant="caption" color="white" className="opacity-85 mt-1">
                   9:30 — 11:00 AM
