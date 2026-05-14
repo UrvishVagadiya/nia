@@ -5,7 +5,10 @@ export const Testimonials: CollectionConfig = {
   admin: {
     useAsTitle: "quote",
     group: "Social Proof",
-    defaultColumns: ["quote", "testimonialType", "member", "leader"],
+    defaultColumns: ["quote", "testimonialType", "chapter", "photoUrl"],
+    components: {
+      beforeList: ["@/components/admin/ChapterFilterBar"],
+    },
   },
   access: {
     read: () => true,
@@ -84,6 +87,9 @@ export const Testimonials: CollectionConfig = {
       admin: {
         condition: (data) => data.testimonialType === "external",
         description: "Direct URL to an image (e.g. Unsplash). Takes precedence if provided.",
+        components: {
+          Cell: "@/components/admin/ImageCell",
+        },
       },
     },
     {

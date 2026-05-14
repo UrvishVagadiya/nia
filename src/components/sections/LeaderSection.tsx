@@ -13,7 +13,9 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
     name: cmsLeader.name,
     title: cmsLeader.role,
     bio: cmsLeader.quote,
-    photo: typeof cmsLeader.photo === "object" ? cmsLeader.photo.url : cmsLeader.photo,
+    photo:
+      (typeof cmsLeader.photo === "object" ? cmsLeader.photo?.url : cmsLeader.photo) ||
+      (cmsLeader as { photoURL?: string }).photoURL,
     specialty: cmsLeader.specialty || "Chapter Leader",
     tenure: cmsLeader.tenure || "Founding Member",
   };

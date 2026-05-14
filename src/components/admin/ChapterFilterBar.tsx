@@ -95,6 +95,7 @@ const ChapterFilterBar: React.FC = () => {
             {/* All Chapters Pill */}
             <button
               onClick={() => handleFilter(null)}
+              suppressHydrationWarning
               style={{
                 padding: "6px 16px",
                 borderRadius: "20px",
@@ -121,6 +122,7 @@ const ChapterFilterBar: React.FC = () => {
                 <button
                   key={chapter.id}
                   onClick={() => handleFilter(chapter.id)}
+                  suppressHydrationWarning
                   style={{
                     padding: "6px 16px",
                     borderRadius: "20px",
