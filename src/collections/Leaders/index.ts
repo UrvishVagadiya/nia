@@ -12,6 +12,7 @@ export const Leaders: CollectionConfig = {
   fields: [
     { name: "name", type: "text", required: true },
     { name: "role", type: "text", required: true },
+    { name: "photo_source", type: "text", admin: { hidden: true } },
     { name: "quote", type: "textarea" },
     {
       type: "row",

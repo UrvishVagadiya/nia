@@ -6,7 +6,7 @@ export const Members: CollectionConfig = {
   admin: {
     useAsTitle: "name",
     group: "Chapter Data",
-    defaultColumns: ["name", "chapter", "photo", "specialty"],
+    defaultColumns: ["name", "chapter", "photo", "photoURL", "specialty"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },
@@ -35,6 +35,9 @@ export const Members: CollectionConfig = {
           admin: {
             width: "50%",
             description: "Upload a file to Supabase. This is preferred for optimization.",
+            components: {
+              Cell: "@/components/admin/ImageCell",
+            },
           },
         },
         {
@@ -44,6 +47,9 @@ export const Members: CollectionConfig = {
           admin: {
             width: "50%",
             description: "Or paste a direct Supabase/Unsplash URL here.",
+            components: {
+              Cell: "@/components/admin/ImageCell",
+            },
           },
         },
       ],

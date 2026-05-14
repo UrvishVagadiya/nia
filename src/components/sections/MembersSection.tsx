@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Member, MembersSectionProps, CarouselApi } from "@/lib/types";
+import { MembersSectionProps, CarouselApi } from "@/lib/types";
+import { useStickyFilter } from "@/hooks/useStickyFilter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Typography from "@/components/ui/typography";
@@ -16,7 +17,8 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
     return ["All", ...Array.from(set).sort()];
   }, [members]);
 
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useStickyFilter("last_specialty_filter", "All", specialties);
+
   const [activeIndex, setActiveIndex] = useState(0);
   const thumbScrollRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);

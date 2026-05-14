@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
-import { PricingPlan, PricingSectionProps } from "@/lib/types";
+import { PricingSectionProps } from "@/lib/types";
 import { ArrowRight } from "lucide-react";
 
 const formatPrice = (num: number) => {
