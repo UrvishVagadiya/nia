@@ -83,6 +83,13 @@ type EventDoc = {
   rsvps?: number;
 };
 
+type FAQDoc = {
+  id: string | number;
+  question: string;
+  answer: string;
+  order?: number;
+};
+
 type GalleryDoc = {
   id: string | number;
   image?: string | MediaDoc;
@@ -132,7 +139,7 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
 
   // Fetch related data that isn't directly in Chapters collection fields
   // (Assuming we have relationships set up or we fetch by chapter ID)
-  const [leader, members, pricing, events, testimonials, gallery] = await Promise.all([
+  const [leader, members, pricing, events, testimonials, gallery, faqs] = await Promise.all([
     payload.find({
       collection: "leaders",
       where: {
@@ -187,12 +194,21 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       limit: 100,
       depth: 2,
     }),
+    payload.find({
+      collection: "faqs",
+      where: {
+        chapter: { equals: chapter.id },
+      },
+      sort: "order",
+      limit: 100,
+    }),
   ]);
 
   const chapterData = result.docs[0] as unknown as ChapterDoc;
   const eventDocs = events.docs as unknown as EventDoc[];
   const testimonialDocs = testimonials.docs as unknown as TestimonialDoc[];
   const galleryDocs = gallery.docs as unknown as GalleryDoc[];
+  const faqDocs = faqs.docs as unknown as FAQDoc[];
 
   const getImageUrl = (img: string | MediaDoc | undefined | null): string => {
     if (!img) return "";
@@ -279,6 +295,12 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       : [],
     gallery: Array.isArray(galleryDocs)
       ? galleryDocs.map((g) => getImageUrl(g.image) || g.url || "")
+      : [],
+    faqs: Array.isArray(faqDocs)
+      ? faqDocs.map((f) => ({
+          question: f.question,
+          answer: f.answer,
+        }))
       : [],
   };
 };

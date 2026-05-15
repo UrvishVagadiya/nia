@@ -179,7 +179,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
         meetingTopic: "",
       });
 
-      toast.success("Request sent! We'll reply within 24 hours.", {
+      toast.success("Request sent! We'll reply soon.", {
         style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
       });
 
@@ -436,15 +436,6 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   <ArrowRight size={16} />
                 )}
               </button>
-
-              <Typography
-                as="div"
-                variant="caption"
-                color="ink-4"
-                className="text-center font-semibold"
-              >
-                Replied within 24 hours
-              </Typography>
             </form>
           </div>
         </div>

@@ -38,8 +38,8 @@ export type Testimonial = {
 };
 
 export type FAQItem = {
-  q: string;
-  a: string;
+  question: string;
+  answer: string;
 };
 
 export type ValueProp = {
@@ -122,6 +122,7 @@ export interface Chapter {
   events: ScheduleItem[];
   testimonials: Testimonial[];
   gallery: string[];
+  faqs: FAQItem[];
 }
 
 export interface Leader {

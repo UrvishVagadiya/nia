@@ -19,6 +19,7 @@ import { LeadersMedia } from "@/collections/Leaders/LeadersMedia";
 import { TestimonialsMedia } from "@/collections/Testimonials/TestimonialsMedia";
 import { GalleryMedia } from "@/collections/Gallery/GalleryMedia";
 import { Inquiries } from "@/collections/Inquiries";
+import { FAQs } from "@/collections/FAQs";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -48,6 +49,7 @@ export default buildConfig({
     Events,
     Gallery,
     Inquiries,
+    FAQs,
     {
       slug: "users",
       auth: true,

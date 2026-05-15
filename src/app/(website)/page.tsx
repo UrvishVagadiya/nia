@@ -57,7 +57,7 @@ export default async function Home() {
   const nextEvent = getNextEvent(chapter.events || []);
 
   return (
-    <main className="overflow-hidden">
+    <main className="overflow-hidden alternating-sections">
       <HeroSection
         chapterNumber={chapter.chapterNumber || ""}
         chapterName={chapter.name}
@@ -92,7 +92,7 @@ export default async function Home() {
 
       <UpdatesSection />
 
-      <FAQSection />
+      <FAQSection faqs={chapter.faqs} />
 
       <StepsSection
         chapterId={chapter.id}

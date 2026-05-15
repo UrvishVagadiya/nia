@@ -326,3 +326,18 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ── Dynamic Alternating Sections ────────────────────────────────────── */
+
+.alternating-sections > section {
+  /* Default to paper */
+  background-color: var(--color-paper-2) !important;
+}
+
+.alternating-sections > section:nth-of-type(even) {
+  background-color: var(--color-paper) !important;
+}
+
+.alternating-sections > section.no-alternate {
+  background-color: unset !important;
+}

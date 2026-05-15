@@ -6,8 +6,7 @@ import { CollectionAfterChangeHook } from "payload";
  */
 const getVisitorEmailHtml = (data: {
   chapterName: string;
-  meetingDay: string;
-  meetingDate: string;
+  meetingDisplay: string;
   meetingTopic: string;
   venue: string;
   visitorName: string;
@@ -62,7 +61,7 @@ const getVisitorEmailHtml = (data: {
             <tr>
               <td style="padding:20px;">
                 <div style="font-size:11px; font-weight:800; color:#0369A1; text-transform:uppercase; letter-spacing:1px;">Requested Meeting</div>
-                <h2 style="margin:8px 0 0; color:#0F3452; font-size:20px;">${data.meetingDay}, ${data.meetingDate}</h2>
+                <h2 style="margin:8px 0 0; color:#0F3452; font-size:20px;">${data.meetingDisplay}</h2>
                 <p style="margin:6px 0; color:#334155; font-size:14px;"><strong>Topic:</strong> ${data.meetingTopic}</p>
                 <p style="margin:6px 0; color:#334155; font-size:14px;"><strong>Venue:</strong> ${data.venue}</p>
               </td>
@@ -177,7 +176,7 @@ export const sendInquiryEmail: CollectionAfterChangeHook = async ({ doc, operati
     const meetingDisplay =
       meetingDay && meetingDate
         ? `${meetingDay}, ${meetingDate}`
-        : meetingDate || meetingDay || "Not Scheduled";
+        : meetingDate || meetingDay || " ";
     console.log(
       `📅 Meeting details: ${meetingDisplay} | Topic: ${meetingDetails.topic || "Regular Meeting"}`
     );
@@ -185,8 +184,7 @@ export const sendInquiryEmail: CollectionAfterChangeHook = async ({ doc, operati
     const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
     const emailHtml = getVisitorEmailHtml({
       chapterName: chapter.name || "N/A",
-      meetingDay: meetingDay, // Kept for the template but we'll use meetingDisplay more effectively
-      meetingDate: meetingDate,
+      meetingDisplay: meetingDisplay,
       meetingTopic: meetingDetails.topic || "Regular Meeting",
       venue: meetingDetails.venue || chapter.venue || "N/A",
       visitorName: doc.name,

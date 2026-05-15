@@ -7,10 +7,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FAQ } from "@/constant/FAQSection.data";
+import { FAQItem } from "@/lib/types";
 import { Plus } from "lucide-react";
 
-const FAQSection = () => {
+interface FAQSectionProps {
+  faqs: FAQItem[];
+}
+
+const FAQSection = ({ faqs = [] }: FAQSectionProps) => {
+  if (!faqs || faqs.length === 0) return null;
+
   return (
     <section className="bg-paper-2">
       <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 sm:gap-16">
@@ -33,7 +39,7 @@ const FAQSection = () => {
         {/* Right Side (Accordion) */}
         <div className="flex flex-col">
           <Accordion defaultValue={["item-0"]} suppressHydrationWarning>
-            {FAQ.map((item, index) => (
+            {faqs.map((item, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
@@ -46,15 +52,19 @@ const FAQSection = () => {
                     color="brand-deep"
                     className="text-balance font-bold!"
                   >
-                    {item.q}
+                    {item.question}
                   </Typography>
                   <span className="w-7.5 h-7.5 rounded-full grid place-items-center shrink-0 text-[18px] leading-none font-semibold transition-all duration-200 bg-paper-2 text-brand-deep group-aria-expanded/accordion-trigger:rotate-45 group-aria-expanded/accordion-trigger:bg-brand group-aria-expanded/accordion-trigger:text-white">
                     <Plus size={12} strokeWidth={3} />
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="pb-6">
-                  <Typography variant="body-sm" color="ink-2" className="max-w-180">
-                    {item.a}
+                  <Typography
+                    variant="body-sm"
+                    color="ink-2"
+                    className="max-w-180 whitespace-pre-wrap"
+                  >
+                    {item.answer}
                   </Typography>
                 </AccordionContent>
               </AccordionItem>
