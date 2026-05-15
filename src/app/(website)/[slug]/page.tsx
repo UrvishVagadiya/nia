@@ -15,6 +15,7 @@ import {
   UpdatesSection,
   FAQSection,
   GetintoRoom,
+  CityPartnerSection,
 } from "@/components/sections";
 
 interface PageProps {
@@ -91,6 +92,7 @@ export default async function ChapterPage({ params }: PageProps) {
 
       {/* Stat Band - Mapping Supabase data to labels/values */}
       <StatBand stats={chapter.stats} />
+      <CityPartnerSection data={chapter.cityPartner} />
 
       <WhyJoinSection />
 
@@ -111,7 +113,7 @@ export default async function ChapterPage({ params }: PageProps) {
       {/* Pricing Plans for this chapter */}
       <PricingSection plans={chapter.pricing} />
 
-      <UpdatesSection />
+      <UpdatesSection updates={chapter.updates} />
 
       <FAQSection faqs={chapter.faqs} />
 

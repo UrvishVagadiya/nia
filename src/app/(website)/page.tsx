@@ -69,7 +69,7 @@ export default async function Home() {
         nextEvent={nextEvent}
       />
       <StatBand stats={chapter.stats} />
-      <CityPartnerSection />
+      <CityPartnerSection data={chapter.cityPartner} />
 
       <WhyJoinSection />
 
@@ -90,7 +90,7 @@ export default async function Home() {
 
       <PricingSection plans={chapter.pricing || []} />
 
-      <UpdatesSection />
+      <UpdatesSection updates={chapter.updates} />
 
       <FAQSection faqs={chapter.faqs} />
 

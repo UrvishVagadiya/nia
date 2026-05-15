@@ -57,6 +57,31 @@ export type BlogPost = {
   images: string[];
 };
 
+export type Update = {
+  id: string;
+  title: string;
+  slug: string;
+  preview: string;
+  category: string;
+  images: string[];
+  publishedDate: string;
+};
+
+export type CityPartnerMessage = {
+  city: string;
+  title: string;
+  subtitle?: string;
+  messageParagraphs: { text: string }[];
+  partners: {
+    name: string;
+    role: string;
+    image: string;
+    location: string;
+  }[];
+  closingText: string;
+  signatureLine: string;
+};
+
 export type FooterColumn = {
   title: string;
   links: {
@@ -123,6 +148,8 @@ export interface Chapter {
   testimonials: Testimonial[];
   gallery: string[];
   faqs: FAQItem[];
+  updates: Update[];
+  cityPartner?: CityPartnerMessage;
 }
 
 export interface Leader {
@@ -213,4 +240,12 @@ export interface VisitorFormValues {
 
 export interface StatBandProps {
   stats?: { label: string; value: string }[];
+}
+
+export interface UpdatesSectionProps {
+  updates: Update[];
+}
+
+export interface CityPartnerSectionProps {
+  data?: CityPartnerMessage;
 }

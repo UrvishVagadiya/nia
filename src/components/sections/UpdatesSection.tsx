@@ -3,19 +3,22 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Typography from "@/components/ui/typography";
-import { BLOG_POSTS } from "../../constant/UpdatesSection.data";
+import { UpdatesSectionProps } from "@/lib/types";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
-const UpdatesSection = () => {
+const UpdatesSection = ({ updates = [] }: UpdatesSectionProps) => {
   const [imgIdx, setImgIdx] = useState(0);
 
   useEffect(() => {
+    if (!updates || updates.length === 0) return;
     const interval = setInterval(() => {
       setImgIdx((prev) => prev + 1);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [updates]);
+
+  if (!updates || updates.length === 0) return null;
 
   return (
     <section id="updates" className="bg-paper border-t border-line">
@@ -38,13 +41,10 @@ const UpdatesSection = () => {
 
         {/* Blog grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {BLOG_POSTS.map((post) => {
-            // Get the current image using modulo to loop through the array
-            const currentImage = post.images[imgIdx % post.images.length];
-
+          {updates.map((post) => {
             return (
               <Card
-                key={post.title}
+                key={post.id}
                 className="bg-white rounded-[18px] border border-line ring-0 overflow-hidden flex flex-col shadow-none py-0! gap-0 group"
               >
                 <div className="aspect-16/10 bg-paper-3 relative overflow-hidden">
@@ -53,7 +53,7 @@ const UpdatesSection = () => {
 
                     return (
                       <Image
-                        key={image}
+                        key={`${post.id}-${index}`}
                         src={image}
                         alt={post.title}
                         fill
@@ -81,7 +81,7 @@ const UpdatesSection = () => {
 
                 <div className="px-5.5 pt-5 pb-6 flex flex-col gap-2.5 flex-1">
                   <Typography as="div" variant="caption" color="ink-4" className="font-semibold!">
-                    {post.date}
+                    {post.publishedDate}
                   </Typography>
                   <CardTitle>
                     <Typography variant="h4" color="brand-deep" className="text-[18px]! font-bold!">

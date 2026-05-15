@@ -123,6 +123,7 @@ const HeroSection = ({
                 src={leaderUrl}
                 alt="Chapter leader"
                 fill
+                priority
                 className="object-cover"
                 sizes="(max-width: 1024px) 50vw, 25vw"
               />

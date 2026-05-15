@@ -107,6 +107,14 @@ export const beforeChangeSoftDelete: CollectionBeforeChangeHook = async ({
       data.isDeleted = true;
       data.status = "deleted";
       data.deletedAt = data.deletedAt || new Date();
+    } else if (data.status === "deleted" || data.isDeleted === true) {
+      // Force sync if already deleted but one field changed
+      data.isDeleted = true;
+      data.status = "deleted";
+    } else if (data.status === "active" || data.isDeleted === false) {
+      // Force sync if already active but one field changed
+      data.isDeleted = false;
+      data.status = "active";
     }
   } else if (operation === "create") {
     if (data.isDeleted === true || data.status === "deleted") {

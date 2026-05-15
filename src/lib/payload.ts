@@ -90,6 +90,32 @@ type FAQDoc = {
   order?: number;
 };
 
+type UpdateDoc = {
+  id: string | number;
+  title: string;
+  slug: string;
+  preview: string;
+  category: string;
+  images: { image: string | MediaDoc }[];
+  publishedDate: string;
+};
+
+type CityPartnerDoc = {
+  id: string | number;
+  city: string;
+  title: string;
+  subtitle?: string;
+  messageParagraphs: { text: string }[];
+  partners: {
+    name: string;
+    role: string;
+    image: string | MediaDoc;
+    location: string;
+  }[];
+  closingText: string;
+  signatureLine: string;
+};
+
 type GalleryDoc = {
   id: string | number;
   image?: string | MediaDoc;
@@ -139,76 +165,95 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
 
   // Fetch related data that isn't directly in Chapters collection fields
   // (Assuming we have relationships set up or we fetch by chapter ID)
-  const [leader, members, pricing, events, testimonials, gallery, faqs] = await Promise.all([
-    payload.find({
-      collection: "leaders",
-      where: {
-        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
-      },
-      limit: 100,
-      depth: 2,
-    }),
-    payload.find({
-      collection: "members",
-      where: {
-        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
-      },
-      limit: 100,
-      depth: 2,
-    }),
-    payload.find({
-      collection: "pricing-plans",
-      where: {
-        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
-      },
-      limit: 100,
-      depth: 2,
-    }),
-    payload.find({
-      collection: "events",
-      where: {
-        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
-      },
-      limit: 100,
-      depth: 2,
-    }),
-    payload.find({
-      collection: "testimonials",
-      where: {
-        and: [
-          {
-            or: [{ chapter: { equals: chapter.id } }, { isGlobal: { equals: true } }],
-          },
-          { isDeleted: { not_equals: true } },
-        ],
-      },
-      limit: 100,
-      depth: 2,
-    }),
-    payload.find({
-      collection: "gallery",
-      where: {
-        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
-      },
-      sort: "order",
-      limit: 100,
-      depth: 2,
-    }),
-    payload.find({
-      collection: "faqs",
-      where: {
-        chapter: { equals: chapter.id },
-      },
-      sort: "order",
-      limit: 100,
-    }),
-  ]);
+  const [leader, members, pricing, events, testimonials, gallery, faqs, updates, cityPartner] =
+    await Promise.all([
+      payload.find({
+        collection: "leaders",
+        where: {
+          and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+        },
+        limit: 100,
+        depth: 2,
+      }),
+      payload.find({
+        collection: "members",
+        where: {
+          and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+        },
+        limit: 100,
+        depth: 2,
+      }),
+      payload.find({
+        collection: "pricing-plans",
+        where: {
+          and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+        },
+        limit: 100,
+        depth: 2,
+      }),
+      payload.find({
+        collection: "events",
+        where: {
+          and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+        },
+        limit: 100,
+        depth: 2,
+      }),
+      payload.find({
+        collection: "testimonials",
+        where: {
+          and: [
+            {
+              or: [{ chapter: { equals: chapter.id } }, { isGlobal: { equals: true } }],
+            },
+            { isDeleted: { not_equals: true } },
+          ],
+        },
+        limit: 100,
+        depth: 2,
+      }),
+      payload.find({
+        collection: "gallery",
+        where: {
+          and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+        },
+        sort: "order",
+        limit: 100,
+        depth: 2,
+      }),
+      payload.find({
+        collection: "faqs",
+        where: {
+          chapter: { equals: chapter.id },
+        },
+        sort: "order",
+        limit: 100,
+      }),
+      payload.find({
+        collection: "updates",
+        where: {
+          and: [{ chapter: { equals: chapter.id } }, { published: { equals: true } }],
+        },
+        sort: "-publishedDate",
+        limit: 10,
+      }),
+      payload.find({
+        collection: "city-partners",
+        where: {
+          published: { equals: true },
+        },
+        sort: "order",
+        limit: 1,
+      }),
+    ]);
 
   const chapterData = result.docs[0] as unknown as ChapterDoc;
   const eventDocs = events.docs as unknown as EventDoc[];
   const testimonialDocs = testimonials.docs as unknown as TestimonialDoc[];
   const galleryDocs = gallery.docs as unknown as GalleryDoc[];
   const faqDocs = faqs.docs as unknown as FAQDoc[];
+  const updateDocs = updates.docs as unknown as UpdateDoc[];
+  const cityPartnerDocs = cityPartner.docs as unknown as CityPartnerDoc[];
 
   const getImageUrl = (img: string | MediaDoc | undefined | null): string => {
     if (!img) return "";
@@ -302,6 +347,37 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
           answer: f.answer,
         }))
       : [],
+    updates: Array.isArray(updateDocs)
+      ? updateDocs.map((u) => ({
+          id: String(u.id),
+          title: u.title,
+          slug: u.slug,
+          preview: u.preview,
+          category: u.category,
+          images: u.images.map((img) => getImageUrl(img.image)),
+          publishedDate: new Date(u.publishedDate).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+        }))
+      : [],
+    cityPartner: cityPartnerDocs[0]
+      ? {
+          city: cityPartnerDocs[0].city,
+          title: cityPartnerDocs[0].title,
+          subtitle: cityPartnerDocs[0].subtitle,
+          messageParagraphs: cityPartnerDocs[0].messageParagraphs,
+          partners: cityPartnerDocs[0].partners.map((p) => ({
+            name: p.name,
+            role: p.role,
+            image: getImageUrl(p.image),
+            location: p.location,
+          })),
+          closingText: cityPartnerDocs[0].closingText,
+          signatureLine: cityPartnerDocs[0].signatureLine,
+        }
+      : undefined,
   };
 };
 

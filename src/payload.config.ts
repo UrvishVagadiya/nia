@@ -20,6 +20,8 @@ import { TestimonialsMedia } from "@/collections/Testimonials/TestimonialsMedia"
 import { GalleryMedia } from "@/collections/Gallery/GalleryMedia";
 import { Inquiries } from "@/collections/Inquiries";
 import { FAQs } from "@/collections/FAQs";
+import { Updates } from "@/collections/Updates";
+import { CityPartners } from "@/collections/CityPartners";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -50,6 +52,8 @@ export default buildConfig({
     Gallery,
     Inquiries,
     FAQs,
+    Updates,
+    CityPartners,
     {
       slug: "users",
       auth: true,
