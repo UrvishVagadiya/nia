@@ -74,6 +74,8 @@ type EventDoc = {
   id: string | number;
   day: string;
   date: string;
+  startTime?: string;
+  endTime?: string;
   topic: string;
   venue?: string;
   rsvps?: number;
@@ -90,6 +92,11 @@ export const getAllChapters = async (): Promise<Pick<Chapter, "name" | "slug" | 
   const payload = await getPayload({ config });
   const result = await payload.find({
     collection: "chapters",
+    where: {
+      isDeleted: {
+        not_equals: true,
+      },
+    },
     limit: 100,
   });
   const docs = result.docs as ChapterSummaryDoc[];
@@ -102,9 +109,18 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
   const result = await payload.find({
     collection: "chapters",
     where: {
-      slug: {
-        equals: slug,
-      },
+      and: [
+        {
+          slug: {
+            equals: slug,
+          },
+        },
+        {
+          isDeleted: {
+            not_equals: true,
+          },
+        },
+      ],
     },
   });
 
@@ -117,39 +133,54 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
   const [leader, members, pricing, events, testimonials, gallery] = await Promise.all([
     payload.find({
       collection: "leaders",
-      where: { chapter: { equals: chapter.id } },
+      where: {
+        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+      },
       limit: 100,
       depth: 2,
     }),
     payload.find({
       collection: "members",
-      where: { chapter: { equals: chapter.id } },
+      where: {
+        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+      },
       limit: 100,
       depth: 2,
     }),
     payload.find({
       collection: "pricing-plans",
-      where: { chapter: { equals: chapter.id } },
+      where: {
+        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+      },
       limit: 100,
       depth: 2,
     }),
     payload.find({
       collection: "events",
-      where: { chapter: { equals: chapter.id } },
+      where: {
+        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+      },
       limit: 100,
       depth: 2,
     }),
     payload.find({
       collection: "testimonials",
       where: {
-        or: [{ chapter: { equals: chapter.id } }, { isGlobal: { equals: true } }],
+        and: [
+          {
+            or: [{ chapter: { equals: chapter.id } }, { isGlobal: { equals: true } }],
+          },
+          { isDeleted: { not_equals: true } },
+        ],
       },
       limit: 100,
       depth: 2,
     }),
     payload.find({
       collection: "gallery",
-      where: { chapter: { equals: chapter.id } },
+      where: {
+        and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
+      },
       sort: "order",
       limit: 100,
       depth: 2,
@@ -209,6 +240,8 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       ? eventDocs.map((e) => ({
           day: String(e.day || ""),
           date: String(e.date || ""),
+          startTime: e.startTime ? String(e.startTime) : undefined,
+          endTime: e.endTime ? String(e.endTime) : undefined,
           topic: String(e.topic || ""),
           venue: String(e.venue || ""),
           rsvps: Number(e.rsvps || 0),
@@ -252,9 +285,18 @@ export const getGlobalTestimonials = async () => {
   const result = await payload.find({
     collection: "testimonials",
     where: {
-      isGlobal: {
-        equals: true,
-      },
+      and: [
+        {
+          isGlobal: {
+            equals: true,
+          },
+        },
+        {
+          isDeleted: {
+            not_equals: true,
+          },
+        },
+      ],
     },
     limit: 10,
   });

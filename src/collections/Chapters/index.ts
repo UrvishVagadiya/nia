@@ -1,21 +1,33 @@
 import { CollectionConfig } from "payload";
 import formatSlug from "../../hooks/formatSlug";
 import { revalidateChapter } from "../../hooks/revalidateChapter";
+import { deleteChapterDependencies } from "../../utils/deleteChapterDependencies";
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
 
 export const Chapters: CollectionConfig = {
   slug: "chapters",
   admin: {
     useAsTitle: "name",
     group: "Chapter Data",
-    defaultColumns: ["name", "slug", "chapterNumber"],
+    defaultColumns: ["name", "slug", "chapterNumber", "status"],
   },
   hooks: {
+    beforeOperation: [onSoftDelete("chapters", deleteChapterDependencies)],
+    beforeChange: [beforeChangeSoftDelete],
     afterChange: [revalidateChapter],
+    afterOperation: [afterSoftDelete],
   },
   access: {
-    read: () => true,
+    read: softDeleteAccess,
   },
   fields: [
+    ...softDeleteFields,
     {
       name: "membersLink",
       type: "ui",
@@ -40,7 +52,10 @@ export const Chapters: CollectionConfig = {
                   name: "name",
                   type: "text",
                   required: true,
-                  admin: { width: "33%" },
+                  admin: {
+                    width: "33%",
+                    autoComplete: "off",
+                  },
                 },
                 {
                   name: "slug",
@@ -61,7 +76,13 @@ export const Chapters: CollectionConfig = {
                   required: true,
                   admin: {
                     width: "33%",
-                    placeholder: "Chapter 01",
+                    placeholder: "01",
+                  },
+                  validate: (val: string | string[] | null | undefined) => {
+                    if (!val) return "Chapter number is required";
+                    if (Array.isArray(val)) return "Please enter a single number";
+                    if (!/^\d+$/.test(val)) return "Please enter numbers only (e.g. 01, 02)";
+                    return true;
                   },
                 },
                 {

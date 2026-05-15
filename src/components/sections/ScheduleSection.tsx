@@ -9,14 +9,31 @@ import { ScheduleItem, ScheduleSectionProps } from "@/lib/types";
 const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: ScheduleSectionProps) => {
   const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
 
-  // If no event is selected, or the selected event is not in the current events list,
-  // we could derive the active event. But to keep the "selected" state interactive,
-  // we'll just use a fallback in the render logic.
-
   const activeEvent = selectedEvent ||
     events[0] || { day: "", date: "", topic: "", rsvps: 0, venue: "" };
   const displayVenue = activeEvent.venue || chapterVenue;
   const selectedSlug = chapterSlug || "innovators";
+
+  // Native Formatter for "Wed, May 13"
+  const formatDateLong = (dateStr?: string | Date): string => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).format(d);
+  };
+
+  // Native Formatter for "May 13"
+  const formatDateShort = (dateStr?: string | Date): string => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+    }).format(d);
+  };
 
   if (!events || events.length === 0) return null;
 
@@ -71,26 +88,23 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
                 {activeEvent.rsvps} {" RSVP'd"}
               </span>
             </div>
-
             <div className="font-serif text-[clamp(36px,4vw,52px)] leading-none font-semibold tracking-[-0.02em] mb-4">
-              {activeEvent.day}, {activeEvent.date}
+              {formatDateLong(activeEvent.date)}
             </div>
-
-            <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-[45px]">
+            <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-11.25">
               {activeEvent.topic}
             </div>
-
             <Link
               href={
                 selectedSlug && activeEvent.date
-                  ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&day=${encodeURIComponent(activeEvent.day)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
+                  ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
                   : "#StepsSection"
               }
               className="bg-brand text-white border border-brand text-center py-3.25 px-5.5 rounded-pill text-[14px] font-semibold inline-flex items-center gap-2.5 w-full justify-center hover:bg-brand-2 transition-colors"
             >
               <span className="flex items-center justify-center">Request a visitor pass</span>
               <ArrowRight size={15} />
-            </Link>
+            </Link>{" "}
           </div>
 
           {/* Sub Cards Row */}
@@ -117,7 +131,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
                   <div
                     className={`text-[15px] mt-1 font-bold ${isActive ? "text-brand" : "text-brand-deep"}`}
                   >
-                    {item.date}
+                    {formatDateShort(item.date)}
                   </div>
                 </button>
               );

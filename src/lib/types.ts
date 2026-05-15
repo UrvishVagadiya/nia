@@ -76,6 +76,8 @@ export interface SlotConfig {
 export interface ScheduleItem {
   day: string;
   date: string;
+  startTime?: string;
+  endTime?: string;
   topic: string;
   venue?: string;
   rsvps: number;

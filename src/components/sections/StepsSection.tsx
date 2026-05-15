@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { Check, Loader2, ArrowRight } from "lucide-react";
@@ -9,13 +9,38 @@ import Typography from "@/components/ui/typography";
 
 import { StepsSectionProps, VisitorFormValues } from "@/lib/types";
 
+const getCurrentTimestampMs = () => Date.now();
+
 const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSectionProps) => {
+  const [cooldown, setCooldown] = useState(() => {
+    if (typeof window === "undefined") return 0;
+
+    const lastInquiryTime = localStorage.getItem("last_inquiry_time");
+    if (lastInquiryTime) {
+      const elapsed = (Date.now() - parseInt(lastInquiryTime)) / 1000;
+      const cooldownDuration = 60;
+      const remaining = Math.max(0, Math.ceil(cooldownDuration - elapsed));
+      return remaining > 0 ? remaining : 0;
+    }
+    return 0;
+  });
   const searchParams = useSearchParams();
   const queryChapter = searchParams.get("chapter") || "";
   const queryVenue = searchParams.get("venue") || "";
-  const queryDay = searchParams.get("day") || "";
   const queryDate = searchParams.get("date") || "";
   const queryTopic = searchParams.get("topic") || "";
+
+  // Helper inside component to consistently format date strings natively
+  const formatDateLong = (dateStr?: string | Date): string => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return typeof dateStr === "string" ? dateStr : "";
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).format(d);
+  };
 
   const {
     register,
@@ -35,16 +60,26 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       chapterName: "",
       chapterSlug: "",
       venue: "",
-      meetingDay: "",
+      meetingDay: "", // Retained mapping placeholder to prevent breaks if required by types
       meetingDate: "",
       meetingTopic: "",
     },
   });
 
   const currentChapterName = useWatch({ control: formControl, name: "chapterName" });
-  const selectedMeetingDay = useWatch({ control: formControl, name: "meetingDay" });
   const selectedMeetingDate = useWatch({ control: formControl, name: "meetingDate" });
   const selectedMeetingTopic = useWatch({ control: formControl, name: "meetingTopic" });
+
+  // Countdown effect
+  useEffect(() => {
+    if (cooldown <= 0) return;
+
+    const interval = setInterval(() => {
+      setCooldown((prev) => (prev > 1 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [cooldown]);
 
   useEffect(() => {
     if (chapterId) setValue("chapterId", chapterId);
@@ -69,11 +104,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
   }, [chapterSlug, chapterName, venue, queryChapter, queryVenue, setValue]);
 
   useEffect(() => {
-    if (!queryDay && !queryDate && !queryTopic) return;
-    setValue("meetingDay", queryDay);
+    if (!queryDate && !queryTopic) return;
     setValue("meetingDate", queryDate);
     setValue("meetingTopic", queryTopic);
-  }, [queryDay, queryDate, queryTopic, setValue]);
+  }, [queryDate, queryTopic, setValue]);
 
   const onSubmit = async (values: VisitorFormValues) => {
     if (!values.chapterId) {
@@ -89,8 +123,8 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       notes: values.notes,
       chapter: values.chapterId,
       meetingDetails: {
-        day: values.meetingDay,
-        date: values.meetingDate,
+        day: formatDateLong(values.meetingDate).split(",")[0] || "Wed",
+        date: formatDateLong(values.meetingDate),
         topic: values.meetingTopic,
         venue: values.venue,
       },
@@ -113,30 +147,38 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       return response.json();
     };
 
-    // Use toast.promise and await it so isSubmitting works correctly
-    await toast.promise(submitRequest(), {
-      loading: "Sending your request...",
-      success: () => {
-        reset({
-          name: "",
-          email: "",
-          specialty: "",
-          phone: "",
-          notes: "",
-          chapterId: values.chapterId,
-          chapterName: values.chapterName,
-          chapterSlug: values.chapterSlug,
-          venue: values.venue,
-        });
-        return "Request sent! We'll reply within 24 hours.";
-      },
-      error: (err: unknown) => {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        console.error("Submission Error:", err);
-        return `Could not send: ${message}`;
-      },
-      style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
-    });
+    try {
+      await submitRequest();
+
+      reset({
+        name: "",
+        email: "",
+        specialty: "",
+        phone: "",
+        notes: "",
+        chapterId: values.chapterId,
+        chapterName: values.chapterName,
+        chapterSlug: values.chapterSlug,
+        venue: values.venue,
+        meetingDay: "",
+        meetingDate: "",
+        meetingTopic: "",
+      });
+
+      toast.success("Request sent! We'll reply within 24 hours.", {
+        style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
+      });
+
+      // Set cooldown
+      setCooldown(60); // 60 second cooldown
+      const now = getCurrentTimestampMs();
+      localStorage.setItem("last_inquiry_time", now.toString());
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      toast.error(`Could not send: ${message}`, {
+        style: { background: "#fff", color: "#ff4d4d", border: "1px solid #ff4d4d" },
+      });
+    }
   };
 
   const chapterLabel =
@@ -219,7 +261,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   Request a pass
                 </Typography>
 
-                {(selectedMeetingDate || selectedMeetingTopic) && (
+                {selectedMeetingDate && (
                   <div className="mb-2 p-3.5 bg-brand-soft rounded-[10px] border border-brand/20">
                     <Typography
                       variant="caption"
@@ -230,11 +272,13 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                     </Typography>
                     <div className="flex flex-col gap-0.5">
                       <Typography variant="body-sm" color="brand-deep" className="font-bold!">
-                        {selectedMeetingDay}, {selectedMeetingDate}
+                        {formatDateLong(selectedMeetingDate)}
                       </Typography>
-                      <Typography variant="caption" color="ink-3" className="italic">
-                        {selectedMeetingTopic}
-                      </Typography>
+                      {selectedMeetingTopic && (
+                        <Typography variant="caption" color="ink-3" className="italic">
+                          {selectedMeetingTopic}
+                        </Typography>
+                      )}
                     </div>
                   </div>
                 )}
@@ -354,15 +398,19 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
               <button
                 type="submit"
                 suppressHydrationWarning
-                disabled={isSubmitting}
-                className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors disabled:opacity-70"
+                disabled={isSubmitting || cooldown > 0}
+                className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Typography as="span" variant="body-sm" color="white" className="font-bold!">
-                  {isSubmitting ? "Submitting..." : "Submit request"}
+                  {isSubmitting
+                    ? "Submitting..."
+                    : cooldown > 0
+                      ? `Wait ${cooldown}s`
+                      : "Submit request"}
                 </Typography>
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" size={16} />
-                ) : (
+                ) : cooldown > 0 ? null : (
                   <ArrowRight size={16} />
                 )}
               </button>

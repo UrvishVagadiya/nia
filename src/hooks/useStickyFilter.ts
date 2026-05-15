@@ -21,9 +21,7 @@ export function useStickyFilter(
           }
           return saved;
         }
-      } catch (e) {
-        console.warn(`Failed to read filter [${key}] from localStorage:`, e);
-      }
+      } catch (e) {}
     }
     return initialValue;
   });
@@ -34,9 +32,7 @@ export function useStickyFilter(
       setFilter(newValue);
       try {
         localStorage.setItem(key, newValue);
-      } catch (e) {
-        console.warn(`Failed to save filter [${key}] to localStorage:`, e);
-      }
+      } catch (e) {}
     },
     [key]
   );

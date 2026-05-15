@@ -33,9 +33,6 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
                 className="object-cover"
                 sizes="(max-width: 980px) 90vw, 480px"
                 priority
-                onError={(e) => {
-                  console.error(`Failed to load image for ${leader.name}:`, e);
-                }}
               />
             ) : (
               <div className="w-full h-full bg-linear-to-br from-paper-2 to-paper-3 flex items-center justify-center">

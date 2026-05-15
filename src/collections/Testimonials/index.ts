@@ -1,19 +1,34 @@
 import { CollectionConfig } from "payload";
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
+import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
 export const Testimonials: CollectionConfig = {
   slug: "testimonials",
   admin: {
     useAsTitle: "quote",
     group: "Social Proof",
-    defaultColumns: ["quote", "testimonialType", "chapter", "photoUrl"],
+    defaultColumns: ["quote", "testimonialType", "chapter", "status"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },
   },
+  hooks: {
+    beforeOperation: [onSoftDelete("testimonials")],
+    beforeChange: [beforeChangeSoftDelete],
+    afterChange: [revalidateRelatedChapter],
+    afterOperation: [afterSoftDelete],
+  },
   access: {
-    read: () => true,
+    read: softDeleteAccess,
   },
   fields: [
+    ...softDeleteFields,
     {
       name: "testimonialType",
       type: "select",

@@ -30,7 +30,12 @@ const Navbar = ({ chapters, currentChapterSlug, host }: NavbarProps) => {
   }, [mobileOpen]);
 
   return (
-    <header className="sticky py-1.5 top-0 z-50 transition-all duration-300 bg-paper border-b border-line">
+    <header
+      className="sticky py-1.5 top-0 z-50 transition-all duration-300 bg-paper border-b border-line"
+      data-chapter={currentChapterSlug}
+      data-host={host}
+      data-chapters-count={chapters.length}
+    >
       <nav className="section-container flex items-center justify-between h-16">
         {/* LOGO */}
         <div className="pt-3 shrink-0">
@@ -82,7 +87,7 @@ const Navbar = ({ chapters, currentChapterSlug, host }: NavbarProps) => {
       >
         <div className="flex flex-col gap-2">
           <Typography
-            variant="caption"
+            variant="body-md"
             color="ink-4"
             className="uppercase tracking-widest font-bold mb-2 opacity-50"
           >

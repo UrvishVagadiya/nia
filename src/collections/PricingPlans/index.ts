@@ -1,20 +1,35 @@
 import { CollectionConfig } from "payload";
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
+import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
 export const PricingPlans: CollectionConfig = {
   slug: "pricing-plans",
   admin: {
     useAsTitle: "name",
     group: "Financials",
-    defaultColumns: ["name", "chapter", "monthlyPrice", "annualPrice"],
+    defaultColumns: ["name", "chapter", "monthlyPrice", "annualPrice", "status"],
     listSearchableFields: ["name"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },
   },
+  hooks: {
+    beforeOperation: [onSoftDelete("pricing-plans")],
+    beforeChange: [beforeChangeSoftDelete],
+    afterChange: [revalidateRelatedChapter],
+    afterOperation: [afterSoftDelete],
+  },
   access: {
-    read: () => true,
+    read: softDeleteAccess,
   },
   fields: [
+    ...softDeleteFields,
     { name: "name", type: "text", required: true },
     {
       type: "row",

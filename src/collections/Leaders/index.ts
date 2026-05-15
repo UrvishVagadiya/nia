@@ -1,39 +1,70 @@
 import { CollectionConfig } from "payload";
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
+import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
 export const Leaders: CollectionConfig = {
   slug: "leaders",
   admin: {
     useAsTitle: "name",
     group: "Chapter Data",
+    defaultColumns: ["name", "role", "chapter", "status"],
+  },
+  hooks: {
+    beforeOperation: [onSoftDelete("leaders")],
+    beforeChange: [beforeChangeSoftDelete],
+    afterChange: [revalidateRelatedChapter],
+    afterOperation: [afterSoftDelete],
   },
   access: {
-    read: () => true,
+    read: softDeleteAccess,
   },
   fields: [
+    ...softDeleteFields,
     { name: "name", type: "text", required: true },
     { name: "role", type: "text", required: true },
-    { name: "photo_source", type: "text", admin: { hidden: true } },
     { name: "quote", type: "textarea" },
     {
-      type: "row",
+      name: "photo_source",
+      type: "radio",
+      label: "Image Source",
+      defaultValue: "upload",
+      options: [
+        { label: "Upload File", value: "upload" },
+        { label: "Direct URL", value: "url" },
+      ],
+      admin: {
+        position: "sidebar",
+        description: "How will you provide the photo?",
+      },
+    },
+    {
+      type: "group",
+      label: "Leader Photo",
       fields: [
         {
           name: "photo",
           type: "upload",
           relationTo: "leaders-media",
-          label: "Leader Photo (Upload)",
+          label: false,
           admin: {
-            width: "50%",
-            description: "Upload a file to Supabase.",
+            condition: (data) => data.photo_source === "upload" || !data.photo_source,
+            description: "Upload a file or select from the media library.",
           },
         },
         {
           name: "photoURL",
           type: "text",
-          label: "Leader Photo (Direct URL)",
+          label: "Direct Image URL",
           admin: {
-            width: "50%",
-            description: "Or paste a direct URL here.",
+            condition: (data) => data.photo_source === "url",
+            description: "Enter a direct link to an image (e.g., Unsplash).",
+            placeholder: "https://example.com/photo.jpg",
           },
         },
       ],
@@ -44,7 +75,7 @@ export const Leaders: CollectionConfig = {
       name: "chapter",
       type: "relationship",
       relationTo: "chapters",
-      required: true,
+      required: false,
       unique: true,
     },
   ],

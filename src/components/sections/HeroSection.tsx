@@ -24,6 +24,38 @@ const HeroSection = ({
     (typeof leaderImage === "object" ? leaderImage.url : leaderImage) ||
     "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=500&fit=crop&crop=faces";
 
+  // Native Formatter for "Wed, May 13"
+  const formatDateLong = (dateStr?: string | Date): string => {
+    if (!dateStr) return "TBA";
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).format(d);
+  };
+
+  // Native Formatter for "9:30 — 11:00 AM"
+  const formatTimeRange = (startStr?: string | Date, endStr?: string | Date): string => {
+    if (!startStr || !endStr) return "9:30 — 11:00 AM";
+
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+
+    const startTimeStr = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: false,
+    }).format(start);
+
+    const endTimeStr = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(end);
+
+    return `${startTimeStr} — ${endTimeStr}`;
+  };
   return (
     <section className="bg-paper-2 overflow-hidden">
       <div className="section-container section-padding grid grid-col-1 md:grid-cols-2 gap-16 items-center">
@@ -101,10 +133,12 @@ const HeroSection = ({
               </Typography>
               <div>
                 <Typography as="div" variant="h5" color="white">
-                  {nextEvent ? `${nextEvent.day}, ${nextEvent.date}` : "TBA"}
+                  {nextEvent ? formatDateLong(nextEvent.date) : "TBA"}
                 </Typography>
                 <Typography as="div" variant="caption" color="white" className="opacity-85 mt-1">
-                  9:30 — 11:00 AM
+                  {nextEvent
+                    ? formatTimeRange(nextEvent.startTime, nextEvent.endTime)
+                    : "9:30 — 11:00 AM"}
                 </Typography>
               </div>
             </div>
