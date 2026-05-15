@@ -89,6 +89,7 @@ export interface HeroProps {
   bullets?: string[];
   mainImage?: string | Media;
   leaderImage?: string | Media;
+  nextEvent?: ScheduleItem;
 }
 
 export interface Chapter {

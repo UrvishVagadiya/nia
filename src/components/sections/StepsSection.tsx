@@ -160,7 +160,6 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       setCooldown(60);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Unknown error";
-      console.error("Submission Error:", err);
       toast.error(`Could not send: ${message}`, {
         style: { background: "#fff", color: "#ff4d4d", border: "1px solid #ff4d4d" },
       });
@@ -174,9 +173,9 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
   return (
     <section id="StepsSection" className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
-        <div className="bg-white rounded-[24px] overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
+        <div className="bg-white rounded-3xl overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}
-          <div className="bg-brand-deep text-white p-[52px_44px] relative overflow-hidden">
+          <div className="bg-brand-deep text-white p-[52px_36px] sm:p-[52px_44px] relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(46,157,219,0.25),transparent_50%)] pointer-events-none"></div>
 
             <div className="relative">

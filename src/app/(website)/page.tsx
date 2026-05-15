@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { getChapterBySlug, getAllChapters } from "@/lib/payload";
+import { getNextEvent } from "@/hooks/getNextEvent";
 import {
   HeroSection,
   StatBand,
@@ -52,6 +53,9 @@ export default async function Home() {
     notFound();
   }
 
+  // Determine the next upcoming event from the chapter events (shared util)
+  const nextEvent = getNextEvent(chapter.events || []);
+
   return (
     <main className="overflow-hidden">
       <CityPartnerSection />
@@ -63,6 +67,7 @@ export default async function Home() {
         bullets={chapter.hero?.bullets?.map((b) => b.text) || []}
         mainImage={chapter.hero?.mainImage}
         leaderImage={chapter.hero?.leaderImage}
+        nextEvent={nextEvent}
       />
 
       <StatBand stats={chapter.stats} />

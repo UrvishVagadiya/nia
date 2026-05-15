@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight } from "lucide-react";
 import Typography from "../ui/typography";
-import { SCHEDULE } from "@/constant/ScheduleSection.data";
 import type { HeroProps } from "@/lib/types";
 
 const HeroSection = ({
@@ -16,6 +15,7 @@ const HeroSection = ({
   bullets = [],
   mainImage,
   leaderImage,
+  nextEvent,
 }: HeroProps) => {
   const mainUrl =
     (typeof mainImage === "object" ? mainImage.url : mainImage) ||
@@ -52,8 +52,8 @@ const HeroSection = ({
 
           <ul className="list-none p-0 m-0 mb-8 grid grid-cols-2 gap-3">
             {(bullets || []).map((item, idx) => (
-              <li key={idx} className="flex items-center gap-[10px]">
-                <span className="w-[22px] h-[22px] rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
+              <li key={idx} className="flex items-center gap-2.5">
+                <span className="w-5.5 h-5.5 rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
                   <Check size={12} strokeWidth={3} />
                 </span>
                 <Typography variant="body-sm" color="ink-2" className="text-[14.5px]!">
@@ -101,7 +101,7 @@ const HeroSection = ({
               </Typography>
               <div>
                 <Typography as="div" variant="h5" color="white">
-                  {SCHEDULE[0].day}, {SCHEDULE[0].date}
+                  {nextEvent ? `${nextEvent.day}, ${nextEvent.date}` : "TBA"}
                 </Typography>
                 <Typography as="div" variant="caption" color="white" className="opacity-85 mt-1">
                   9:30 — 11:00 AM

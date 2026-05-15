@@ -55,7 +55,7 @@ export default buildConfig({
         useAsTitle: "email",
       },
       access: {
-        read: () => true,
+        read: ({ req: { user } }) => !!user,
       },
       fields: [],
     },

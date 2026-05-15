@@ -50,10 +50,6 @@ export const deleteChapterDependencies = async (payload: Payload, chapterId: str
     if (chapterFields.length === 0) continue;
 
     for (const fieldName of chapterFields) {
-      payload.logger.info(
-        `[Cascade Delete] Scanning ${collection.slug} for field: ${fieldName} referencing chapter: ${chapterId}`
-      );
-
       try {
         // Find all documents referencing this chapter in this field
         const docs = await payload.find({
@@ -68,10 +64,6 @@ export const deleteChapterDependencies = async (payload: Payload, chapterId: str
         });
 
         if (docs.totalDocs > 0) {
-          payload.logger.info(
-            `[Cascade Delete] Found ${docs.totalDocs} documents in ${collection.slug} to delete.`
-          );
-
           // Soft Delete: Instead of deleting or just dissociating,
           // we mark records as deleted and record the timestamp.
           for (const doc of docs.docs) {
@@ -87,11 +79,7 @@ export const deleteChapterDependencies = async (payload: Payload, chapterId: str
             });
           }
         }
-      } catch (err) {
-        payload.logger.error(
-          `[Cascade Soft-Delete] Error dissociating collection ${collection.slug}: ${err}`
-        );
-      }
+      } catch (err) {}
     }
   }
 };

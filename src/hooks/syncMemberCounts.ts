@@ -23,8 +23,6 @@ export const syncMemberCounts: CollectionAfterChangeHook = async ({ doc, req: { 
       },
       limit: 1,
     });
-
-    payload.logger.info(`Chapter ${chapterId} now has ${totalDocs} active members.`);
   }
 
   return doc;
@@ -46,7 +44,5 @@ export const syncMemberCountsOnDelete: CollectionAfterDeleteHook = async ({
       },
       limit: 1,
     });
-
-    payload.logger.info(`Chapter ${chapterId} now has ${totalDocs} members after deletion.`);
   }
 };

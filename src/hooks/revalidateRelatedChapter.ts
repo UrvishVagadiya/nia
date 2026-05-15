@@ -22,20 +22,15 @@ export const revalidateRelatedChapter: CollectionAfterChangeHook = async ({
       });
 
       if (chapter && chapter.slug) {
-        payload.logger.info(
-          `Revalidating chapter: /${chapter.slug} due to change in ${collection.slug}`
-        );
         revalidatePath(`/${chapter.slug}`, "page");
         revalidatePath("/", "layout");
       }
     } else if (doc.isGlobal) {
       // For global things like some testimonials, revalidate all chapters or just home
-      payload.logger.info(`Revalidating home/layout due to global change in ${collection.slug}`);
+
       revalidatePath("/", "layout");
     }
-  } catch (err) {
-    payload.logger.error(`Error revalidating related chapter: ${err}`);
-  }
+  } catch (err) {}
 
   return doc;
 };

@@ -21,7 +21,7 @@ interface SoftDeleteRequest extends PayloadRequest {
  * Arguments for the beforeOperation hook during a delete operation.
  */
 interface BeforeDeleteOperationArgs {
-  id?: string | number;
+  id?: string | number | null;
   where?: Where;
   req: SoftDeleteRequest;
 }

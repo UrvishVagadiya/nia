@@ -19,7 +19,6 @@ const serverFunction: ServerFunctionClient = async function (args) {
       importMap,
     });
   } catch (error) {
-    console.error("Payload Server Function Error:", error);
     throw error;
   }
 };
