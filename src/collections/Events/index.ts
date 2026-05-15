@@ -21,12 +21,25 @@ export const Events: CollectionConfig = {
       hasMany: false,
     },
     {
-      name: "day",
+      name: "date",
+      type: "date",
+      required: true,
+
+      admin: {
+        date: {
+          pickerAppearance: "dayOnly",
+        },
+      },
+    },
+
+    {
+      name: "startTime",
       type: "text",
       required: true,
     },
+
     {
-      name: "date",
+      name: "endTime",
       type: "text",
       required: true,
     },
