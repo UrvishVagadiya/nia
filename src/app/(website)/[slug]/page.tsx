@@ -113,7 +113,7 @@ export default async function ChapterPage({ params }: PageProps) {
 
       <UpdatesSection />
 
-      <FAQSection />
+      <FAQSection faqs={chapter.faqs} />
 
       <StepsSection
         chapterId={chapter.id}
