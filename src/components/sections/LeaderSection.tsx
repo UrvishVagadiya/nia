@@ -30,6 +30,7 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
                 src={leader.photo}
                 alt={leader.name}
                 fill
+                loading="eager"
                 className="object-cover"
                 sizes="(max-width: 980px) 90vw, 480px"
                 priority

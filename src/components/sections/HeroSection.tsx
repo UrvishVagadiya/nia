@@ -114,6 +114,7 @@ const HeroSection = ({
                 alt="Main chapter group"
                 fill
                 priority
+                loading="eager"
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
@@ -124,6 +125,7 @@ const HeroSection = ({
                 alt="Chapter leader"
                 fill
                 priority
+                loading="eager"
                 className="object-cover"
                 sizes="(max-width: 1024px) 50vw, 25vw"
               />

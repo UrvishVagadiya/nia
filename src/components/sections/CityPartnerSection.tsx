@@ -42,6 +42,7 @@ const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
                     src={partner1.image}
                     alt={`${partner1.name} portrait`}
                     fill
+                    loading="eager"
                     priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
@@ -69,6 +70,7 @@ const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
                       alt={`${partner2.name} portrait`}
                       fill
                       priority
+                      loading="eager"
                       sizes="(max-width: 1024px) 100vw, 30vw"
                       className="object-cover object-top"
                     />

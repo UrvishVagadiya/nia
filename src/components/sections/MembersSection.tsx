@@ -217,6 +217,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
                     alt={member.name}
                     width={36}
                     height={36}
+                    loading="eager"
                     className="w-full h-full object-cover"
                   />
                 </button>

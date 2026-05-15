@@ -98,6 +98,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
                         alt={t.who}
                         width={120}
                         height={120}
+                        loading="eager"
                         className="w-full h-full object-cover"
                       />
                     )}

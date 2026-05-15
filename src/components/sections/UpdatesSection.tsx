@@ -57,6 +57,7 @@ const UpdatesSection = ({ updates = [] }: UpdatesSectionProps) => {
                         src={image}
                         alt={post.title}
                         fill
+                        loading="eager"
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className={`
                           object-cover absolute inset-0

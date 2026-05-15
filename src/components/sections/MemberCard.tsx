@@ -17,6 +17,7 @@ const MemberCard = ({ member }: { member: Member }) => {
           }
           alt={member.name}
           fill
+          loading="eager"
           className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
         />
