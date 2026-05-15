@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
@@ -21,7 +21,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
     register,
     handleSubmit,
     setValue,
-    watch,
+    control: formControl,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<VisitorFormValues>({
@@ -41,7 +41,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
     },
   });
 
-  const currentChapterName = watch("chapterName");
+  const currentChapterName = useWatch({ control: formControl, name: "chapterName" });
+  const selectedMeetingDay = useWatch({ control: formControl, name: "meetingDay" });
+  const selectedMeetingDate = useWatch({ control: formControl, name: "meetingDate" });
+  const selectedMeetingTopic = useWatch({ control: formControl, name: "meetingTopic" });
 
   useEffect(() => {
     if (chapterId) setValue("chapterId", chapterId);
@@ -140,6 +143,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
     currentChapterName ||
     (chapterSlug ? chapterSlug.charAt(0).toUpperCase() + chapterSlug.slice(1) : "Innovators");
 
+  const fieldErrorMessage = (message: string) => (
+    <span className="text-[12px] text-red-600">{message}</span>
+  );
+
   return (
     <section id="StepsSection" className="bg-paper-2 border-t border-line">
       <div className="section-container section-padding">
@@ -212,7 +219,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   Request a pass
                 </Typography>
 
-                {(watch("meetingDate") || watch("meetingTopic")) && (
+                {(selectedMeetingDate || selectedMeetingTopic) && (
                   <div className="mb-2 p-3.5 bg-brand-soft rounded-[10px] border border-brand/20">
                     <Typography
                       variant="caption"
@@ -223,10 +230,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                     </Typography>
                     <div className="flex flex-col gap-0.5">
                       <Typography variant="body-sm" color="brand-deep" className="font-bold!">
-                        {watch("meetingDay")}, {watch("meetingDate")}
+                        {selectedMeetingDay}, {selectedMeetingDate}
                       </Typography>
                       <Typography variant="caption" color="ink-3" className="italic">
-                        {watch("meetingTopic")}
+                        {selectedMeetingTopic}
                       </Typography>
                     </div>
                   </div>
@@ -241,12 +248,16 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   <input
                     placeholder="Full name"
                     suppressHydrationWarning
-                    {...register("name", { required: true })}
+                    {...register("name", {
+                      required: "Name is required.",
+                      minLength: {
+                        value: 2,
+                        message: "Name must be at least 2 characters.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none focus:border-brand transition-colors"
                   />
-                  {errors.name && (
-                    <span className="text-[12px] text-red-600">Name is required.</span>
-                  )}
+                  {errors.name && fieldErrorMessage(errors.name.message || "Name is required.")}
                 </label>
 
                 <label className="flex flex-col gap-1.5">
@@ -257,12 +268,16 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                     placeholder="name@company.com"
                     type="email"
                     suppressHydrationWarning
-                    {...register("email", { required: true })}
+                    {...register("email", {
+                      required: "Email is required.",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Enter a valid email address.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none focus:border-brand transition-colors"
                   />
-                  {errors.email && (
-                    <span className="text-[12px] text-red-600">Email is required.</span>
-                  )}
+                  {errors.email && fieldErrorMessage(errors.email.message || "Email is required.")}
                 </label>
               </div>
 
@@ -274,12 +289,17 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   <input
                     placeholder="e.g. Textile exports"
                     suppressHydrationWarning
-                    {...register("specialty", { required: true })}
+                    {...register("specialty", {
+                      required: "Specialty is required.",
+                      minLength: {
+                        value: 3,
+                        message: "Specialty must be at least 3 characters.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none focus:border-brand transition-colors"
                   />
-                  {errors.specialty && (
-                    <span className="text-[12px] text-red-600">Specialty is required.</span>
-                  )}
+                  {errors.specialty &&
+                    fieldErrorMessage(errors.specialty.message || "Specialty is required.")}
                 </label>
 
                 <label className="flex flex-col gap-1.5">
@@ -289,12 +309,24 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   <input
                     placeholder="+91 …"
                     suppressHydrationWarning
-                    {...register("phone", { required: true })}
+                    {...register("phone", {
+                      required: "Phone is required.",
+                      minLength: {
+                        value: 7,
+                        message: "Phone number is too short.",
+                      },
+                      maxLength: {
+                        value: 15,
+                        message: "Phone number is too long.",
+                      },
+                      pattern: {
+                        value: /^[+]?[-\d\s()]{7,15}$/,
+                        message: "Enter a valid phone number.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none focus:border-brand transition-colors"
                   />
-                  {errors.phone && (
-                    <span className="text-[12px] text-red-600">Phone is required.</span>
-                  )}
+                  {errors.phone && fieldErrorMessage(errors.phone.message || "Phone is required.")}
                 </label>
               </div>
 
