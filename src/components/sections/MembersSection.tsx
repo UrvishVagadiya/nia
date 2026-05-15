@@ -144,12 +144,12 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
           }}
           className="relative w-full overflow-hidden"
         >
-          <CarouselContent className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-4 ml-0">
+          <CarouselContent className="md:flex md:flex-wrap md:justify-center gap-4 md:gap-4 ml-0">
             {filtered.map((member, index) => (
               <CarouselItem
                 key={member.id}
                 className={cn(
-                  "basis-[78%] min-w-73 sm:max-w-80 md:basis-full md:max-w-none ml-0",
+                  "basis-[78%] min-w-73 sm:max-w-80 md:basis-auto md:w-80 ml-0",
                   index === 0 && "pl-8 sm:pl-12 md:pl-0",
                   index === filtered.length - 1 && "pr-8 sm:pr-12 md:pr-0"
                 )}
