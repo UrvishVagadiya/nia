@@ -83,7 +83,7 @@ export const Chapters: CollectionConfig = withSoftDelete(
                     },
                   },
                   {
-                    name: "email",
+                    name: "mail",
                     type: "email",
                     required: false,
                     admin: {

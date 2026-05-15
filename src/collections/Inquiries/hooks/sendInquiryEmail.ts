@@ -119,7 +119,7 @@ const getVisitorEmailHtml = (data: {
       <!-- FOOTER -->
       <tr>
         <td align="center" style="padding:30px; background-color:#f1f5f9; border-top:1px solid #E2E8F0;">
-          <p style="color:#64748B; font-size:13px; margin:0 0- 10px 0;">Need help? Contact us at <a href="mailto:admin@niasurat.com" style="color:#2E9DDB; text-decoration:none;">admin@niasurat.com</a></p>
+          <p style="color:#64748B; font-size:13px; margin:0 0 10px 0;">Need help? Contact us at <a href="mailto:admin@niasurat.com" style="color:#2E9DDB; text-decoration:none;">admin@niasurat.com</a></p>
           <p style="color:#94A3B8; font-size:11px; margin:0;">&copy; 2026 NIA Surat - A Network In Action chapter. All rights reserved.</p>
         </td>
       </tr>
@@ -133,35 +133,85 @@ export const sendInquiryEmail: CollectionAfterChangeHook = async ({ doc, operati
   if (operation !== "create") return;
   const { payload } = req;
 
+  console.log("🚀 Inquiry hook triggered for chapter:", doc.chapter);
+  console.log("📄 Full Inquiry Document:", JSON.stringify(doc, null, 2));
+
   try {
-    const chapterId = typeof doc.chapter === "object" ? doc.chapter.id : doc.chapter;
-    const chapter = await payload.findByID({ collection: "chapters", id: chapterId });
+    // 1. Resolve Chapter ID (handle string, number, or object)
+    const rawId = typeof doc.chapter === "object" ? doc.chapter?.id : doc.chapter;
+    const chapterId = rawId ? (isNaN(Number(rawId)) ? rawId : Number(rawId)) : null;
 
-    if (chapter && chapter.email) {
-      const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
-
-      const emailHtml = getVisitorEmailHtml({
-        chapterName: chapter.name,
-        meetingDay: doc.meetingDetails?.day || "N/A",
-        meetingDate: doc.meetingDetails?.date || "N/A",
-        meetingTopic: doc.meetingDetails?.topic || "N/A",
-        venue: doc.meetingDetails?.venue || chapter.venue || "N/A",
-        visitorName: doc.name,
-        visitorEmail: doc.email,
-        visitorPhone: doc.phone,
-        visitorSpecialty: doc.specialty,
-        visitorNotes: doc.notes || "No additional notes provided.",
-        adminDashboardLink: `${serverUrl}/admin/collections/inquiries/${doc.id}`,
-      });
-
-      await payload.sendEmail({
-        to: chapter.email as string,
-        from: process.env.SMTP_FROM_ADDRESS || "admin@niasurat.com",
-        subject: `New Visitor Request: ${doc.name} (${chapter.name})`,
-        html: emailHtml,
-      });
+    if (!chapterId) {
+      console.warn("⚠️ No chapter ID found in inquiry document.");
+      return;
     }
-  } catch {
-    // Silent fail in production
+
+    // 2. Fetch Chapter data
+    const chapter = await payload.findByID({
+      collection: "chapters",
+      id: chapterId,
+      depth: 0,
+    });
+
+    if (!chapter) {
+      console.error(`❌ Chapter not found for ID: ${chapterId}`);
+      return;
+    }
+
+    // 3. Determine Recipient (Check both 'mail' and 'email', fallback to SMTP_FROM)
+    const recipient = chapter.mail || chapter.email || process.env.SMTP_FROM_ADDRESS;
+
+    if (!recipient) {
+      console.error(
+        "❌ No recipient email available (Chapter mail/email and Fallback are all empty)."
+      );
+      return;
+    }
+
+    console.log(`📩 Sending inquiry email to: ${recipient} for chapter: ${chapter.name}`);
+
+    // Format meeting display to match schedule (e.g. "Wed, May 20")
+    const meetingDetails = doc.meetingDetails || {};
+    const meetingDay = meetingDetails.day || "";
+    const meetingDate = meetingDetails.date || "";
+    const meetingDisplay =
+      meetingDay && meetingDate
+        ? `${meetingDay}, ${meetingDate}`
+        : meetingDate || meetingDay || "Not Scheduled";
+    console.log(
+      `📅 Meeting details: ${meetingDisplay} | Topic: ${meetingDetails.topic || "Regular Meeting"}`
+    );
+
+    const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
+    const emailHtml = getVisitorEmailHtml({
+      chapterName: chapter.name || "N/A",
+      meetingDay: meetingDay, // Kept for the template but we'll use meetingDisplay more effectively
+      meetingDate: meetingDate,
+      meetingTopic: meetingDetails.topic || "Regular Meeting",
+      venue: meetingDetails.venue || chapter.venue || "N/A",
+      visitorName: doc.name,
+      visitorEmail: doc.email,
+      visitorPhone: doc.phone,
+      visitorSpecialty: doc.specialty,
+      visitorNotes: doc.notes || "No additional notes.",
+      adminDashboardLink: `${serverUrl}/admin/collections/inquiries/${doc.id}`,
+    });
+
+    // 4. Send Email
+    await payload.sendEmail({
+      to: recipient as string,
+      from: process.env.SMTP_FROM_ADDRESS || "admin@niasurat.com",
+      subject: `[New Request] Visitor Pass: ${doc.name} (${chapter.name})`,
+      html: emailHtml,
+    });
+
+    console.log(`✅ Email sent successfully to ${recipient}!`);
+  } catch (error: unknown) {
+    console.error("🔥 Error in sendInquiryEmail hook:");
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error(error);
+    }
   }
 };

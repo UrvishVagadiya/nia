@@ -106,6 +106,7 @@ export interface Chapter {
   slug: string;
   chapterNumber: string;
   venue?: string;
+  mail?: string;
   hero: {
     title: string;
     subtitle: string;

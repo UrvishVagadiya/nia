@@ -1,54 +1,60 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
-import PhoneInput from "react-phone-number-input";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 
 import { StepsSectionProps, VisitorFormValues } from "@/lib/types";
 
-const getCurrentTimestampMs = () => Date.now();
+// Helper outside component to consistently format date strings natively
+const formatDateLong = (dateStr?: string | Date): string => {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) {
+    // If it's already a formatted string, return it as is
+    return typeof dateStr === "string" ? dateStr : "";
+  }
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(d);
+};
 
 const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSectionProps) => {
-  const [cooldown, setCooldown] = useState(() => {
-    if (typeof window === "undefined") return 0;
+  const [cooldown, setCooldown] = useState(0);
 
+  useEffect(() => {
     const lastInquiryTime = localStorage.getItem("last_inquiry_time");
     if (lastInquiryTime) {
-      const elapsed = (Date.now() - parseInt(lastInquiryTime)) / 1000;
+      const elapsed = (new Date().getTime() - parseInt(lastInquiryTime)) / 1000;
       const cooldownDuration = 60;
       const remaining = Math.max(0, Math.ceil(cooldownDuration - elapsed));
-      return remaining > 0 ? remaining : 0;
+      if (remaining > 0) {
+        // Use a small delay to avoid cascading render warning during initial mount
+        const timer = setTimeout(() => setCooldown(remaining), 0);
+        return () => clearTimeout(timer);
+      }
     }
-    return 0;
-  });
+  }, []);
+
+  const router = useRouter();
   const searchParams = useSearchParams();
   const queryChapter = searchParams.get("chapter") || "";
   const queryVenue = searchParams.get("venue") || "";
   const queryDate = searchParams.get("date") || "";
   const queryTopic = searchParams.get("topic") || "";
 
-  // Helper inside component to consistently format date strings natively
-  const formatDateLong = (dateStr?: string | Date): string => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return typeof dateStr === "string" ? dateStr : "";
-    return new Intl.DateTimeFormat("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    }).format(d);
-  };
-
   const {
-    register,
     handleSubmit,
     setValue,
     control: formControl,
     reset,
+    register,
     formState: { errors, isSubmitting },
   } = useForm<VisitorFormValues>({
     defaultValues: {
@@ -110,11 +116,24 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
   }, [queryDate, queryTopic, setValue]);
 
   const onSubmit = async (values: VisitorFormValues) => {
+    // Cooldown check
+    if (cooldown > 0) {
+      const minutesRemaining = Math.ceil(cooldown / 60);
+      toast.error(
+        `Please try again in ${minutesRemaining} ${minutesRemaining === 1 ? "minute" : "minutes"}.`,
+        {
+          style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
+        }
+      );
+      return;
+    }
+
     if (!values.chapterId) {
       toast.error("Chapter information is missing. Please refresh the page.");
       return;
     }
 
+    const formattedDate = formatDateLong(values.meetingDate);
     const payloadData = {
       name: values.name,
       email: values.email,
@@ -123,14 +142,15 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       notes: values.notes,
       chapter: values.chapterId,
       meetingDetails: {
-        day: formatDateLong(values.meetingDate).split(",")[0] || "Wed",
-        date: formatDateLong(values.meetingDate),
-        topic: values.meetingTopic,
+        day: formattedDate.split(",")[0] || "",
+        date:
+          formattedDate.split(",").length > 1 ? formattedDate.split(",")[1].trim() : formattedDate,
+        topic: values.meetingTopic || "Regular Meeting",
         venue: values.venue,
       },
     };
 
-    const submitRequest = async () => {
+    try {
       const response = await fetch("/api/inquiries", {
         method: "POST",
         headers: {
@@ -143,12 +163,6 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
         const errorData = await response.json();
         throw new Error(errorData.errors?.[0]?.message || "Failed to submit request");
       }
-
-      return response.json();
-    };
-
-    try {
-      await submitRequest();
 
       reset({
         name: "",
@@ -170,8 +184,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       });
 
       setCooldown(60);
-      const now = getCurrentTimestampMs();
-      localStorage.setItem("last_inquiry_time", now.toString());
+      localStorage.setItem("last_inquiry_time", new Date().getTime().toString());
+
+      // Clear the URL query parameters
+      router.replace(window.location.pathname, { scroll: false });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Could not send: ${message}`, {
@@ -354,9 +370,11 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                     control={formControl}
                     rules={{
                       required: "Phone is required.",
-                      minLength: {
-                        value: 7,
-                        message: "Phone number is too short.",
+                      validate: (value) => {
+                        if (!value) return "Phone is required.";
+                        return (
+                          isValidPhoneNumber(value) || "Invalid phone number for selected country."
+                        );
                       },
                     }}
                     render={({ field }) => (
@@ -364,11 +382,14 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                         international
                         withCountryCallingCode
                         defaultCountry="IN"
+                        displayInitialValueAsLocalNumber
+                        limitMaxLength={true}
                         placeholder="Enter phone number"
                         value={field.value}
                         onChange={field.onChange}
                         className="flex items-center gap-2 w-full rounded-[10px] border border-line bg-white px-3.25 py-2.75 focus-within:border-brand transition-colors"
                         numberInputProps={{
+                          maxLength: 15,
                           className:
                             "w-full border-none outline-none bg-transparent text-[14px] text-ink",
                         }}
@@ -403,19 +424,15 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
               <button
                 type="submit"
                 suppressHydrationWarning
-                disabled={isSubmitting || cooldown > 0}
+                disabled={isSubmitting}
                 className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Typography as="span" variant="body-sm" color="white" className="font-bold!">
-                  {isSubmitting
-                    ? "Submitting..."
-                    : cooldown > 0
-                      ? `Wait ${cooldown}s`
-                      : "Submit request"}
+                  {isSubmitting ? "Submitting..." : "Submit request"}
                 </Typography>
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" size={16} />
-                ) : cooldown > 0 ? null : (
+                ) : (
                   <ArrowRight size={16} />
                 )}
               </button>

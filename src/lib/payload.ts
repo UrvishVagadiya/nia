@@ -7,6 +7,7 @@ type ChapterSummaryDoc = {
   name: string;
   slug: string;
   venue?: string;
+  mail?: string;
 };
 
 type MediaDoc = {
@@ -18,6 +19,7 @@ type ChapterDoc = {
   slug: string;
   chapterNumber: string;
   venue?: string;
+  mail?: string;
   hero?: {
     mainImage?: string | MediaDoc;
     leaderImage?: string | MediaDoc;
@@ -100,7 +102,7 @@ export const getAllChapters = async (): Promise<Pick<Chapter, "name" | "slug" | 
     limit: 100,
   });
   const docs = result.docs as ChapterSummaryDoc[];
-  return docs.map((doc) => ({ name: doc.name, slug: doc.slug, venue: doc.venue }));
+  return docs.map((doc) => ({ name: doc.name, slug: doc.slug, venue: doc.venue, mail: doc.mail }));
 };
 
 export const getChapterBySlug = async (slug: string): Promise<Chapter | null> => {
@@ -204,6 +206,7 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
     slug: chapterData.slug,
     chapterNumber: chapterData.chapterNumber,
     venue: chapterData.venue,
+    mail: chapterData.mail,
     hero: {
       title: chapterData.hero?.title || "",
       subtitle: chapterData.hero?.subtitle || "",
