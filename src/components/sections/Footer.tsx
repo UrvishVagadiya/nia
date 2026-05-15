@@ -12,19 +12,17 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 lg:gap-16">
           {/* Brand column */}
           <div>
-            <div className="relative w-[120px] h-10">
-              <Image
-                src="/nia-logo.png"
-                alt="NIA Logo"
-                fill
-                className="invert brightness-0 object-contain"
-                priority
-              />
-            </div>
+            <Image
+              src="/nia-logo.png"
+              alt="NIA Logo"
+              width={120}
+              height={40}
+              className="invert brightness-0 h-auto"
+            />
             <Typography
               variant="body-sm"
               color="white"
-              className="mt-3 pl-5 leading-relaxed max-w-xs text-white/60"
+              className="mt-3 leading-relaxed max-w-xs text-white/60"
             >
               Three chapters. 72 business owners. One mission — to be the most-trusted referral room
               in Surat.
