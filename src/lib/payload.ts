@@ -74,6 +74,8 @@ type EventDoc = {
   id: string | number;
   day: string;
   date: string;
+  startTime?: string;
+  endTime?: string;
   topic: string;
   venue?: string;
   rsvps?: number;
@@ -238,6 +240,8 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       ? eventDocs.map((e) => ({
           day: String(e.day || ""),
           date: String(e.date || ""),
+          startTime: e.startTime ? String(e.startTime) : undefined,
+          endTime: e.endTime ? String(e.endTime) : undefined,
           topic: String(e.topic || ""),
           venue: String(e.venue || ""),
           rsvps: Number(e.rsvps || 0),

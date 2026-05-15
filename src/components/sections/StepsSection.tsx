@@ -9,19 +9,44 @@ import Typography from "@/components/ui/typography";
 
 import { StepsSectionProps, VisitorFormValues } from "@/lib/types";
 
+const getCurrentTimestampMs = () => Date.now();
+
 const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSectionProps) => {
+  const [cooldown, setCooldown] = useState(() => {
+    if (typeof window === "undefined") return 0;
+
+    const lastInquiryTime = localStorage.getItem("last_inquiry_time");
+    if (lastInquiryTime) {
+      const elapsed = (Date.now() - parseInt(lastInquiryTime)) / 1000;
+      const cooldownDuration = 60;
+      const remaining = Math.max(0, Math.ceil(cooldownDuration - elapsed));
+      return remaining > 0 ? remaining : 0;
+    }
+    return 0;
+  });
   const searchParams = useSearchParams();
   const queryChapter = searchParams.get("chapter") || "";
   const queryVenue = searchParams.get("venue") || "";
-  const queryDay = searchParams.get("day") || "";
   const queryDate = searchParams.get("date") || "";
   const queryTopic = searchParams.get("topic") || "";
+
+  // Helper inside component to consistently format date strings natively
+  const formatDateLong = (dateStr?: string | Date): string => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return typeof dateStr === "string" ? dateStr : "";
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    }).format(d);
+  };
 
   const {
     register,
     handleSubmit,
     setValue,
-    control,
+    control: formControl,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<VisitorFormValues>({
@@ -35,37 +60,26 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       chapterName: "",
       chapterSlug: "",
       venue: "",
-      meetingDay: "",
+      meetingDay: "", // Retained mapping placeholder to prevent breaks if required by types
       meetingDate: "",
       meetingTopic: "",
     },
   });
 
-  const [cooldown, setCooldown] = useState(0);
+  const currentChapterName = useWatch({ control: formControl, name: "chapterName" });
+  const selectedMeetingDate = useWatch({ control: formControl, name: "meetingDate" });
+  const selectedMeetingTopic = useWatch({ control: formControl, name: "meetingTopic" });
 
+  // Countdown effect
   useEffect(() => {
-    // Check if there is an active cooldown in localStorage
-    const lastSubmit = localStorage.getItem("last_inquiry_time");
-    if (lastSubmit) {
-      const elapsed = Date.now() - parseInt(lastSubmit);
-      if (elapsed < 60000) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setCooldown(Math.ceil((60000 - elapsed) / 1000));
-      }
-    }
-  }, []);
+    if (cooldown <= 0) return;
 
-  useEffect(() => {
-    if (cooldown > 0) {
-      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
+    const interval = setInterval(() => {
+      setCooldown((prev) => (prev > 1 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [cooldown]);
-
-  const [meetingDate, meetingTopic, meetingDay, currentChapterName] = useWatch({
-    control,
-    name: ["meetingDate", "meetingTopic", "meetingDay", "chapterName"],
-  });
 
   useEffect(() => {
     if (chapterId) setValue("chapterId", chapterId);
@@ -90,11 +104,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
   }, [chapterSlug, chapterName, venue, queryChapter, queryVenue, setValue]);
 
   useEffect(() => {
-    if (!queryDay && !queryDate && !queryTopic) return;
-    setValue("meetingDay", queryDay);
+    if (!queryDate && !queryTopic) return;
     setValue("meetingDate", queryDate);
     setValue("meetingTopic", queryTopic);
-  }, [queryDay, queryDate, queryTopic, setValue]);
+  }, [queryDate, queryTopic, setValue]);
 
   const onSubmit = async (values: VisitorFormValues) => {
     if (!values.chapterId) {
@@ -110,8 +123,8 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       notes: values.notes,
       chapter: values.chapterId,
       meetingDetails: {
-        day: values.meetingDay,
-        date: values.meetingDate,
+        day: formatDateLong(values.meetingDate).split(",")[0] || "Wed",
+        date: formatDateLong(values.meetingDate),
         topic: values.meetingTopic,
         venue: values.venue,
       },
@@ -147,6 +160,9 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
         chapterName: values.chapterName,
         chapterSlug: values.chapterSlug,
         venue: values.venue,
+        meetingDay: "",
+        meetingDate: "",
+        meetingTopic: "",
       });
 
       toast.success("Request sent! We'll reply within 24 hours.", {
@@ -154,10 +170,9 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       });
 
       // Set cooldown
-      // eslint-disable-next-line react-hooks/purity
-      const now = Date.now();
+      setCooldown(60); // 60 second cooldown
+      const now = getCurrentTimestampMs();
       localStorage.setItem("last_inquiry_time", now.toString());
-      setCooldown(60);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Could not send: ${message}`, {
@@ -169,6 +184,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
   const chapterLabel =
     currentChapterName ||
     (chapterSlug ? chapterSlug.charAt(0).toUpperCase() + chapterSlug.slice(1) : "Innovators");
+
+  const fieldErrorMessage = (message: string) => (
+    <span className="text-[12px] text-red-600">{message}</span>
+  );
 
   return (
     <section id="StepsSection" className="bg-paper-2 border-t border-line">
@@ -242,7 +261,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   Request a pass
                 </Typography>
 
-                {(meetingDate || meetingTopic) && (
+                {selectedMeetingDate && (
                   <div className="mb-2 p-3.5 bg-brand-soft rounded-[10px] border border-brand/20">
                     <Typography
                       variant="caption"
@@ -253,11 +272,13 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                     </Typography>
                     <div className="flex flex-col gap-0.5">
                       <Typography variant="body-sm" color="brand-deep" className="font-bold!">
-                        {meetingDay}, {meetingDate}
+                        {formatDateLong(selectedMeetingDate)}
                       </Typography>
-                      <Typography variant="caption" color="ink-3" className="italic">
-                        {meetingTopic}
-                      </Typography>
+                      {selectedMeetingTopic && (
+                        <Typography variant="caption" color="ink-3" className="italic">
+                          {selectedMeetingTopic}
+                        </Typography>
+                      )}
                     </div>
                   </div>
                 )}
@@ -271,12 +292,16 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   <input
                     placeholder="Full name"
                     suppressHydrationWarning
-                    {...register("name", { required: true })}
+                    {...register("name", {
+                      required: "Name is required.",
+                      minLength: {
+                        value: 2,
+                        message: "Name must be at least 2 characters.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none focus:border-brand transition-colors"
                   />
-                  {errors.name && (
-                    <span className="text-[12px] text-red-600">Name is required.</span>
-                  )}
+                  {errors.name && fieldErrorMessage(errors.name.message || "Name is required.")}
                 </label>
 
                 <label className="flex flex-col gap-1.5">
@@ -287,12 +312,16 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                     placeholder="name@company.com"
                     type="email"
                     suppressHydrationWarning
-                    {...register("email", { required: true })}
+                    {...register("email", {
+                      required: "Email is required.",
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: "Enter a valid email address.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink! outline-none focus:border-brand transition-colors"
                   />
-                  {errors.email && (
-                    <span className="text-[12px] text-red-600">Email is required.</span>
-                  )}
+                  {errors.email && fieldErrorMessage(errors.email.message || "Email is required.")}
                 </label>
               </div>
 
@@ -304,12 +333,17 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   <input
                     placeholder="e.g. Textile exports"
                     suppressHydrationWarning
-                    {...register("specialty", { required: true })}
+                    {...register("specialty", {
+                      required: "Specialty is required.",
+                      minLength: {
+                        value: 3,
+                        message: "Specialty must be at least 3 characters.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none focus:border-brand transition-colors"
                   />
-                  {errors.specialty && (
-                    <span className="text-[12px] text-red-600">Specialty is required.</span>
-                  )}
+                  {errors.specialty &&
+                    fieldErrorMessage(errors.specialty.message || "Specialty is required.")}
                 </label>
 
                 <label className="flex flex-col gap-1.5">
@@ -319,12 +353,24 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   <input
                     placeholder="+91 …"
                     suppressHydrationWarning
-                    {...register("phone", { required: true })}
+                    {...register("phone", {
+                      required: "Phone is required.",
+                      minLength: {
+                        value: 7,
+                        message: "Phone number is too short.",
+                      },
+                      maxLength: {
+                        value: 15,
+                        message: "Phone number is too long.",
+                      },
+                      pattern: {
+                        value: /^[+]?[-\d\s()]{7,15}$/,
+                        message: "Enter a valid phone number.",
+                      },
+                    })}
                     className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none focus:border-brand transition-colors"
                   />
-                  {errors.phone && (
-                    <span className="text-[12px] text-red-600">Phone is required.</span>
-                  )}
+                  {errors.phone && fieldErrorMessage(errors.phone.message || "Phone is required.")}
                 </label>
               </div>
 

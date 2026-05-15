@@ -22,29 +22,34 @@ export const Events: CollectionConfig = withSoftDelete({
       hasMany: false,
     },
     {
-      name: "dateSelector",
-      type: "ui",
+      name: "date",
+      type: "date",
+      required: true,
       admin: {
-        components: {
-          Field: "@/components/admin/EventDatePicker",
+        date: {
+          pickerAppearance: "dayOnly",
         },
       },
     },
     {
-      name: "day",
-      type: "text",
+      name: "startTime",
+      type: "date",
       required: true,
       admin: {
-        description: "Auto-populated by the Date Picker above",
+        date: {
+          pickerAppearance: "timeOnly",
+        },
         width: "50%",
       },
     },
     {
-      name: "date",
-      type: "text",
+      name: "endTime",
+      type: "date",
       required: true,
       admin: {
-        description: "Auto-populated (e.g. Oct 24)",
+        date: {
+          pickerAppearance: "timeOnly",
+        },
         width: "50%",
       },
     },
