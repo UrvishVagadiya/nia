@@ -1,14 +1,8 @@
 import { CollectionConfig } from "payload";
-import {
-  softDeleteFields,
-  softDeleteAccess,
-  onSoftDelete,
-  beforeChangeSoftDelete,
-  afterSoftDelete,
-} from "../../utils/softDelete";
+import { withSoftDelete } from "../../utils/softDelete";
 import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
-export const PricingPlans: CollectionConfig = {
+export const PricingPlans: CollectionConfig = withSoftDelete({
   slug: "pricing-plans",
   admin: {
     useAsTitle: "name",
@@ -20,16 +14,9 @@ export const PricingPlans: CollectionConfig = {
     },
   },
   hooks: {
-    beforeOperation: [onSoftDelete("pricing-plans")],
-    beforeChange: [beforeChangeSoftDelete],
     afterChange: [revalidateRelatedChapter],
-    afterOperation: [afterSoftDelete],
-  },
-  access: {
-    read: softDeleteAccess,
   },
   fields: [
-    ...softDeleteFields,
     { name: "name", type: "text", required: true },
     {
       type: "row",
@@ -66,4 +53,4 @@ export const PricingPlans: CollectionConfig = {
       required: true,
     },
   ],
-};
+});

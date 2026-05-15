@@ -1,34 +1,51 @@
 import { CollectionConfig } from "payload";
-import {
-  softDeleteFields,
-  softDeleteAccess,
-  onSoftDelete,
-  beforeChangeSoftDelete,
-  afterSoftDelete,
-} from "../../utils/softDelete";
+import { withSoftDelete } from "../../utils/softDelete";
 import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
-export const Testimonials: CollectionConfig = {
+export const Testimonials: CollectionConfig = withSoftDelete({
   slug: "testimonials",
   admin: {
-    useAsTitle: "quote",
+    useAsTitle: "who",
     group: "Social Proof",
-    defaultColumns: ["quote", "testimonialType", "chapter", "status"],
+    defaultColumns: ["status", "who", "role", "member", "leader", "quote"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },
   },
   hooks: {
-    beforeOperation: [onSoftDelete("testimonials")],
-    beforeChange: [beforeChangeSoftDelete],
+    beforeChange: [
+      async ({ data, req }) => {
+        // Automatically sync name and role if member or leader is selected
+        if (data.testimonialType === "member" && data.member) {
+          const member = await req.payload.findByID({
+            collection: "members",
+            id: data.member,
+            depth: 0,
+          });
+          if (member) {
+            data.who = member.name;
+            data.role =
+              member.company && member.specialty
+                ? `${member.company} - ${member.specialty}`
+                : member.company || member.specialty || "";
+          }
+        } else if (data.testimonialType === "leader" && data.leader) {
+          const leader = await req.payload.findByID({
+            collection: "leaders",
+            id: data.leader,
+            depth: 0,
+          });
+          if (leader) {
+            data.who = leader.name;
+            data.role = leader.role;
+          }
+        }
+        return data;
+      },
+    ],
     afterChange: [revalidateRelatedChapter],
-    afterOperation: [afterSoftDelete],
-  },
-  access: {
-    read: softDeleteAccess,
   },
   fields: [
-    ...softDeleteFields,
     {
       name: "testimonialType",
       type: "select",
@@ -39,7 +56,9 @@ export const Testimonials: CollectionConfig = {
         { label: "Leader", value: "leader" },
         { label: "Other", value: "external" },
       ],
-      admin: {},
+      admin: {
+        width: "100%",
+      },
     },
     {
       name: "member",
@@ -69,13 +88,17 @@ export const Testimonials: CollectionConfig = {
           name: "who",
           type: "text",
           label: "Name",
-          admin: { width: "50%" },
+          admin: {
+            width: "50%",
+          },
         },
         {
           name: "role",
           type: "text",
           label: "Role / Designation",
-          admin: { width: "50%" },
+          admin: {
+            width: "50%",
+          },
         },
       ],
     },
@@ -122,4 +145,4 @@ export const Testimonials: CollectionConfig = {
       },
     },
   ],
-};
+});

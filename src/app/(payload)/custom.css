@@ -1,11 +1,3 @@
-/* Custom Admin Styles */
-
-/* 
-  Target the login button loading state.
-  Payload 3 uses modern CSS classes. 
-  We'll target the button in the login form.
-*/
-
 form.login__form button[type="submit"]:disabled {
   position: relative;
   color: transparent !important;
@@ -24,4 +16,11 @@ form.login__form button[type="submit"]:disabled::after {
   color: white;
   /* Adjust based on theme */
   font-weight: bold;
+}
+
+/* Hide "Permanently Delete" buttons to enforce soft-delete safety in production */
+#action-permanently-delete,
+button[class*="permanently-delete"],
+button[class*="delete-permanently"] {
+  display: none !important;
 }

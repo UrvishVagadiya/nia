@@ -1,14 +1,8 @@
 import { CollectionConfig } from "payload";
-import {
-  softDeleteFields,
-  softDeleteAccess,
-  onSoftDelete,
-  beforeChangeSoftDelete,
-  afterSoftDelete,
-} from "../../utils/softDelete";
+import { withSoftDelete } from "../../utils/softDelete";
 import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
-export const Leaders: CollectionConfig = {
+export const Leaders: CollectionConfig = withSoftDelete({
   slug: "leaders",
   admin: {
     useAsTitle: "name",
@@ -16,16 +10,9 @@ export const Leaders: CollectionConfig = {
     defaultColumns: ["name", "role", "chapter", "status"],
   },
   hooks: {
-    beforeOperation: [onSoftDelete("leaders")],
-    beforeChange: [beforeChangeSoftDelete],
     afterChange: [revalidateRelatedChapter],
-    afterOperation: [afterSoftDelete],
-  },
-  access: {
-    read: softDeleteAccess,
   },
   fields: [
-    ...softDeleteFields,
     { name: "name", type: "text", required: true },
     { name: "role", type: "text", required: true },
     { name: "quote", type: "textarea" },
@@ -79,4 +66,4 @@ export const Leaders: CollectionConfig = {
       unique: true,
     },
   ],
-};
+});

@@ -199,3 +199,31 @@ export const afterSoftDelete: CollectionAfterOperationHook = async ({ operation,
   }
   return result;
 };
+
+/**
+ * Utility to wrap a CollectionConfig with soft delete logic.
+ */
+import { CollectionConfig } from "payload";
+
+export function withSoftDelete(
+  config: CollectionConfig,
+  onDelete?: (payload: Payload, id: string | number) => Promise<void>
+): CollectionConfig {
+  return {
+    ...config,
+    access: {
+      ...config.access,
+      read: softDeleteAccess,
+    },
+    hooks: {
+      ...config.hooks,
+      beforeOperation: [
+        ...(config.hooks?.beforeOperation || []),
+        onSoftDelete(config.slug, onDelete),
+      ],
+      beforeChange: [...(config.hooks?.beforeChange || []), beforeChangeSoftDelete],
+      afterOperation: [...(config.hooks?.afterOperation || []), afterSoftDelete],
+    },
+    fields: [...(config.fields || []), ...softDeleteFields],
+  };
+}

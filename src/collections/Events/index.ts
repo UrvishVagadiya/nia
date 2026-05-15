@@ -1,15 +1,9 @@
 import { CollectionConfig } from "payload";
 // Trigger re-save to fix stale config error
-import {
-  softDeleteFields,
-  softDeleteAccess,
-  onSoftDelete,
-  beforeChangeSoftDelete,
-  afterSoftDelete,
-} from "../../utils/softDelete";
+import { withSoftDelete } from "../../utils/softDelete";
 import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
-export const Events: CollectionConfig = {
+export const Events: CollectionConfig = withSoftDelete({
   slug: "events",
   admin: {
     useAsTitle: "topic",
@@ -17,16 +11,9 @@ export const Events: CollectionConfig = {
     defaultColumns: ["topic", "date", "chapter", "status"],
   },
   hooks: {
-    beforeOperation: [onSoftDelete("events")],
-    beforeChange: [beforeChangeSoftDelete],
     afterChange: [revalidateRelatedChapter],
-    afterOperation: [afterSoftDelete],
-  },
-  access: {
-    read: softDeleteAccess,
   },
   fields: [
-    ...softDeleteFields,
     {
       name: "chapter",
       type: "relationship",
@@ -35,14 +22,31 @@ export const Events: CollectionConfig = {
       hasMany: false,
     },
     {
+      name: "dateSelector",
+      type: "ui",
+      admin: {
+        components: {
+          Field: "@/components/admin/EventDatePicker",
+        },
+      },
+    },
+    {
       name: "day",
       type: "text",
       required: true,
+      admin: {
+        description: "Auto-populated by the Date Picker above",
+        width: "50%",
+      },
     },
     {
       name: "date",
       type: "text",
       required: true,
+      admin: {
+        description: "Auto-populated (e.g. Oct 24)",
+        width: "50%",
+      },
     },
     {
       name: "topic",
@@ -62,4 +66,4 @@ export const Events: CollectionConfig = {
       defaultValue: 0,
     },
   ],
-};
+});

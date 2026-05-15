@@ -1,14 +1,8 @@
 import { CollectionConfig } from "payload";
 import { sendInquiryEmail } from "./hooks/sendInquiryEmail";
-import {
-  softDeleteFields,
-  softDeleteAccess,
-  onSoftDelete,
-  beforeChangeSoftDelete,
-  afterSoftDelete,
-} from "../../utils/softDelete";
+import { withSoftDelete } from "../../utils/softDelete";
 
-export const Inquiries: CollectionConfig = {
+export const Inquiries: CollectionConfig = withSoftDelete({
   slug: "inquiries",
   admin: {
     useAsTitle: "name",
@@ -17,16 +11,11 @@ export const Inquiries: CollectionConfig = {
   },
   access: {
     create: () => true,
-    read: softDeleteAccess,
   },
   hooks: {
-    beforeOperation: [onSoftDelete("inquiries")],
-    beforeChange: [beforeChangeSoftDelete],
     afterChange: [sendInquiryEmail],
-    afterOperation: [afterSoftDelete],
   },
   fields: [
-    ...softDeleteFields,
     {
       name: "name",
       type: "text",
@@ -80,4 +69,4 @@ export const Inquiries: CollectionConfig = {
       ],
     },
   ],
-};
+});

@@ -1,15 +1,9 @@
 import { CollectionConfig } from "payload";
 import { syncMemberCounts, syncMemberCountsOnDelete } from "../../hooks/syncMemberCounts";
 import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
-import {
-  softDeleteFields,
-  softDeleteAccess,
-  onSoftDelete,
-  beforeChangeSoftDelete,
-  afterSoftDelete,
-} from "../../utils/softDelete";
+import { withSoftDelete } from "../../utils/softDelete";
 
-export const Members: CollectionConfig = {
+export const Members: CollectionConfig = withSoftDelete({
   slug: "members",
   admin: {
     useAsTitle: "name",
@@ -20,14 +14,8 @@ export const Members: CollectionConfig = {
     },
   },
   hooks: {
-    beforeOperation: [onSoftDelete("members")],
-    beforeChange: [beforeChangeSoftDelete],
     afterChange: [syncMemberCounts, revalidateRelatedChapter],
     afterDelete: [syncMemberCountsOnDelete],
-    afterOperation: [afterSoftDelete],
-  },
-  access: {
-    read: softDeleteAccess,
   },
   fields: [
     { name: "name", type: "text", required: true },
@@ -88,6 +76,5 @@ export const Members: CollectionConfig = {
       relationTo: "chapters",
       required: false,
     },
-    ...softDeleteFields,
   ],
-};
+});
