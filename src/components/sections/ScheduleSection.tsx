@@ -35,6 +35,25 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
     }).format(d);
   };
 
+  const getWeekOfMonthLabel = (dateStr?: string | Date): string => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "";
+
+    const weekOfMonth = Math.ceil(d.getDate() / 7);
+    return `Wk ${weekOfMonth}`;
+  };
+
+  const formatWeekday = (dateStr?: string | Date): string => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+    }).format(d);
+  };
+
+  const meetingWeekday = activeEvent.day || formatWeekday(activeEvent.date);
+
   if (!events || events.length === 0) return null;
 
   return (
@@ -50,7 +69,8 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
           </div>
 
           <Typography as="h2" variant="h2" color="brand-deep" className="mb-4 text-[48px]!">
-            Every Wednesday <span className="italic font-serif text-brand">at 9:30</span>
+            Every {meetingWeekday || "Wednesday"}{" "}
+            <span className="italic font-serif text-brand">at 9:30</span>
           </Typography>
 
           <Typography variant="body-md" color="ink-2" className="mb-6 max-w-120">
@@ -110,7 +130,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
           {/* Sub Cards Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {events.map((item, index) => {
-              const label = index === 0 ? "Up next" : `Wk ${index + 1}`;
+              const label = index === 0 ? "Up next" : getWeekOfMonthLabel(item.date) || "Wk";
               const isActive = selectedEvent === item;
               return (
                 <button
