@@ -79,7 +79,7 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
 
         {/* Toggle */}
         <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1 rounded-pill bg-paper-2 border border-line">
+          <div className="inline-flex p-1  rounded-pill bg-paper-2 border border-line">
             <button
               onClick={() => setBilling("monthly")}
               className={`px-4.5 py-2 rounded-pill capitalize transition-colors duration-200 ${
@@ -110,7 +110,7 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+        <div className="flex flex-col lg:flex-row justify-center gap-4 items-stretch">
           {tiers.map((tier) => {
             const isDark = selectedCard === tier.name;
             return (
@@ -118,7 +118,7 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
                 key={tier.name}
                 onClick={() => setSelectedCard(tier.name)}
                 suppressHydrationWarning
-                className={`cursor-pointer transition-all duration-300 relative rounded-[18px] p-8 flex flex-col gap-4 border ${
+                className={`cursor-pointer transition-all duration-300 relative rounded-[18px] p-8 flex flex-col gap-4 border w-full lg:flex-1 lg:max-w-[400px] ${
                   isDark
                     ? "bg-brand-deep text-white border-brand-deep lg:-translate-y-3 shadow-[0_20px_40px_-20px_rgba(14,58,92,0.4)]"
                     : "bg-white text-ink border-line shadow-none hover:border-brand/30"

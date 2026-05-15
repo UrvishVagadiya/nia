@@ -6,16 +6,16 @@ import { useForm, useWatch, Controller } from "react-hook-form";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 import { StepsSectionProps, VisitorFormValues } from "@/lib/types";
 
-// Helper outside component to consistently format date strings natively
 const formatDateLong = (dateStr?: string | Date): string => {
   if (!dateStr) return "";
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) {
-    // If it's already a formatted string, return it as is
     return typeof dateStr === "string" ? dateStr : "";
   }
   return new Intl.DateTimeFormat("en-US", {
@@ -372,27 +372,27 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                       required: "Phone is required.",
                       validate: (value) => {
                         if (!value) return "Phone is required.";
+                        // Add + if missing for validation
+                        const phoneWithPlus = value.startsWith("+") ? value : `+${value}`;
                         return (
-                          isValidPhoneNumber(value) || "Invalid phone number for selected country."
+                          isValidPhoneNumber(phoneWithPlus) ||
+                          "Invalid phone number for selected country."
                         );
                       },
                     }}
                     render={({ field }) => (
                       <PhoneInput
-                        international
-                        withCountryCallingCode
-                        defaultCountry="IN"
-                        displayInitialValueAsLocalNumber
-                        limitMaxLength={true}
-                        placeholder="Enter phone number"
+                        country={"in"}
                         value={field.value}
                         onChange={field.onChange}
-                        className="flex items-center gap-2 w-full rounded-[10px] border border-line bg-white px-3.25 py-2.75 focus-within:border-brand transition-colors"
-                        numberInputProps={{
-                          maxLength: 15,
-                          className:
-                            "w-full border-none outline-none bg-transparent text-[14px] text-ink",
-                        }}
+                        placeholder="Enter phone number"
+                        inputClass="!w-full !border-none !outline-none !bg-transparent !text-[14px] !text-ink !h-full"
+                        containerClass="flex items-center gap-2 w-full rounded-[10px] border border-line bg-white px-3.25 py-2.75 focus-within:border-brand transition-colors"
+                        buttonClass="!bg-transparent !border-none !p-0 hover:!bg-transparent"
+                        dropdownClass="!bg-white !rounded-[10px] !border !border-line !shadow-lg !max-h-[250px] !overflow-y-auto"
+                        searchClass="!bg-white !border-b !border-line !px-2 !py-1"
+                        enableSearch={true}
+                        disableSearchIcon={true}
                       />
                     )}
                   />
