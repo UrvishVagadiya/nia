@@ -10,7 +10,7 @@ import {
 
 const GetintoRoom = () => {
   return (
-    <section className="bg-paper-2">
+    <section className="bg-paper">
       <div className="section-container section-padding">
         <div className="bg-paper rounded-3xl p-[clamp(32px,4vw,56px)] border border-line">
           {/* Header */}

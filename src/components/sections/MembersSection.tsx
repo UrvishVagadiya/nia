@@ -82,7 +82,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
   if (!members || members.length === 0) return null;
 
   return (
-    <section id="members" className="bg-paper-2">
+    <section id="members" className="bg-paper">
       <div className="py-11 lg:py-22 md:px-5  md:w-full md:max-w-[1280px] lg:mx-auto">
         <div className="text-center mb-10 px-5 lg:px-8">
           <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">

@@ -17,10 +17,9 @@ const CityPartnerSection = () => {
             </Typography>
           </div>
 
-          <Typography as="h2" variant="h1" color="brand-deep" className="mx-auto">
+          <Typography as="h2" variant="h1" color="brand-deep" className="mx-auto max-w-293">
             The right room doesn&apos;t just open doors.
-            <br />
-            <span className="heading-italic-brand">It changes how you move inside them.</span>
+            <span className="heading-italic-brand"> It changes how you move inside them.</span>
           </Typography>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-8 md:gap-10 lg:gap-14 items-center">

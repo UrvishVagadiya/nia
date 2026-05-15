@@ -6,15 +6,11 @@ import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
 import { PricingSectionProps } from "@/lib/types";
 import { ArrowRight } from "lucide-react";
-
-const formatPrice = (num: number) => {
-  if (num >= 1000) {
-    return `₹${(num / 1000).toFixed(0)}k`;
-  }
-  return `₹${num.toLocaleString("en-IN")}`;
-};
+import { usePriceFormatter } from "@/hooks/price";
 
 const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
+  const { formatPrice, formatCurrency } = usePriceFormatter();
+
   // Find the popular plan name to set as initial state
   const initialSelected = useMemo(() => {
     if (!cmsPlans || cmsPlans.length === 0) return "";
@@ -38,7 +34,7 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
       const aPrice = Number(p.annualPrice ?? 0);
 
       const savings = mPrice && aPrice ? mPrice * 12 - aPrice : 0;
-      const savingsText = savings > 0 ? ` · saves ₹${savings.toLocaleString("en-IN")}` : "";
+      const savingsText = savings > 0 ? ` · saves ₹${formatCurrency(savings)}` : "";
 
       return {
         name: p.name,
@@ -57,12 +53,12 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
         popular: p.isPopular,
       };
     });
-  }, [cmsPlans]);
+  }, [cmsPlans, formatPrice, formatCurrency]);
 
   if (!cmsPlans || cmsPlans.length === 0) return null;
 
   return (
-    <section id="membership" className="bg-paper">
+    <section id="membership" className="bg-paper-2">
       <div className="section-container section-padding">
         {/* Header */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">

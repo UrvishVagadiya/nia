@@ -58,7 +58,6 @@ export default async function Home() {
 
   return (
     <main className="overflow-hidden">
-      <CityPartnerSection />
       <HeroSection
         chapterNumber={chapter.chapterNumber || ""}
         chapterName={chapter.name}
@@ -69,8 +68,8 @@ export default async function Home() {
         leaderImage={chapter.hero?.leaderImage}
         nextEvent={nextEvent}
       />
-
       <StatBand stats={chapter.stats} />
+      <CityPartnerSection />
 
       <WhyJoinSection />
 

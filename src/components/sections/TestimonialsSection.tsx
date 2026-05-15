@@ -35,7 +35,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
   if (n === 0 || !current) return null;
 
   return (
-    <section className="bg-paper">
+    <section className="bg-paper-2">
       <div className="md:section-container! section-padding">
         {/* ── Heading ── */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-5 md:mx-auto">

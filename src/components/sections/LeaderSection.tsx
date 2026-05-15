@@ -20,7 +20,7 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
     tenure: cmsLeader.tenure || "Founding Member",
   };
   return (
-    <section id="leader" className="bg-paper">
+    <section id="leader" className="bg-paper-2">
       <div className="section-container section-padding">
         <div className="leader-grid flex flex-col md:flex-row gap-16 items-center">
           {/* Portrait with gradient overlay */}

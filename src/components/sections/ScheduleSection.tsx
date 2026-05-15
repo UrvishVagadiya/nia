@@ -5,59 +5,28 @@ import { ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import Typography from "@/components/ui/typography";
 import { ScheduleItem, ScheduleSectionProps } from "@/lib/types";
+import { useDateFormatter, useSortedEvents } from "@/hooks/date";
 
 const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: ScheduleSectionProps) => {
   const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
+  const { formatDateLong, formatDateShort, getWeekOfMonthLabel, formatWeekday } =
+    useDateFormatter();
+  const sortedEvents = useSortedEvents(events);
 
-  const activeEvent = selectedEvent ||
-    events[0] || { day: "", date: "", topic: "", rsvps: 0, venue: "" };
+  const activeEvent =
+    selectedEvent ||
+    sortedEvents[0] ||
+    ({ day: "", date: "", topic: "", rsvps: 0, venue: "" } as ScheduleItem);
+
   const displayVenue = activeEvent.venue || chapterVenue;
   const selectedSlug = chapterSlug || "innovators";
 
-  // Native Formatter for "Wed, May 13"
-  const formatDateLong = (dateStr?: string | Date): string => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    return new Intl.DateTimeFormat("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    }).format(d);
-  };
-
-  // Native Formatter for "May 13"
-  const formatDateShort = (dateStr?: string | Date): string => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    return new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-    }).format(d);
-  };
-
-  const getWeekOfMonthLabel = (dateStr?: string | Date): string => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return "";
-
-    const weekOfMonth = Math.ceil(d.getDate() / 7);
-    return `Wk ${weekOfMonth}`;
-  };
-
-  const formatWeekday = (dateStr?: string | Date): string => {
-    if (!dateStr) return "";
-    const d = new Date(dateStr);
-    return new Intl.DateTimeFormat("en-US", {
-      weekday: "long",
-    }).format(d);
-  };
-
   const meetingWeekday = activeEvent.day || formatWeekday(activeEvent.date);
 
-  if (!events || events.length === 0) return null;
+  if (!sortedEvents || sortedEvents.length === 0) return null;
 
   return (
-    <section id="schedule" className="bg-paper-2">
+    <section id="schedule" className="bg-paper">
       <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
         {/* Left Side (Text content) */}
         <div>
@@ -96,11 +65,10 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
 
         {/* Right Side (Cards) */}
         <div>
-          {/* Main Next Meeting Card */}
           <div className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden transition-all duration-300">
             <div className="flex justify-between items-start mb-6">
               <span className="px-3 py-1.25 bg-brand text-white rounded-pill text-[11px] font-bold tracking-[0.08em] uppercase">
-                {selectedEvent && events.indexOf(selectedEvent) === 0
+                {selectedEvent && sortedEvents.indexOf(selectedEvent) === 0
                   ? "Next meeting"
                   : "Selected meeting"}
               </span>
@@ -127,9 +95,8 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
             </Link>{" "}
           </div>
 
-          {/* Sub Cards Row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {events.map((item, index) => {
+            {sortedEvents.map((item, index) => {
               const label = index === 0 ? "Up next" : getWeekOfMonthLabel(item.date) || "Wk";
               const isActive = selectedEvent === item;
               return (

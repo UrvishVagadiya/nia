@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
+import PhoneInput from "react-phone-number-input";
 
 import { StepsSectionProps, VisitorFormValues } from "@/lib/types";
 
@@ -60,7 +61,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       chapterName: "",
       chapterSlug: "",
       venue: "",
-      meetingDay: "", // Retained mapping placeholder to prevent breaks if required by types
+      meetingDay: "",
       meetingDate: "",
       meetingTopic: "",
     },
@@ -88,7 +89,6 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
   useEffect(() => {
     const fallbackSlug = chapterSlug || queryChapter || "innovators";
 
-    // Capitalize slug words for fallback name (e.g. "superiors" -> "Superiors")
     const fallbackName =
       chapterName ||
       fallbackSlug
@@ -169,8 +169,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
         style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
       });
 
-      // Set cooldown
-      setCooldown(60); // 60 second cooldown
+      setCooldown(60);
       const now = getCurrentTimestampMs();
       localStorage.setItem("last_inquiry_time", now.toString());
     } catch (err: unknown) {
@@ -190,7 +189,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
   );
 
   return (
-    <section id="StepsSection" className="bg-paper-2 border-t border-line">
+    <section id="StepsSection" className="bg-paper border-t border-line">
       <div className="section-container section-padding">
         <div className="bg-white rounded-3xl overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}
@@ -284,10 +283,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                 )}
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <label className="flex flex-col gap-1.5">
                   <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
-                    Your name
+                    Your name <span className="text-red-500">*</span>
                   </Typography>
                   <input
                     placeholder="Full name"
@@ -306,7 +305,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
 
                 <label className="flex flex-col gap-1.5">
                   <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
-                    Email address
+                    Email address <span className="text-red-500">*</span>
                   </Typography>
                   <input
                     placeholder="name@company.com"
@@ -325,10 +324,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                 </label>
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <label className="flex flex-col gap-1.5">
                   <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
-                    Your specialty / trade
+                    Your specialty / trade <span className="text-red-500">*</span>
                   </Typography>
                   <input
                     placeholder="e.g. Textile exports"
@@ -348,27 +347,33 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
 
                 <label className="flex flex-col gap-1.5">
                   <Typography as="span" variant="eyebrow" color="ink-2" className="font-bold!">
-                    Phone (with code)
+                    Phone number <span className="text-red-500">*</span>
                   </Typography>
-                  <input
-                    placeholder="+91 …"
-                    suppressHydrationWarning
-                    {...register("phone", {
+                  <Controller
+                    name="phone"
+                    control={formControl}
+                    rules={{
                       required: "Phone is required.",
                       minLength: {
                         value: 7,
                         message: "Phone number is too short.",
                       },
-                      maxLength: {
-                        value: 15,
-                        message: "Phone number is too long.",
-                      },
-                      pattern: {
-                        value: /^[+]?[-\d\s()]{7,15}$/,
-                        message: "Enter a valid phone number.",
-                      },
-                    })}
-                    className="w-full px-3.25 py-2.75 text-[14px] font-sans border border-line rounded-[10px] bg-white text-ink outline-none focus:border-brand transition-colors"
+                    }}
+                    render={({ field }) => (
+                      <PhoneInput
+                        international
+                        withCountryCallingCode
+                        defaultCountry="IN"
+                        placeholder="Enter phone number"
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="flex items-center gap-2 w-full rounded-[10px] border border-line bg-white px-3.25 py-2.75 focus-within:border-brand transition-colors"
+                        numberInputProps={{
+                          className:
+                            "w-full border-none outline-none bg-transparent text-[14px] text-ink",
+                        }}
+                      />
+                    )}
                   />
                   {errors.phone && fieldErrorMessage(errors.phone.message || "Phone is required.")}
                 </label>

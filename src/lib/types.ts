@@ -94,6 +94,12 @@ export interface HeroProps {
   nextEvent?: ScheduleItem;
 }
 
+export interface NavbarProps {
+  chapters: { name: string; slug: string }[];
+  currentChapterSlug?: string;
+  host: string;
+}
+
 export interface Chapter {
   id: string | number;
   name: string;

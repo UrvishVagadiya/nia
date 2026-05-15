@@ -12,7 +12,7 @@ import { Plus } from "lucide-react";
 
 const FAQSection = () => {
   return (
-    <section className="bg-paper">
+    <section className="bg-paper-2">
       <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-8 sm:gap-16">
         {/* Left Side (Header) */}
         <div>

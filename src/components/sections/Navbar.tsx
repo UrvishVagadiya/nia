@@ -8,12 +8,7 @@ import Image from "next/image";
 import { NAV_LINKS } from "@/constant/Navbar.data";
 import Typography from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
-
-interface NavbarProps {
-  chapters: { name: string; slug: string }[];
-  currentChapterSlug?: string;
-  host: string;
-}
+import { NavbarProps } from "@/lib/types";
 
 const Navbar = ({ chapters, currentChapterSlug, host }: NavbarProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
