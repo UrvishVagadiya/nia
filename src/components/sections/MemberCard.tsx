@@ -46,12 +46,12 @@ const MemberCard = ({ member }: { member: Member }) => {
         <div className="flex items-center gap-2 text-ink-4 text-[11px] font-bold mb-4 tracking-wide uppercase">
           <div className="flex items-center gap-1">
             <MapPin size={11} className="text-brand" />
-            {member.location}
+            <div className="line-clamp-1">{member.location}</div>
           </div>
           <span className="text-ink-4 mx-0.5">&bull;</span>
-          <div className="flex items-center gap-1">
-            <Calendar size={11} className="text-brand" />
-            {member.joined}
+          <div className="flex items-center gap-1 capitalize!">
+            <Calendar size={11} className="text-brand " />
+            <div className="line-clamp-1">Since {member.joined}</div>
           </div>
         </div>
         <p className="text-[13px] text-ink-3 leading-[1.6] line-clamp-3 m-0 text-pretty min-h-[64px]">

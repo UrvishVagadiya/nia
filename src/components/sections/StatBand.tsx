@@ -1,14 +1,3 @@
-// "use client";
-
-// import Typography from "../ui/typography";
-// import { cn } from "@/lib/utils";
-
-// import { StatBandProps } from "@/lib/types";
-
-// const StatBand = ({ stats: cmsStats }: StatBandProps) => {
-//   const items = cmsStats?.length
-//     ? cmsStats.map((s, idx) => ({ key: idx, numeral: s.value, label: s.label }))
-//     : [];
 "use client";
 
 import Typography from "../ui/typography";
