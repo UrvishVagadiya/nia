@@ -149,7 +149,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
               <CarouselItem
                 key={member.id}
                 className={cn(
-                  "basis-[78%] min-w-73 sm:max-w-80 md:basis-auto md:w-80 ml-0",
+                  "basis-[78%] min-w-73 sm:max-w-80 md:basis-auto md:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)] ml-0",
                   index === 0 && "pl-8 sm:pl-12 md:pl-0",
                   index === filtered.length - 1 && "pr-8 sm:pr-12 md:pr-0"
                 )}
