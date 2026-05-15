@@ -12,12 +12,23 @@ import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import MemberCard from "./MemberCard";
 
 const MembersSection = ({ members = [] }: MembersSectionProps) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+  }, []);
+
   const specialties = useMemo(() => {
-    const set = new Set(members.map((m) => m.specialty));
+    // Trim to avoid duplicates like "Wealth Management" and "Wealth Management "
+    const set = new Set(members.map((m) => m.specialty?.trim()).filter(Boolean));
     return ["All", ...Array.from(set).sort()];
   }, [members]);
 
-  const [filter, setFilter] = useStickyFilter("last_specialty_filter", "All", specialties);
+  const [stickyFilter, setFilter] = useStickyFilter("last_specialty_filter", "All", specialties);
+
+  // Use "All" on server, sticky filter on client after mount
+  const filter = isMounted ? stickyFilter : "All";
 
   const [activeIndex, setActiveIndex] = useState(0);
   const thumbScrollRef = useRef<HTMLDivElement>(null);
@@ -27,7 +38,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
 
   // Filter members based on selected specialty
   const filtered = useMemo(() => {
-    return filter === "All" ? members : members.filter((m) => m.specialty === filter);
+    return filter === "All" ? members : members.filter((m) => m.specialty?.trim() === filter);
   }, [filter, members]);
   // Sync thumbnail scroll when activeIndex changes
   useEffect(() => {

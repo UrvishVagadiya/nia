@@ -626,7 +626,6 @@ export async function GET(req: Request) {
     });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error occurred";
-    console.error("Seed error:", error);
     return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }

@@ -41,14 +41,14 @@ const getVisitorEmailHtml = (data: {
         <td align="center" style="padding:40px; background-color:#0F3452;">
           <div style="color:#2E9DDB; font-size:24px; font-weight:800; letter-spacing:1px;">NIA - ${data.chapterName}</div>
           <h1 style="color:#ffffff; margin:10px 0 0; font-size:28px;">Visitor Pass Request</h1>
-          <p style="color:#CBD5E1; font-size:16px; margin:5px 0 0;">New Membership Inquiry & Meeting Request</p>
+          <p style="color:#CBD5E1; font-size:16px; margin:5px 0 0;">Attend a meeting, connect with members, and experience the network firsthand.</p>
         </td>
       </tr>
 
       <!-- INTRODUCTION -->
       <tr>
         <td style="padding: 30px 40px 0 40px;">
-          <p style="color: #1E293B; font-size: 16px; line-height: 1.6; margin: 0; font-weight: 600;">Hello Contact Us Team,</p>
+          <p style="color: #1E293B; font-size: 16px; line-height: 1.6; margin: 0; font-weight: 600;">Hello Team,</p>
           <p style="color: #475569; font-size: 15px; line-height: 1.6; margin: 15px 0 0 0;">
             You have received a new request for a <strong>Visitor Pass</strong>. The following individual has expressed interest in attending a session to explore our network.
           </p>
@@ -73,7 +73,7 @@ const getVisitorEmailHtml = (data: {
 
       <!-- VISITOR INFO SECTION -->
       <tr>
-        <td style="padding:0 40px;">
+        <td style="padding:15px 40px;">
           <h3 style="color:#0F3452; border-bottom:1px solid #E2E8F0; padding-bottom:10px; font-size:18px;">Visitor Background</h3>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
@@ -113,16 +113,6 @@ const getVisitorEmailHtml = (data: {
               </td>
             </tr>
           </table>
-        </td>
-      </tr>
-
-      <!-- CTA BUTTON -->
-      <tr>
-        <td align="center" style="padding:40px;">
-          <a href="${data.adminDashboardLink}" style="background-color:#0F3452; color:#ffffff; padding:16px 36px; border-radius:10px; text-decoration:none; font-weight:700; display:inline-block; font-size:16px;">Approve Visitor Pass</a>
-          <div style="margin-top:15px;">
-            <a href="#" style="color:#94A3B8; font-size:13px; text-decoration:none; font-weight:600;">Decline Request</a>
-          </div>
         </td>
       </tr>
 
@@ -171,7 +161,7 @@ export const sendInquiryEmail: CollectionAfterChangeHook = async ({ doc, operati
         html: emailHtml,
       });
     }
-  } catch (error) {
-    console.error("Error in sendInquiryEmail hook:", error);
+  } catch {
+    // Silent fail in production
   }
 };

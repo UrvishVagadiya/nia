@@ -1,22 +1,33 @@
 import { CollectionConfig } from "payload";
 import { syncMemberCounts, syncMemberCountsOnDelete } from "../../hooks/syncMemberCounts";
+import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
 
 export const Members: CollectionConfig = {
   slug: "members",
   admin: {
     useAsTitle: "name",
     group: "Chapter Data",
-    defaultColumns: ["name", "chapter", "photo", "photoURL", "specialty"],
+    defaultColumns: ["name", "chapter", "photo", "status", "specialty"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },
   },
   hooks: {
-    afterChange: [syncMemberCounts],
+    beforeOperation: [onSoftDelete("members")],
+    beforeChange: [beforeChangeSoftDelete],
+    afterChange: [syncMemberCounts, revalidateRelatedChapter],
     afterDelete: [syncMemberCountsOnDelete],
+    afterOperation: [afterSoftDelete],
   },
   access: {
-    read: () => true,
+    read: softDeleteAccess,
   },
   fields: [
     { name: "name", type: "text", required: true },
@@ -28,13 +39,27 @@ export const Members: CollectionConfig = {
       type: "row",
       fields: [
         {
+          name: "photo_source",
+          type: "select",
+          label: "Image Source",
+          defaultValue: "upload",
+          options: [
+            { label: "Upload File", value: "upload" },
+            { label: "Direct URL", value: "url" },
+          ],
+          admin: {
+            width: "25%",
+          },
+        },
+        {
           name: "photo",
           type: "upload",
           relationTo: "members-media",
           label: "Member Photo (Upload)",
           admin: {
-            width: "50%",
-            description: "Upload a file to Supabase. This is preferred for optimization.",
+            width: "75%",
+            description: "Upload a file to Supabase.",
+            condition: (data) => data.photo_source === "upload" || !data.photo_source,
             components: {
               Cell: "@/components/admin/ImageCell",
             },
@@ -45,8 +70,9 @@ export const Members: CollectionConfig = {
           type: "text",
           label: "Member Photo (Direct URL)",
           admin: {
-            width: "50%",
-            description: "Or paste a direct Supabase/Unsplash URL here.",
+            width: "40%",
+            description: "Or paste a direct URL here.",
+            condition: (data) => data.photo_source === "url",
             components: {
               Cell: "@/components/admin/ImageCell",
             },
@@ -60,7 +86,8 @@ export const Members: CollectionConfig = {
       name: "chapter",
       type: "relationship",
       relationTo: "chapters",
-      required: true,
+      required: false,
     },
+    ...softDeleteFields,
   ],
 };

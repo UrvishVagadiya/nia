@@ -1,23 +1,37 @@
 import { CollectionConfig } from "payload";
+// Trigger re-save to fix stale config error
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
+import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
 export const Events: CollectionConfig = {
   slug: "events",
   admin: {
     useAsTitle: "topic",
-    group: "Schedule",
-    components: {
-      beforeList: ["@/components/admin/ChapterFilterBar"],
-    },
+    group: "Chapter Data",
+    defaultColumns: ["topic", "date", "chapter", "status"],
+  },
+  hooks: {
+    beforeOperation: [onSoftDelete("events")],
+    beforeChange: [beforeChangeSoftDelete],
+    afterChange: [revalidateRelatedChapter],
+    afterOperation: [afterSoftDelete],
   },
   access: {
-    read: () => true,
+    read: softDeleteAccess,
   },
   fields: [
+    ...softDeleteFields,
     {
       name: "chapter",
       type: "relationship",
       relationTo: "chapters",
-      required: true,
+      required: false,
       hasMany: false,
     },
     {

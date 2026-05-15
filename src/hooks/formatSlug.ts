@@ -9,9 +9,12 @@ const format = (val: string): string =>
 const formatSlug =
   (fallback: string): FieldHook =>
   ({ value, originalDoc, data }) => {
-    if (typeof value === "string") {
+    // If there's a value already, just format it and return
+    if (value && typeof value === "string") {
       return format(value);
     }
+
+    // Otherwise, try to use the fallback field (e.g. 'name')
     const fallbackData = data?.[fallback] || originalDoc?.[fallback];
 
     if (fallbackData && typeof fallbackData === "string") {

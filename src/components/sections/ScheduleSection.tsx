@@ -71,15 +71,12 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
                 {activeEvent.rsvps} {" RSVP'd"}
               </span>
             </div>
-
             <div className="font-serif text-[clamp(36px,4vw,52px)] leading-none font-semibold tracking-[-0.02em] mb-4">
               {activeEvent.day}, {activeEvent.date}
             </div>
-
             <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-[45px]">
               {activeEvent.topic}
             </div>
-
             <Link
               href={
                 selectedSlug && activeEvent.date
@@ -90,7 +87,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
             >
               <span className="flex items-center justify-center">Request a visitor pass</span>
               <ArrowRight size={15} />
-            </Link>
+            </Link>{" "}
           </div>
 
           {/* Sub Cards Row */}

@@ -1,21 +1,32 @@
 import { CollectionConfig } from "payload";
 import { sendInquiryEmail } from "./hooks/sendInquiryEmail";
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
 
 export const Inquiries: CollectionConfig = {
   slug: "inquiries",
   admin: {
     useAsTitle: "name",
     group: "Visitor Data",
-    defaultColumns: ["name", "email", "chapter", "createdAt"],
+    defaultColumns: ["name", "email", "chapter", "createdAt", "status"],
   },
   access: {
     create: () => true,
-    read: () => true,
+    read: softDeleteAccess,
   },
   hooks: {
+    beforeOperation: [onSoftDelete("inquiries")],
+    beforeChange: [beforeChangeSoftDelete],
     afterChange: [sendInquiryEmail],
+    afterOperation: [afterSoftDelete],
   },
   fields: [
+    ...softDeleteFields,
     {
       name: "name",
       type: "text",
@@ -44,7 +55,7 @@ export const Inquiries: CollectionConfig = {
       name: "chapter",
       type: "relationship",
       relationTo: "chapters",
-      required: true,
+      required: false,
     },
     {
       name: "meetingDetails",

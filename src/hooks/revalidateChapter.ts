@@ -1,18 +1,12 @@
 import { CollectionAfterChangeHook } from "payload";
 import { revalidatePath } from "next/cache";
 
-export const revalidateChapter: CollectionAfterChangeHook = ({
-  doc,
-  previousDoc,
-  req: { payload },
-}) => {
+export const revalidateChapter: CollectionAfterChangeHook = ({ doc }) => {
   if (doc.slug) {
-    payload.logger.info(`Revalidating chapter: ${doc.slug}`);
+    // Revalidate the specific chapter page (under [slug] in website group)
+    revalidatePath(`/${doc.slug}`, "page");
 
-    // Revalidate the specific chapter page
-    revalidatePath(`/(chapters)/${doc.slug}`, "page");
-
-    // Revalidate the home page or any other relevant paths
+    // Revalidate the home page and other layouts
     revalidatePath("/", "layout");
   }
 

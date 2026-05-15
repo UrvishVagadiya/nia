@@ -18,7 +18,6 @@ const Footer = () => {
               width={120}
               height={40}
               className="invert brightness-0 h-auto"
-              style={{ width: "auto" }}
             />
             <Typography
               variant="body-sm"

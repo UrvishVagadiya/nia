@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import Typography from "@/components/ui/typography";
@@ -21,7 +21,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<VisitorFormValues>({
@@ -41,7 +41,31 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
     },
   });
 
-  const currentChapterName = watch("chapterName");
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    // Check if there is an active cooldown in localStorage
+    const lastSubmit = localStorage.getItem("last_inquiry_time");
+    if (lastSubmit) {
+      const elapsed = Date.now() - parseInt(lastSubmit);
+      if (elapsed < 60000) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setCooldown(Math.ceil((60000 - elapsed) / 1000));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
+
+  const [meetingDate, meetingTopic, meetingDay, currentChapterName] = useWatch({
+    control,
+    name: ["meetingDate", "meetingTopic", "meetingDay", "chapterName"],
+  });
 
   useEffect(() => {
     if (chapterId) setValue("chapterId", chapterId);
@@ -110,30 +134,37 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
       return response.json();
     };
 
-    // Use toast.promise and await it so isSubmitting works correctly
-    await toast.promise(submitRequest(), {
-      loading: "Sending your request...",
-      success: () => {
-        reset({
-          name: "",
-          email: "",
-          specialty: "",
-          phone: "",
-          notes: "",
-          chapterId: values.chapterId,
-          chapterName: values.chapterName,
-          chapterSlug: values.chapterSlug,
-          venue: values.venue,
-        });
-        return "Request sent! We'll reply within 24 hours.";
-      },
-      error: (err: unknown) => {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        console.error("Submission Error:", err);
-        return `Could not send: ${message}`;
-      },
-      style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
-    });
+    try {
+      await submitRequest();
+
+      reset({
+        name: "",
+        email: "",
+        specialty: "",
+        phone: "",
+        notes: "",
+        chapterId: values.chapterId,
+        chapterName: values.chapterName,
+        chapterSlug: values.chapterSlug,
+        venue: values.venue,
+      });
+
+      toast.success("Request sent! We'll reply within 24 hours.", {
+        style: { background: "#fff", color: "#0e3a5c", border: "1px solid #e2e8f0" },
+      });
+
+      // Set cooldown
+      // eslint-disable-next-line react-hooks/purity
+      const now = Date.now();
+      localStorage.setItem("last_inquiry_time", now.toString());
+      setCooldown(60);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unknown error";
+      console.error("Submission Error:", err);
+      toast.error(`Could not send: ${message}`, {
+        style: { background: "#fff", color: "#ff4d4d", border: "1px solid #ff4d4d" },
+      });
+    }
   };
 
   const chapterLabel =
@@ -212,7 +243,7 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                   Request a pass
                 </Typography>
 
-                {(watch("meetingDate") || watch("meetingTopic")) && (
+                {(meetingDate || meetingTopic) && (
                   <div className="mb-2 p-3.5 bg-brand-soft rounded-[10px] border border-brand/20">
                     <Typography
                       variant="caption"
@@ -223,10 +254,10 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                     </Typography>
                     <div className="flex flex-col gap-0.5">
                       <Typography variant="body-sm" color="brand-deep" className="font-bold!">
-                        {watch("meetingDay")}, {watch("meetingDate")}
+                        {meetingDay}, {meetingDate}
                       </Typography>
                       <Typography variant="caption" color="ink-3" className="italic">
-                        {watch("meetingTopic")}
+                        {meetingTopic}
                       </Typography>
                     </div>
                   </div>
@@ -322,15 +353,19 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
               <button
                 type="submit"
                 suppressHydrationWarning
-                disabled={isSubmitting}
-                className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors disabled:opacity-70"
+                disabled={isSubmitting || cooldown > 0}
+                className="bg-brand text-white border-none rounded-pill px-5.5 py-3.5 font-bold cursor-pointer mt-1.5 inline-flex items-center justify-center gap-2 hover:bg-brand-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <Typography as="span" variant="body-sm" color="white" className="font-bold!">
-                  {isSubmitting ? "Submitting..." : "Submit request"}
+                  {isSubmitting
+                    ? "Submitting..."
+                    : cooldown > 0
+                      ? `Wait ${cooldown}s`
+                      : "Submit request"}
                 </Typography>
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" size={16} />
-                ) : (
+                ) : cooldown > 0 ? null : (
                   <ArrowRight size={16} />
                 )}
               </button>

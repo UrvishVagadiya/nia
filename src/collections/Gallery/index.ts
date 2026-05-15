@@ -1,12 +1,27 @@
 import { CollectionConfig } from "payload";
+import {
+  softDeleteFields,
+  softDeleteAccess,
+  onSoftDelete,
+  beforeChangeSoftDelete,
+  afterSoftDelete,
+} from "../../utils/softDelete";
+import { revalidateRelatedChapter } from "../../hooks/revalidateRelatedChapter";
 
 export const Gallery: CollectionConfig = {
   slug: "gallery",
   admin: {
     group: "Media Content",
+    defaultColumns: ["image", "chapter", "order", "status"],
+  },
+  hooks: {
+    beforeOperation: [onSoftDelete("gallery")],
+    beforeChange: [beforeChangeSoftDelete],
+    afterChange: [revalidateRelatedChapter],
+    afterOperation: [afterSoftDelete],
   },
   access: {
-    read: () => true,
+    read: softDeleteAccess,
   },
   fields: [
     { name: "image", type: "upload", relationTo: "gallery-media", required: true },
@@ -17,5 +32,6 @@ export const Gallery: CollectionConfig = {
       relationTo: "chapters",
       required: true,
     },
+    ...softDeleteFields,
   ],
 };

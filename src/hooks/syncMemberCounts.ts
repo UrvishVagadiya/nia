@@ -4,19 +4,27 @@ export const syncMemberCounts: CollectionAfterChangeHook = async ({ doc, req: { 
   if (doc.chapter) {
     const chapterId = typeof doc.chapter === "object" ? doc.chapter.id : doc.chapter;
 
-    // Count members for this chapter
+    // Count active members for this chapter
     const { totalDocs } = await payload.find({
       collection: "members",
       where: {
-        chapter: {
-          equals: chapterId,
-        },
+        and: [
+          {
+            chapter: {
+              equals: chapterId,
+            },
+          },
+          {
+            isDeleted: {
+              not_equals: true,
+            },
+          },
+        ],
       },
       limit: 1,
     });
 
-    // Update chapter stats or any other logic
-    payload.logger.info(`Chapter ${chapterId} now has ${totalDocs} members.`);
+    payload.logger.info(`Chapter ${chapterId} now has ${totalDocs} active members.`);
   }
 
   return doc;
