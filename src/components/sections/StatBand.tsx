@@ -13,7 +13,7 @@ const StatBand = ({ stats: cmsStats }: StatBandProps) => {
   if (items.length === 0) return null;
 
   return (
-    <section className="bg-paper-2 px-4 pb-12 lg:px-8 lg:pb-20 overflow-hidden">
+    <div className="bg-paper-2 px-4 pb-12 lg:px-8 lg:pb-20 overflow-hidden">
       <div className="section-container px-12! rounded-[18px] py-6 lg:py-9 lg:px-12 relative overflow-hidden bg-brand-2">
         <div
           className="absolute inset-0 bg-[--color-primary] pointer-events-none"
@@ -57,7 +57,7 @@ const StatBand = ({ stats: cmsStats }: StatBandProps) => {
           })}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

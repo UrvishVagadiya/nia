@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Typography from "@/components/ui/typography";
+import { Button } from "@/components/ui/button";
 import { SLOT_CONFIGS } from "@/constant/TestimonialsSection.data";
 import { Testimonial } from "@/lib/types";
 
@@ -35,7 +36,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
   if (n === 0 || !current) return null;
 
   return (
-    <section className="bg-paper-2">
+    <section>
       <div className="md:section-container! section-padding">
         {/* ── Heading ── */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-5 md:mx-auto">
@@ -72,12 +73,12 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
                 const t = testimonials[tIndex];
 
                 return (
-                  <button
+                  <Button
                     key={i}
+                    variant="avatar"
                     onClick={() => handleManual(tIndex)}
                     aria-label={`Show testimonial from ${t.who}`}
-                    suppressHydrationWarning
-                    className="rounded-full overflow-hidden shrink-0 cursor-pointer p-0 border-none transition-all duration-350ms ease-[cubic-bezier(0.4,0,0.2,1)]"
+                    className="shrink-0 cursor-pointer transition-all duration-350ms ease-[cubic-bezier(0.4,0,0.2,1)]"
                     style={{
                       width: slot.size,
                       height: slot.size,
@@ -102,7 +103,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
                         className="w-full h-full object-cover"
                       />
                     )}
-                  </button>
+                  </Button>
                 );
               });
             })()}
@@ -130,47 +131,42 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
 
           {/* Prev arrow */}
           <div className="pl-2 absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
-            <button
+            <Button
+              variant="arrow-primary"
               onClick={() => {
                 prev();
                 setAutoKey((k) => k + 1);
               }}
               aria-label="Previous testimonial"
-              suppressHydrationWarning
-              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
             >
               <ChevronLeft size={20} />
-            </button>
+            </Button>
           </div>
 
           {/* Next arrow */}
           <div className="pr-2 absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-            <button
+            <Button
+              variant="arrow-primary"
               onClick={() => {
                 next();
                 setAutoKey((k) => k + 1);
               }}
               aria-label="Next testimonial"
-              suppressHydrationWarning
-              className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center border-none cursor-pointer hover:bg-brand-2 transition-colors p-0 shadow-[0_6px_16px_-4px_rgba(46,157,219,0.4)]"
             >
               <ChevronRight size={20} />
-            </button>
+            </Button>
           </div>
         </div>
 
         {/* ── Dot indicators ── */}
         <div className="flex justify-center gap-1.5 mt-6">
           {testimonials.map((_, i) => (
-            <button
+            <Button
               key={i}
+              variant={i === active ? "dot-active" : "dot-inactive"}
               onClick={() => handleManual(i)}
               aria-label={`Show testimonial ${i + 1}`}
-              suppressHydrationWarning
-              className={[
-                "rounded-[4px] border-none p-0 cursor-pointer transition-all duration-200",
-                i === active ? "w-6 h-2 bg-brand" : "w-2 h-2 bg-line-2 hover:bg-ink-4",
-              ].join(" ")}
+              className="cursor-pointer transition-all duration-200"
             />
           ))}
         </div>

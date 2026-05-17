@@ -11,7 +11,7 @@ const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
   const partner2 = data.partners[1];
 
   return (
-    <section id="cityPartner" className="bg-paper border-b border-line/70 overflow-hidden">
+    <section id="cityPartner" className="border-b border-line/70 overflow-hidden">
       {/* --- Content Grid Section --- */}
       <div className="section-container section-padding">
         <div className="flex flex-col items-center text-center justify-center mx-auto pb-10 md:pb-16">
@@ -110,7 +110,7 @@ const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
 
           {/* Right Column: Narrative Content */}
           <div className="flex flex-col gap-2 lg:pl-4 text-left">
-            <div className="space-y-4 max-w-160 mx-auto lg:mx-0">
+            <div className="space-y-4 max-w-160 mx-auto lg:mx-0 text-justify">
               {data.messageParagraphs.map((paragraph, idx) => (
                 <Typography
                   key={idx}

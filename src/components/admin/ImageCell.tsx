@@ -2,28 +2,25 @@
 import React from "react";
 
 interface ImageCellProps {
-  cellData: unknown; // cellData can be string or object from Payload
+  cellData: string | { url?: string } | null | undefined;
   rowData: {
-    photo?: string | { url?: string };
-    photoURL?: string;
+    photo?: string | { url?: string } | null | undefined;
+    photoURL?: string | null | undefined;
   };
 }
 
 const ImageCell: React.FC<ImageCellProps> = (props) => {
   const { cellData, rowData } = props;
 
-  // 1. Try to get URL from the 'photo' upload field (which might be an object)
   let imageUrl =
     typeof cellData === "object" && cellData !== null
       ? (cellData as { url?: string })?.url
       : (cellData as string);
 
-  // 2. Fallback to 'photoURL' field if 'photo' is empty
   if (!imageUrl && rowData?.photoURL) {
     imageUrl = rowData.photoURL;
   }
 
-  // 3. If we still don't have an image, try checking if rowData.photo is an object
   if (!imageUrl && rowData?.photo) {
     imageUrl =
       typeof rowData.photo === "object" && rowData.photo !== null
@@ -48,6 +45,7 @@ const ImageCell: React.FC<ImageCellProps> = (props) => {
         justifyContent: "center",
       }}
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={imageUrl}
         alt="Thumbnail"

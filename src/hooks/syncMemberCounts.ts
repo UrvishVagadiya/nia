@@ -2,10 +2,10 @@ import { CollectionAfterChangeHook, CollectionAfterDeleteHook } from "payload";
 
 export const syncMemberCounts: CollectionAfterChangeHook = async ({ doc, req: { payload } }) => {
   if (doc.chapter) {
-    const chapterId = typeof doc.chapter === "object" ? doc.chapter.id : doc.chapter;
+    const chapterId =
+      typeof doc.chapter === "object" ? (doc.chapter as { id: string | number }).id : doc.chapter;
 
-    // Count active members for this chapter
-    const { totalDocs } = await payload.find({
+    const result = await payload.find({
       collection: "members",
       where: {
         and: [
@@ -23,6 +23,7 @@ export const syncMemberCounts: CollectionAfterChangeHook = async ({ doc, req: { 
       },
       limit: 1,
     });
+    payload.logger.info(`Active members count for chapter ${chapterId}: ${result.totalDocs}`);
   }
 
   return doc;
@@ -33,9 +34,10 @@ export const syncMemberCountsOnDelete: CollectionAfterDeleteHook = async ({
   req: { payload },
 }) => {
   if (doc.chapter) {
-    const chapterId = typeof doc.chapter === "object" ? doc.chapter.id : doc.chapter;
+    const chapterId =
+      typeof doc.chapter === "object" ? (doc.chapter as { id: string | number }).id : doc.chapter;
 
-    const { totalDocs } = await payload.find({
+    const result = await payload.find({
       collection: "members",
       where: {
         chapter: {
@@ -44,5 +46,8 @@ export const syncMemberCountsOnDelete: CollectionAfterDeleteHook = async ({
       },
       limit: 1,
     });
+    payload.logger.info(
+      `Total members count for chapter ${chapterId} on delete: ${result.totalDocs}`
+    );
   }
 };

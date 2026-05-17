@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface Chapter {
   id: string;
@@ -93,9 +94,9 @@ const ChapterFilterBar: React.FC = () => {
             className="no-scrollbar"
           >
             {/* All Chapters Pill */}
-            <button
+            <Button
+              variant="none"
               onClick={() => handleFilter(null)}
-              suppressHydrationWarning
               style={{
                 padding: "6px 16px",
                 borderRadius: "20px",
@@ -114,15 +115,15 @@ const ChapterFilterBar: React.FC = () => {
               }}
             >
               All
-            </button>
+            </Button>
 
             {chapters.map((chapter) => {
               const isActive = currentChapterId === String(chapter.id);
               return (
-                <button
+                <Button
                   key={chapter.id}
+                  variant="none"
                   onClick={() => handleFilter(chapter.id)}
-                  suppressHydrationWarning
                   style={{
                     padding: "6px 16px",
                     borderRadius: "20px",
@@ -141,14 +142,15 @@ const ChapterFilterBar: React.FC = () => {
                   }}
                 >
                   {chapter.name}
-                </button>
+                </Button>
               );
             })}
           </div>
         </div>
 
         {currentChapterId && (
-          <button
+          <Button
+            variant="none"
             onClick={() => handleFilter(null)}
             style={{
               fontSize: "11px",
@@ -166,7 +168,7 @@ const ChapterFilterBar: React.FC = () => {
             }}
           >
             Clear Filter ×
-          </button>
+          </Button>
         )}
       </div>
     </div>
