@@ -100,7 +100,7 @@ function Button({
       {variant === "primary" ? (
         <>
           <span>{children}</span>
-          <ArrowRight size={16} className="ml-0.5" />
+          <ArrowRight size={16} className="ml-0.5 " />
         </>
       ) : variant === "primary-light" ? (
         <>

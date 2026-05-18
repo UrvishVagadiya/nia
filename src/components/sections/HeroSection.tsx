@@ -90,7 +90,7 @@ const HeroSection = ({
           </Typography>
 
           {caption && (
-            <Typography variant="body-lg" color="ink-2" className="mb-7">
+            <Typography variant="body-lg" color="ink-2" className="mb-7 ">
               {caption}
             </Typography>
           )}
