@@ -34,6 +34,7 @@ export const FAQs: CollectionConfig = {
       relationTo: "chapters",
       required: true,
       hasMany: false,
+      index: true,
       admin: {
         position: "sidebar",
       },

@@ -111,7 +111,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
         </div>
 
         {/* ── Testimonial Card wrapper ── */}
-        <div className="relative max-w-210 mx-5 md:mx-auto">
+        <div className="relative max-w-210 mx-5 md:mx-10 lg:mx-auto">
           <div className="bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
             {/* Name */}
             <Typography as="div" variant="h5" color="brand" className="mb-1 italic">

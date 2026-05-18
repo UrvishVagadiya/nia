@@ -75,6 +75,7 @@ export const Members: CollectionConfig = withSoftDelete({
       type: "relationship",
       relationTo: "chapters",
       required: false,
+      index: true,
     },
   ],
 });

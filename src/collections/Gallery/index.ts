@@ -19,6 +19,7 @@ export const Gallery: CollectionConfig = withSoftDelete({
       type: "relationship",
       relationTo: "chapters",
       required: true,
+      index: true,
     },
   ],
 });

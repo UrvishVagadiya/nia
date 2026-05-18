@@ -15,7 +15,6 @@ export function getNextEvent(events: ScheduleItem[] = []): ScheduleItem | undefi
       let ts = Date.parse(raw);
 
       if (isNaN(ts)) {
-        // Try parsing with the current year appended (e.g. "Apr 10" -> "Apr 10 2026")
         ts = Date.parse(`${raw} ${now.getFullYear()}`);
       }
 

@@ -20,6 +20,7 @@ export const Events: CollectionConfig = withSoftDelete({
       relationTo: "chapters",
       required: false,
       hasMany: false,
+      index: true,
     },
     {
       name: "date",
