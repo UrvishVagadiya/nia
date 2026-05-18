@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Typography from "@/components/ui/typography";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import MemberCard from "./MemberCard";
 
@@ -83,7 +84,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
 
   return (
     <section id="members" className="bg-paper">
-      <div className="py-11 lg:py-22 md:px-5  md:w-full md:max-w-[1280px] lg:mx-auto">
+      <div className="py-11 lg:py-22 px-0 md:px-5 lg:px-8 w-full max-w-7xl mx-auto">
         <div className="text-center mb-10 px-5 lg:px-8">
           <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
@@ -102,18 +103,15 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
           {specialties.map((s, index) => {
             const isActive = filter === s;
             return (
-              <button
+              <Button
                 key={s}
+                variant={isActive ? "filter-active" : "filter-inactive"}
                 onClick={() => {
                   setFilter(s);
                   scrollTo(0);
                 }}
-                suppressHydrationWarning
                 className={cn(
-                  "rounded-pill px-5 py-2 transition-all duration-200 shrink-0 mb-1",
-                  isActive
-                    ? "bg-brand-deep text-white shadow-md"
-                    : "bg-white text-ink-3 hover:text-ink shadow-sm hover:shadow-md",
+                  "mb-1 transition-all duration-200",
                   index === 0 && "ml-8 sm:ml-12 md:ml-0",
                   index === specialties.length - 1 && "mr-8 sm:mr-12 md:mr-0"
                 )}
@@ -125,7 +123,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
                 >
                   {s}
                 </Typography>
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -149,8 +147,8 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
               <CarouselItem
                 key={member.id}
                 className={cn(
-                  "basis-[78%] min-w-73 sm:max-w-80 md:basis-auto md:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)] ml-0",
-                  index === 0 && "pl-8 sm:pl-12 md:pl-0",
+                  "basis-[78%] min-w-73 sm:max-w-80 md:max-w-none md:basis-auto md:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)] ml-0 md:pl-0",
+                  index === 0 && "pl-8 sm:pl-12",
                   index === filtered.length - 1 && "pr-8 sm:pr-12 md:pr-0"
                 )}
               >
@@ -168,22 +166,20 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
               <span className="text-ink-4">/ {String(filtered.length).padStart(2, "0")}</span>
             </div>
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="arrow-light"
                 onClick={() => scrollTo(Math.max(0, activeIndex - 1))}
-                suppressHydrationWarning
-                className="w-10 h-10 rounded-full border border-line bg-white text-brand-deep flex items-center justify-center disabled:opacity-30 transition-all active:scale-95"
                 disabled={activeIndex === 0}
               >
                 <ChevronLeft size={20} />
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="arrow-dark"
                 onClick={() => scrollTo(Math.min(filtered.length - 1, activeIndex + 1))}
-                suppressHydrationWarning
-                className="w-10 h-10 rounded-full bg-brand-deep text-white flex items-center justify-center disabled:opacity-30 transition-all active:scale-95 shadow-md"
                 disabled={activeIndex === filtered.length - 1}
               >
                 <ChevronRight size={20} />
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -195,15 +191,15 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
             {filtered.map((member, idx) => {
               const isActive = activeIndex === idx;
               return (
-                <button
+                <Button
                   key={member.id}
+                  variant="avatar"
                   ref={(el) => {
                     thumbRefs.current[idx] = el;
                   }}
                   onClick={() => scrollTo(idx)}
-                  suppressHydrationWarning
                   className={cn(
-                    "flex-none w-9 h-9 rounded-full overflow-hidden p-0 transition-all duration-160",
+                    "w-9 h-9 transition-all duration-160",
                     isActive
                       ? "border-2 border-brand opacity-100"
                       : "border-2 border-transparent ring-1 ring-line ring-inset opacity-65"
@@ -220,7 +216,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
                     loading="eager"
                     className="w-full h-full object-cover"
                   />
-                </button>
+                </Button>
               );
             })}
           </div>

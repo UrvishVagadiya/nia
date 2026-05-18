@@ -21,7 +21,7 @@ const UpdatesSection = ({ updates = [] }: UpdatesSectionProps) => {
   if (!updates || updates.length === 0) return null;
 
   return (
-    <section id="updates" className="bg-paper border-t border-line">
+    <section id="updates" className="border-t border-line">
       <div className="section-container section-padding">
         {/* Heading */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">

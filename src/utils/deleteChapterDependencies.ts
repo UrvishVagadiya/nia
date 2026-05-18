@@ -64,8 +64,6 @@ export const deleteChapterDependencies = async (payload: Payload, chapterId: str
         });
 
         if (docs.totalDocs > 0) {
-          // Soft Delete: Instead of deleting or just dissociating,
-          // we mark records as deleted and record the timestamp.
           for (const doc of docs.docs) {
             await payload.update({
               collection: collection.slug,
@@ -79,7 +77,9 @@ export const deleteChapterDependencies = async (payload: Payload, chapterId: str
             });
           }
         }
-      } catch (err) {}
+      } catch (err) {
+        payload.logger.error(err instanceof Error ? err.message : String(err));
+      }
     }
   }
 };

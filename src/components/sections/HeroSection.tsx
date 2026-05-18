@@ -57,7 +57,7 @@ const HeroSection = ({
     return `${startTimeStr} — ${endTimeStr}`;
   };
   return (
-    <section className="bg-paper-2 overflow-hidden">
+    <section className="overflow-hidden">
       <div className="section-container section-padding grid grid-col-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side: Copy */}
         <div>

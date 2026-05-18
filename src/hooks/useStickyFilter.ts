@@ -21,18 +21,21 @@ export function useStickyFilter(
           }
           return saved;
         }
-      } catch (e) {}
+      } catch {
+        // Ignore storage access errors
+      }
     }
     return initialValue;
   });
 
-  // Keep localStorage in sync when filter changes
   const updateFilter = useCallback(
     (newValue: string) => {
       setFilter(newValue);
       try {
         localStorage.setItem(key, newValue);
-      } catch (e) {}
+      } catch {
+        // Ignore storage write errors
+      }
     },
     [key]
   );

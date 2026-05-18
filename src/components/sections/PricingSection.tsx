@@ -2,10 +2,10 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Typography from "@/components/ui/typography";
 import { PricingSectionProps } from "@/lib/types";
-import { ArrowRight } from "lucide-react";
 import { usePriceFormatter } from "@/hooks/price";
 
 const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
@@ -58,7 +58,7 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
   if (!cmsPlans || cmsPlans.length === 0) return null;
 
   return (
-    <section id="membership" className="bg-paper-2">
+    <section id="membership">
       <div className="section-container section-padding">
         {/* Header */}
         <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
@@ -77,35 +77,20 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
           </Typography>
         </div>
 
-        {/* Toggle */}
         <div className="flex justify-center mb-10">
-          <div className="inline-flex p-1  rounded-pill bg-paper-2 border border-line">
-            <button
+          <div className="inline-flex p-1 rounded-pill bg-paper-2 border border-line">
+            <Button
+              variant={billing === "monthly" ? "toggle-active" : "toggle-inactive"}
               onClick={() => setBilling("monthly")}
-              className={`px-4.5 py-2 rounded-pill capitalize transition-colors duration-200 ${
-                billing === "monthly"
-                  ? "bg-brand text-white"
-                  : "bg-transparent text-ink-2 hover:text-ink"
-              }`}
             >
-              <Typography
-                as="span"
-                variant="body-sm"
-                className={billing === "monthly" ? "text-white" : "text-ink-2"}
-              >
-                monthly
-              </Typography>
-            </button>
-            <button
+              monthly
+            </Button>
+            <Button
+              variant={billing === "annual" ? "toggle-active" : "toggle-inactive"}
               onClick={() => setBilling("annual")}
-              className={`text-[13px] px-4.5 py-2 rounded-pill font-semibold capitalize transition-colors duration-200 ${
-                billing === "annual"
-                  ? "bg-brand text-white"
-                  : "bg-transparent text-ink-2 hover:text-ink"
-              }`}
             >
               annual
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -184,26 +169,14 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
                   ))}
                 </ul>
 
-                <Link
-                  href="#StepsSection"
-                  onClick={(e) => e.stopPropagation()}
-                  className={`py-3.25 px-5.5 rounded-pill inline-flex items-center justify-center gap-2 mt-2.5 transition-colors duration-300 ${
-                    isDark
-                      ? "bg-white text-brand-deep hover:b-paper-2"
-                      : "bg-brand text-white hover:bg-brand-2"
-                  }`}
+                <Button
+                  variant={isDark ? "primary-light" : "primary"}
+                  render={<Link href="#StepsSection" onClick={(e) => e.stopPropagation()} />}
+                  nativeButton={false}
+                  className="mt-2.5 w-full"
                 >
-                  <Typography
-                    as="span"
-                    variant="body-sm"
-                    className={isDark ? "text-brand-deep" : "text-white"}
-                  >
-                    {tier.cta}
-                  </Typography>
-                  <span className=" ml-0.5">
-                    <ArrowRight size={15} />
-                  </span>
-                </Link>
+                  {tier.cta}
+                </Button>
               </Card>
             );
           })}

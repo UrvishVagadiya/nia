@@ -68,7 +68,9 @@ export default async function Home() {
         leaderImage={chapter.hero?.leaderImage}
         nextEvent={nextEvent}
       />
+
       <StatBand stats={chapter.stats} />
+
       <CityPartnerSection data={chapter.cityPartner} />
 
       <WhyJoinSection />

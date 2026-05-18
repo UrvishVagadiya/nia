@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 import { ScheduleItem, ScheduleSectionProps } from "@/lib/types";
 import { useDateFormatter, useSortedEvents } from "@/hooks/date";
@@ -26,7 +27,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
   if (!sortedEvents || sortedEvents.length === 0) return null;
 
   return (
-    <section id="schedule" className="bg-paper">
+    <section id="schedule">
       <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
         {/* Left Side (Text content) */}
         <div>
@@ -82,17 +83,22 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
             <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-11.25">
               {activeEvent.topic}
             </div>
-            <Link
-              href={
-                selectedSlug && activeEvent.date
-                  ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
-                  : "#StepsSection"
+            <Button
+              variant="primary"
+              render={
+                <Link
+                  href={
+                    selectedSlug && activeEvent.date
+                      ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
+                      : "#StepsSection"
+                  }
+                />
               }
-              className="bg-brand text-white border border-brand text-center py-3.25 px-5.5 rounded-pill text-[14px] font-semibold inline-flex items-center gap-2.5 w-full justify-center hover:bg-brand-2 transition-colors"
+              nativeButton={false}
+              className="w-full justify-center"
             >
-              <span className="flex items-center justify-center">Request a visitor pass</span>
-              <ArrowRight size={15} />
-            </Link>{" "}
+              Request a visitor pass
+            </Button>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -100,15 +106,10 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
               const label = index === 0 ? "Up next" : getWeekOfMonthLabel(item.date) || "Wk";
               const isActive = selectedEvent === item;
               return (
-                <button
+                <Button
                   key={index}
-                  type="button"
+                  variant={isActive ? "schedule-active" : "schedule-inactive"}
                   onClick={() => setSelectedEvent(item)}
-                  className={`text-left bg-white border rounded-md py-3 px-3.5 transition-all duration-200 ${
-                    isActive
-                      ? "border-brand shadow-sm ring-1 ring-brand/20"
-                      : "border-line hover:border-brand/40"
-                  }`}
                 >
                   <div
                     className={`text-[10px] uppercase tracking-[0.08em] font-bold ${isActive ? "text-brand" : "text-ink-4"}`}
@@ -120,7 +121,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
                   >
                     {formatDateShort(item.date)}
                   </div>
-                </button>
+                </Button>
               );
             })}
           </div>

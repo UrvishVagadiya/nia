@@ -54,13 +54,14 @@ const Navbar = ({ chapters, currentChapterSlug, host }: NavbarProps) => {
         </div>
 
         {/* TOGGLE BUTTON */}
-        <button
+        <Button
+          variant="none"
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden flex items-center justify-center w-10 h-10 rounded-md text-ink-2 z-[60] relative"
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
+        </Button>
       </nav>
 
       {/* MOBILE SIDEBAR SYSTEM */}
