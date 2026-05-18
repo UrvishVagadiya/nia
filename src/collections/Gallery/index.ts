@@ -6,7 +6,7 @@ export const Gallery: CollectionConfig = withSoftDelete({
   slug: "gallery",
   admin: {
     group: "Media Content",
-    defaultColumns: ["image", "chapter", "order", "status"],
+    defaultColumns: ["image", "chapter", "order", "isDeleted"],
   },
   hooks: {
     afterChange: [revalidateRelatedChapter],

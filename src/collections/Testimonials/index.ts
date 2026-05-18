@@ -7,7 +7,7 @@ export const Testimonials: CollectionConfig = withSoftDelete({
   admin: {
     useAsTitle: "who",
     group: "Social Proof",
-    defaultColumns: ["status", "who", "role", "member", "leader", "quote"],
+    defaultColumns: ["isDeleted", "who", "role", "member", "leader", "quote"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },

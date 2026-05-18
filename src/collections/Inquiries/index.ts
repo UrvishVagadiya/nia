@@ -8,7 +8,7 @@ export const Inquiries: CollectionConfig = withSoftDelete({
   admin: {
     useAsTitle: "name",
     group: "Visitor Data",
-    defaultColumns: ["name", "email", "chapter", "createdAt", "status"],
+    defaultColumns: ["name", "email", "chapter", "createdAt", "isDeleted"],
   },
   access: {
     create: () => true,
