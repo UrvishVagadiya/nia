@@ -67,7 +67,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
         {/* Right Side (Cards) */}
         <div>
           <div className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden transition-all duration-300">
-            <div className="flex justify-between items-start mb-6">
+            <div className="flex justify-between items-center mb-6 ">
               <span className="px-3 py-1.25 bg-brand text-white rounded-pill text-[11px] font-bold tracking-[0.08em] uppercase">
                 {selectedEvent && sortedEvents.indexOf(selectedEvent) === 0
                   ? "Next meeting"
