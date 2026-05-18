@@ -1,12 +1,16 @@
 import { CollectionConfig } from "payload";
 import formatSlug from "../../hooks/formatSlug";
+import { withSoftDelete } from "../../utils/softDelete";
 
-export const Updates: CollectionConfig = {
+export const Updates: CollectionConfig = withSoftDelete({
   slug: "updates",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "category", "publishedDate", "published"],
+    defaultColumns: ["title", "category", "status", "publishedDate", "published"],
     group: "Chapter Content",
+    components: {
+      beforeList: ["@/components/admin/ChapterFilterBar"],
+    },
   },
   access: {
     read: () => true,
@@ -96,4 +100,4 @@ export const Updates: CollectionConfig = {
     },
   ],
   defaultSort: "-publishedDate",
-};
+});

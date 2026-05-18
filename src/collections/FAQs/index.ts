@@ -1,12 +1,16 @@
 import { CollectionConfig } from "payload";
+import { withSoftDelete } from "../../utils/softDelete";
 
-export const FAQs: CollectionConfig = {
+export const FAQs: CollectionConfig = withSoftDelete({
   slug: "faqs",
   admin: {
     useAsTitle: "question",
-    defaultColumns: ["question", "chapter", "order"],
+    defaultColumns: ["question", "chapter", "status", "order"],
     group: "Chapter Content",
     description: "Manage frequently asked questions for each chapter.",
+    components: {
+      beforeList: ["@/components/admin/ChapterFilterBar"],
+    },
   },
   access: {
     read: () => true,
@@ -50,4 +54,4 @@ export const FAQs: CollectionConfig = {
     },
   ],
   defaultSort: "order",
-};
+});

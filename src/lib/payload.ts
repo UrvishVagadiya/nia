@@ -224,7 +224,7 @@ const getChapterBySlugUncached = async (slug: string): Promise<Chapter | null> =
       payload.find({
         collection: "faqs",
         where: {
-          chapter: { equals: chapter.id },
+          and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
         },
         sort: "order",
         limit: 100,
@@ -232,7 +232,11 @@ const getChapterBySlugUncached = async (slug: string): Promise<Chapter | null> =
       payload.find({
         collection: "updates",
         where: {
-          and: [{ chapter: { equals: chapter.id } }, { published: { equals: true } }],
+          and: [
+            { chapter: { equals: chapter.id } },
+            { published: { equals: true } },
+            { isDeleted: { not_equals: true } },
+          ],
         },
         sort: "-publishedDate",
         limit: 10,
