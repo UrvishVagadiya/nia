@@ -19,25 +19,21 @@ import {
 import CityPartnerSection from "@/components/sections/CityPartnerSection";
 
 export default async function Home() {
-  // Get subdomain from headers (set in middleware)
   const headersList = await headers();
   const host = headersList.get("host") || "";
   const subdomain = headersList.get("x-subdomain");
 
-  // If no subdomain is present, dynamically redirect to the first available chapter
   const chapters = await getAllChapters();
   if (!subdomain) {
     if (chapters && chapters.length > 0) {
       const firstChapterSlug = chapters[0].slug;
+      const isLocal = host.includes("localhost");
+      const protocol = isLocal ? "http" : "https";
+      const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "nia-surat.propelius.tech";
 
-      // Determine the base domain for redirection
-      let redirectUrl = "";
-      if (host.includes("localhost")) {
-        redirectUrl = `http://${firstChapterSlug}.localhost:3000`;
-      } else {
-        const productionDomain = "nia-surat.propelius.tech";
-        redirectUrl = `https://${firstChapterSlug}.${productionDomain}`;
-      }
+      const redirectUrl = isLocal
+        ? `${protocol}://${firstChapterSlug}.localhost:3000`
+        : `${protocol}://${firstChapterSlug}.${rootDomain}`;
 
       redirect(redirectUrl);
     }

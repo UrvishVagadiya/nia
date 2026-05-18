@@ -5,7 +5,6 @@ export const Media: CollectionConfig = {
   upload: true,
   admin: {
     group: "Media Content",
-    hidden: true,
   },
   access: {
     read: () => true,

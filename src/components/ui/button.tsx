@@ -68,13 +68,18 @@ const buttonVariants = cva(
   }
 );
 
+interface ButtonProps extends ButtonPrimitive.Props, VariantProps<typeof buttonVariants> {
+  noArrowBg?: boolean;
+}
+
 function Button({
   className,
   variant = "default",
   size,
+  noArrowBg = false,
   children,
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonProps) {
   const finalSize =
     size === undefined
       ? (variant && ["primary", "primary-light", "secondary", "none"].includes(variant)) ||
@@ -100,12 +105,24 @@ function Button({
       {variant === "primary" ? (
         <>
           <span>{children}</span>
-          <ArrowRight size={16} className="ml-0.5 " />
+          {noArrowBg ? (
+            <ArrowRight size={16} className="ml-1 shrink-0" />
+          ) : (
+            <span className="w-6 h-6 rounded-full bg-white/20 text-white grid place-items-center text-[12px]">
+              <ArrowRight size={12} />
+            </span>
+          )}
         </>
       ) : variant === "primary-light" ? (
         <>
           <span>{children}</span>
-          <ArrowRight size={16} className="ml-0.5 text-brand-deep" />
+          {noArrowBg ? (
+            <ArrowRight size={16} className="ml-1 text-brand-deep shrink-0" />
+          ) : (
+            <span className="w-6 h-6 rounded-full bg-brand-deep/10 text-brand-deep grid place-items-center text-[12px]">
+              <ArrowRight size={12} />
+            </span>
+          )}
         </>
       ) : (
         children

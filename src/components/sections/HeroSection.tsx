@@ -85,7 +85,7 @@ const HeroSection = ({
             NIA {chapterName}.
           </Typography>
 
-          <Typography variant="h1" color="brand-2" className="italic mb-5.5">
+          <Typography variant="h1" color="brand" className="italic mb-5.5">
             {subtitle}
           </Typography>
 
@@ -165,7 +165,7 @@ const HeroSection = ({
             className="absolute top-4 right-4 bg-brand-deep text-white py-2.5 px-4 rounded-pill text-[12.5px] font-semibold shadow-[0_8px_24px_-8px_rgba(14,58,92,0.4)] inline-flex items-center gap-2 hover:bg-brand-deep/90 transition-colors"
           >
             View Schedule
-            <ArrowRight size={14} />
+            <ArrowRight className="bg-brand rounded-full h-5 w-5 p-1" />
           </Link>
         </div>
       </div>

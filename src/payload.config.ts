@@ -14,11 +14,9 @@ import { Leaders } from "@/collections/Leaders";
 import { Testimonials } from "@/collections/Testimonials";
 import { PricingPlans } from "@/collections/PricingPlans";
 import { Events } from "@/collections/Events";
-import { Gallery } from "@/collections/Gallery";
 import { MembersMedia } from "@/collections/Members/MembersMedia";
 import { LeadersMedia } from "@/collections/Leaders/LeadersMedia";
 import { TestimonialsMedia } from "@/collections/Testimonials/TestimonialsMedia";
-import { GalleryMedia } from "@/collections/Gallery/GalleryMedia";
 import { Inquiries } from "@/collections/Inquiries";
 import { FAQs } from "@/collections/FAQs";
 import { Updates } from "@/collections/Updates";
@@ -43,14 +41,12 @@ export default buildConfig({
     MembersMedia,
     LeadersMedia,
     TestimonialsMedia,
-    GalleryMedia,
     Chapters,
     Leaders,
     Members,
     PricingPlans,
     Testimonials,
     Events,
-    Gallery,
     Inquiries,
     FAQs,
     Updates,
@@ -170,26 +166,6 @@ export default buildConfig({
           secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
         },
         region: process.env.S3_REGION || "us-east-1",
-        endpoint: process.env.S3_ENDPOINT || "",
-        forcePathStyle: true,
-      },
-    }),
-    s3Storage({
-      collections: {
-        "gallery-media": {
-          disablePayloadAccessControl: true,
-          generateFileURL: ({ filename }) => {
-            return `https://${process.env.SUPABASE_PROJECT_ID}.storage.supabase.co/storage/v1/object/public/${process.env.S3_BUCKET_GALLERY || "gallery"}/${filename}`;
-          },
-        },
-      },
-      bucket: process.env.S3_BUCKET_GALLERY || "gallery",
-      config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
-        },
-        region: process.env.S3_REGION || "ap-southeast-1",
         endpoint: process.env.S3_ENDPOINT || "",
         forcePathStyle: true,
       },
