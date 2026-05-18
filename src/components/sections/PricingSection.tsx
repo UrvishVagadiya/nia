@@ -174,6 +174,7 @@ const PricingSection = ({ plans: cmsPlans }: PricingSectionProps) => {
                   render={<Link href="#StepsSection" onClick={(e) => e.stopPropagation()} />}
                   nativeButton={false}
                   className="mt-2.5 w-full"
+                  noArrowBg={true}
                 >
                   {tier.cta}
                 </Button>
