@@ -320,7 +320,7 @@ const CountrySelect = ({ disabled, value, onChange, options }: CountrySelectProp
           aria-label="Country list"
         >
           <Command className="overscroll-contain" filter={countryFilter}>
-            <CommandInput placeholder="Search country..." className="border-b border-line" />
+            <CommandInput placeholder="Search coutry..." />
             <CommandList className="max-h-[180px] overflow-y-auto overscroll-contain">
               <CommandEmpty>No country found.</CommandEmpty>
               <CommandGroup>
