@@ -140,6 +140,7 @@ export const Testimonials: CollectionConfig = withSoftDelete({
       name: "chapter",
       type: "relationship",
       relationTo: "chapters",
+      index: true,
       admin: {
         condition: (data) => !data.isGlobal,
       },

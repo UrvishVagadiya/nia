@@ -28,11 +28,16 @@ const HeroSection = ({
   const formatDateLong = (dateStr?: string | Date): string => {
     if (!dateStr) return "TBA";
     const d = new Date(dateStr);
-    return new Intl.DateTimeFormat("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    }).format(d);
+    if (isNaN(d.getTime())) return String(dateStr);
+    try {
+      return new Intl.DateTimeFormat("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      }).format(d);
+    } catch {
+      return String(dateStr);
+    }
   };
 
   // Native Formatter for "9:30 — 11:00 AM"
@@ -42,19 +47,27 @@ const HeroSection = ({
     const start = new Date(startStr);
     const end = new Date(endStr);
 
-    const startTimeStr = new Intl.DateTimeFormat("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: false,
-    }).format(start);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      return "9:30 — 11:00 AM";
+    }
 
-    const endTimeStr = new Intl.DateTimeFormat("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    }).format(end);
+    try {
+      const startTimeStr = new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: false,
+      }).format(start);
 
-    return `${startTimeStr} — ${endTimeStr}`;
+      const endTimeStr = new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }).format(end);
+
+      return `${startTimeStr} — ${endTimeStr}`;
+    } catch {
+      return "9:30 — 11:00 AM";
+    }
   };
   return (
     <section className="overflow-hidden">
@@ -114,7 +127,7 @@ const HeroSection = ({
                 alt="Main chapter group"
                 fill
                 priority
-                loading="eager"
+                fetchPriority="high"
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
@@ -125,7 +138,7 @@ const HeroSection = ({
                 alt="Chapter leader"
                 fill
                 priority
-                loading="eager"
+                fetchPriority="high"
                 className="object-cover"
                 sizes="(max-width: 1024px) 50vw, 25vw"
               />

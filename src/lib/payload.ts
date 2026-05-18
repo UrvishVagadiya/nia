@@ -123,7 +123,7 @@ type GalleryDoc = {
 };
 
 // Get all chapters with only name/slug/venue (for Navbar + forms)
-export const getAllChapters = async (): Promise<Pick<Chapter, "name" | "slug" | "venue">[]> => {
+const getAllChaptersUncached = async (): Promise<Pick<Chapter, "name" | "slug" | "venue">[]> => {
   const payload = await getPayload({ config });
   const result = await payload.find({
     collection: "chapters",
@@ -138,7 +138,7 @@ export const getAllChapters = async (): Promise<Pick<Chapter, "name" | "slug" | 
   return docs.map((doc) => ({ name: doc.name, slug: doc.slug, venue: doc.venue, mail: doc.mail }));
 };
 
-export const getChapterBySlug = async (slug: string): Promise<Chapter | null> => {
+const getChapterBySlugUncached = async (slug: string): Promise<Chapter | null> => {
   const payload = await getPayload({ config });
 
   const result = await payload.find({
@@ -247,13 +247,13 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
       }),
     ]);
 
-  const chapterData = result.docs[0] as unknown as ChapterDoc;
-  const eventDocs = events.docs as unknown as EventDoc[];
-  const testimonialDocs = testimonials.docs as unknown as TestimonialDoc[];
-  const galleryDocs = gallery.docs as unknown as GalleryDoc[];
-  const faqDocs = faqs.docs as unknown as FAQDoc[];
-  const updateDocs = updates.docs as unknown as UpdateDoc[];
-  const cityPartnerDocs = cityPartner.docs as unknown as CityPartnerDoc[];
+  const chapterData = result.docs[0] as ChapterDoc;
+  const eventDocs = events.docs as EventDoc[];
+  const testimonialDocs = testimonials.docs as TestimonialDoc[];
+  const galleryDocs = gallery.docs as GalleryDoc[];
+  const faqDocs = faqs.docs as FAQDoc[];
+  const updateDocs = updates.docs as UpdateDoc[];
+  const cityPartnerDocs = cityPartner.docs as CityPartnerDoc[];
 
   const getImageUrl = (img: string | MediaDoc | undefined | null): string => {
     if (!img) return "";
@@ -279,22 +279,22 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
     stats: Array.isArray(chapterData.stats) ? chapterData.stats : [],
     leader: leader.docs[0]
       ? {
-          ...(leader.docs[0] as unknown as LeaderDoc),
+          ...(leader.docs[0] as LeaderDoc),
           id: String(leader.docs[0].id),
           photo:
-            (leader.docs[0] as unknown as LeaderDoc).photoURL ||
-            getImageUrl((leader.docs[0] as unknown as LeaderDoc).photo),
+            (leader.docs[0] as LeaderDoc).photoURL ||
+            getImageUrl((leader.docs[0] as LeaderDoc).photo),
           chapter_id: chapterData.id,
-          quote: String((leader.docs[0] as unknown as LeaderDoc).quote || ""),
+          quote: String((leader.docs[0] as LeaderDoc).quote || ""),
         }
       : undefined,
-    members: (members.docs as unknown as MemberDoc[]).map((m) => ({
+    members: (members.docs as MemberDoc[]).map((m) => ({
       ...m,
       id: String(m.id),
       photo: m.photoURL || getImageUrl(m.photo),
     })) as Member[],
     pricing:
-      (pricing.docs as unknown as PricingPlan[]).map((p) => ({
+      (pricing.docs as PricingPlan[]).map((p) => ({
         ...p,
         features: Array.isArray(p.features)
           ? p.features.map((f) => (typeof f === "string" ? f : f.text))
@@ -354,12 +354,19 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
           slug: u.slug,
           preview: u.preview,
           category: u.category,
-          images: u.images.map((img) => getImageUrl(img.image)),
-          publishedDate: new Date(u.publishedDate).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          }),
+          images: Array.isArray(u.images) ? u.images.map((img) => getImageUrl(img.image)) : [],
+          publishedDate: u.publishedDate
+            ? (() => {
+                const d = new Date(u.publishedDate);
+                return isNaN(d.getTime())
+                  ? ""
+                  : d.toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    });
+              })()
+            : "",
         }))
       : [],
     cityPartner: cityPartnerDocs[0]
@@ -367,13 +374,17 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
           city: cityPartnerDocs[0].city,
           title: cityPartnerDocs[0].title,
           subtitle: cityPartnerDocs[0].subtitle,
-          messageParagraphs: cityPartnerDocs[0].messageParagraphs,
-          partners: cityPartnerDocs[0].partners.map((p) => ({
-            name: p.name,
-            role: p.role,
-            image: getImageUrl(p.image),
-            location: p.location,
-          })),
+          messageParagraphs: Array.isArray(cityPartnerDocs[0].messageParagraphs)
+            ? cityPartnerDocs[0].messageParagraphs
+            : [],
+          partners: Array.isArray(cityPartnerDocs[0].partners)
+            ? cityPartnerDocs[0].partners.map((p) => ({
+                name: p.name,
+                role: p.role,
+                image: getImageUrl(p.image),
+                location: p.location,
+              }))
+            : [],
           closingText: cityPartnerDocs[0].closingText,
           signatureLine: cityPartnerDocs[0].signatureLine,
         }
@@ -381,7 +392,7 @@ export const getChapterBySlug = async (slug: string): Promise<Chapter | null> =>
   };
 };
 
-export const getGlobalTestimonials = async () => {
+const getGlobalTestimonialsUncached = async () => {
   const payload = await getPayload({ config });
   const result = await payload.find({
     collection: "testimonials",
@@ -403,3 +414,41 @@ export const getGlobalTestimonials = async () => {
   });
   return result.docs;
 };
+
+// ==========================================
+// HIGH-PERFORMANCE UNSTABLE_CACHE WRAPPERS
+// ==========================================
+import { unstable_cache } from "next/cache";
+
+export const getAllChapters = unstable_cache(
+  async (): Promise<Pick<Chapter, "name" | "slug" | "venue">[]> => {
+    return getAllChaptersUncached();
+  },
+  ["all-chapters-list"],
+  {
+    revalidate: 3600, // Cache for 1 hour
+    tags: ["chapters"],
+  }
+);
+
+export const getChapterBySlug = unstable_cache(
+  async (slug: string): Promise<Chapter | null> => {
+    return getChapterBySlugUncached(slug);
+  },
+  ["chapter-page-data"],
+  {
+    revalidate: 3600, // Cache for 1 hour
+    tags: ["chapters"],
+  }
+);
+
+export const getGlobalTestimonials = unstable_cache(
+  async () => {
+    return getGlobalTestimonialsUncached();
+  },
+  ["global-testimonials-list"],
+  {
+    revalidate: 3600, // Cache for 1 hour
+    tags: ["testimonials"],
+  }
+);

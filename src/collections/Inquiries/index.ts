@@ -1,5 +1,6 @@
 import { CollectionConfig } from "payload";
 import { sendInquiryEmail } from "./hooks/sendInquiryEmail";
+import { rateLimitInquiry } from "./hooks/rateLimitInquiry";
 import { withSoftDelete } from "../../utils/softDelete";
 
 export const Inquiries: CollectionConfig = withSoftDelete({
@@ -11,11 +12,22 @@ export const Inquiries: CollectionConfig = withSoftDelete({
   },
   access: {
     create: () => true,
+    read: ({ req: { user } }) => !!user,
+    update: ({ req: { user } }) => !!user,
+    delete: ({ req: { user } }) => !!user,
   },
   hooks: {
+    beforeChange: [rateLimitInquiry],
     afterChange: [sendInquiryEmail],
   },
   fields: [
+    {
+      name: "ip",
+      type: "text",
+      admin: {
+        hidden: true,
+      },
+    },
     {
       name: "name",
       type: "text",
