@@ -70,7 +70,6 @@ export const deleteChapterDependencies = async (payload: Payload, chapterId: str
               id: doc.id,
               data: {
                 isDeleted: true,
-                status: "deleted",
                 deletedAt: new Date(),
               },
               overrideAccess: true,

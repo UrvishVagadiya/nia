@@ -1,5 +1,6 @@
 import { default as default_daa6482c3969bc56408ff4d75c004a51 } from "@/components/admin/MembersLink";
 import { default as default_ff32efc137541c6552ed42594a323755 } from "@/components/admin/StatusCell";
+import { default as default_e5ff73186a140b159cb931c360904e7a } from "@/components/admin/StatusSelect";
 import { default as default_fd57ff655974e51082b41745cd3e465f } from "@/components/admin/ImageCell";
 import { default as default_a02d4defa3e95330ccb6540358ca4f1c } from "@/components/admin/ChapterFilterBar";
 import { RscEntryLexicalCell as RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e } from "@payloadcms/richtext-lexical/rsc";
@@ -32,6 +33,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 export const importMap = {
   "@/components/admin/MembersLink#default": default_daa6482c3969bc56408ff4d75c004a51,
   "@/components/admin/StatusCell#default": default_ff32efc137541c6552ed42594a323755,
+  "@/components/admin/StatusSelect#default": default_e5ff73186a140b159cb931c360904e7a,
   "@/components/admin/ImageCell#default": default_fd57ff655974e51082b41745cd3e465f,
   "@/components/admin/ChapterFilterBar#default": default_a02d4defa3e95330ccb6540358ca4f1c,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell":

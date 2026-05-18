@@ -8,7 +8,7 @@ export const Events: CollectionConfig = withSoftDelete({
   admin: {
     useAsTitle: "topic",
     group: "Chapter Data",
-    defaultColumns: ["topic", "date", "chapter", "status"],
+    defaultColumns: ["topic", "date", "chapter", "isDeleted"],
   },
   hooks: {
     afterChange: [revalidateRelatedChapter],

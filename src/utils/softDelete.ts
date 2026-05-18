@@ -28,29 +28,17 @@ interface BeforeDeleteOperationArgs {
 
 export const softDeleteFields: Field[] = [
   {
-    name: "status",
-    type: "select",
-    defaultValue: "active",
-    options: [
-      { label: "Active", value: "active" },
-      { label: "Deleted", value: "deleted" },
-    ],
-    admin: {
-      position: "sidebar",
-      components: {
-        Cell: "@/components/admin/StatusCell",
-      },
-    },
-    label: "Is Deleted Status",
-  },
-  {
     name: "isDeleted",
     type: "checkbox",
     defaultValue: false,
     admin: {
-      hidden: true,
+      position: "sidebar",
+      components: {
+        Cell: "@/components/admin/StatusCell",
+        Field: "@/components/admin/StatusSelect",
+      },
     },
-    label: "Is Deleted (Boolean)",
+    label: "Status",
     index: true,
   },
   {
@@ -86,44 +74,24 @@ export const beforeChangeSoftDelete: CollectionBeforeChangeHook = async ({
   operation,
 }) => {
   if (operation === "update") {
-    const wasDeleted = originalDoc?.isDeleted === true || originalDoc?.status === "deleted";
+    const wasDeleted = originalDoc?.isDeleted === true;
+    const isDeleting = data.isDeleted === true;
 
-    // Check if any restoration signal is present
-    const isRestoring =
-      data.isDeleted === false ||
-      data.status === "active" ||
-      (data.deletedAt === null && wasDeleted);
-
-    // Check if any deletion signal is present
-    const isDeleting = data.isDeleted === true || data.status === "deleted";
-
-    if (isRestoring && wasDeleted) {
+    if (wasDeleted && !isDeleting) {
       // Perform full restoration
       data.isDeleted = false;
-      data.status = "active";
       data.deletedAt = null;
-    } else if (isDeleting && !wasDeleted) {
+    } else if (!wasDeleted && isDeleting) {
       // Perform soft delete
       data.isDeleted = true;
-      data.status = "deleted";
       data.deletedAt = data.deletedAt || new Date();
-    } else if (data.status === "deleted" || data.isDeleted === true) {
-      // Force sync if already deleted but one field changed
-      data.isDeleted = true;
-      data.status = "deleted";
-    } else if (data.status === "active" || data.isDeleted === false) {
-      // Force sync if already active but one field changed
-      data.isDeleted = false;
-      data.status = "active";
     }
   } else if (operation === "create") {
-    if (data.isDeleted === true || data.status === "deleted") {
+    if (data.isDeleted === true) {
       data.isDeleted = true;
-      data.status = "deleted";
       data.deletedAt = data.deletedAt || new Date();
     } else {
       data.isDeleted = false;
-      data.status = "active";
       data.deletedAt = null;
     }
   }
@@ -147,7 +115,6 @@ export const onSoftDelete = (
             id,
             data: {
               isDeleted: true,
-              status: "deleted",
               deletedAt: new Date(),
             },
             overrideAccess: true,
@@ -166,7 +133,6 @@ export const onSoftDelete = (
             where,
             data: {
               isDeleted: true,
-              status: "deleted",
               deletedAt: new Date(),
             },
             overrideAccess: true,

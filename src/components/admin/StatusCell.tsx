@@ -2,13 +2,13 @@
 import React from "react";
 
 interface StatusCellProps {
-  cellData: string;
+  cellData: boolean | string | null | undefined;
 }
 
 const StatusCell: React.FC<StatusCellProps> = ({ cellData }) => {
-  // Ensure we have a valid status, default to active
-  const status = cellData || "active";
-  const isDeleted = status === "deleted";
+  // Handle both boolean and string values (for backward compatibility)
+  const isDeleted = cellData === true || String(cellData) === "true" || cellData === "deleted";
+  const label = isDeleted ? "Deleted" : "Active";
 
   return (
     <div
@@ -34,7 +34,7 @@ const StatusCell: React.FC<StatusCellProps> = ({ cellData }) => {
           marginRight: "6px",
         }}
       />
-      {status}
+      {label}
     </div>
   );
 };

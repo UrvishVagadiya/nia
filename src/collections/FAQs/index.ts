@@ -5,7 +5,7 @@ export const FAQs: CollectionConfig = withSoftDelete({
   slug: "faqs",
   admin: {
     useAsTitle: "question",
-    defaultColumns: ["question", "chapter", "status", "order"],
+    defaultColumns: ["question", "chapter", "isDeleted", "order"],
     group: "Chapter Content",
     description: "Manage frequently asked questions for each chapter.",
     components: {

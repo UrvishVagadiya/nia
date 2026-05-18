@@ -6,7 +6,7 @@ export const Updates: CollectionConfig = withSoftDelete({
   slug: "updates",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "category", "status", "publishedDate", "published"],
+    defaultColumns: ["title", "category", "isDeleted", "publishedDate", "published"],
     group: "Chapter Content",
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],

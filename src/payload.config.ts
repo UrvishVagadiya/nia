@@ -1,6 +1,7 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "path";
+// Trigger configuration reload to regenerate importMap for StatusSelect
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import { s3Storage } from "@payloadcms/storage-s3";

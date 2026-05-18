@@ -10,7 +10,7 @@ export const Chapters: CollectionConfig = withSoftDelete(
     admin: {
       useAsTitle: "name",
       group: "Chapter Data",
-      defaultColumns: ["name", "slug", "chapterNumber", "status"],
+      defaultColumns: ["name", "slug", "chapterNumber", "isDeleted"],
     },
     hooks: {
       afterChange: [revalidateChapter],

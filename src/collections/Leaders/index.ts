@@ -7,7 +7,7 @@ export const Leaders: CollectionConfig = withSoftDelete({
   admin: {
     useAsTitle: "name",
     group: "Chapter Data",
-    defaultColumns: ["name", "role", "chapter", "status"],
+    defaultColumns: ["name", "role", "chapter", "isDeleted"],
   },
   hooks: {
     afterChange: [revalidateRelatedChapter],

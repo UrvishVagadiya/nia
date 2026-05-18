@@ -8,7 +8,7 @@ export const Members: CollectionConfig = withSoftDelete({
   admin: {
     useAsTitle: "name",
     group: "Chapter Data",
-    defaultColumns: ["name", "chapter", "photo", "status", "specialty"],
+    defaultColumns: ["name", "chapter", "photo", "isDeleted", "specialty"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },

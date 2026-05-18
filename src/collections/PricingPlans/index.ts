@@ -7,7 +7,7 @@ export const PricingPlans: CollectionConfig = withSoftDelete({
   admin: {
     useAsTitle: "name",
     group: "Financials",
-    defaultColumns: ["name", "chapter", "monthlyPrice", "annualPrice", "status"],
+    defaultColumns: ["name", "chapter", "monthlyPrice", "annualPrice", "isDeleted"],
     listSearchableFields: ["name"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],

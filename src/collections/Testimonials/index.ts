@@ -7,7 +7,7 @@ export const Testimonials: CollectionConfig = withSoftDelete({
   admin: {
     useAsTitle: "who",
     group: "Social Proof",
-    defaultColumns: ["status", "who", "role", "member", "leader", "quote"],
+    defaultColumns: ["isDeleted", "who", "role", "member", "leader", "quote"],
     components: {
       beforeList: ["@/components/admin/ChapterFilterBar"],
     },
@@ -15,7 +15,32 @@ export const Testimonials: CollectionConfig = withSoftDelete({
   hooks: {
     beforeChange: [
       async ({ data, req }) => {
-        // Automatically sync name and role if member or leader is selected
+        // Phase 1: Data Sanitization - Clear unused relationship IDs and auto-populated fields
+        // This prevents data pollution when users switch testimonial types
+        if (data.testimonialType) {
+          switch (data.testimonialType) {
+            case "member":
+              // Clear leader relationship and fields that will be re-populated from member
+              data.leader = null;
+              data.who = null;
+              data.role = null;
+              break;
+            case "leader":
+              // Clear member relationship and fields that will be re-populated from leader
+              data.member = null;
+              data.who = null;
+              data.role = null;
+              break;
+            case "external":
+              // Clear both relationships; keep manually-entered who/role as-is
+              data.member = null;
+              data.leader = null;
+              break;
+          }
+        }
+
+        // Phase 2: Auto-populate name and role if member or leader is selected
+        // This runs on sanitized data to ensure no stale relationships
         if (data.testimonialType === "member" && data.member) {
           const member = await req.payload.findByID({
             collection: "members",
