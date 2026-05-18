@@ -146,7 +146,6 @@ export interface Chapter {
   pricing: PricingPlan[];
   events: ScheduleItem[];
   testimonials: Testimonial[];
-  gallery: string[];
   faqs: FAQItem[];
   updates: Update[];
   cityPartner?: CityPartnerMessage;

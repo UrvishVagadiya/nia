@@ -116,12 +116,6 @@ type CityPartnerDoc = {
   signatureLine: string;
 };
 
-type GalleryDoc = {
-  id: string | number;
-  image?: string | MediaDoc;
-  url?: string;
-};
-
 // Get all chapters with only name/slug/venue (for Navbar + forms)
 const getAllChaptersUncached = async (): Promise<Pick<Chapter, "name" | "slug" | "venue">[]> => {
   const payload = await getPayload({ config });
@@ -165,7 +159,7 @@ const getChapterBySlugUncached = async (slug: string): Promise<Chapter | null> =
 
   // Fetch related data that isn't directly in Chapters collection fields
   // (Assuming we have relationships set up or we fetch by chapter ID)
-  const [leader, members, pricing, events, testimonials, gallery, faqs, updates, cityPartner] =
+  const [leader, members, pricing, events, testimonials, faqs, updates, cityPartner] =
     await Promise.all([
       payload.find({
         collection: "leaders",
@@ -213,15 +207,6 @@ const getChapterBySlugUncached = async (slug: string): Promise<Chapter | null> =
         depth: 2,
       }),
       payload.find({
-        collection: "gallery",
-        where: {
-          and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
-        },
-        sort: "order",
-        limit: 100,
-        depth: 2,
-      }),
-      payload.find({
         collection: "faqs",
         where: {
           and: [{ chapter: { equals: chapter.id } }, { isDeleted: { not_equals: true } }],
@@ -254,7 +239,6 @@ const getChapterBySlugUncached = async (slug: string): Promise<Chapter | null> =
   const chapterData = result.docs[0] as ChapterDoc;
   const eventDocs = events.docs as EventDoc[];
   const testimonialDocs = testimonials.docs as TestimonialDoc[];
-  const galleryDocs = gallery.docs as GalleryDoc[];
   const faqDocs = faqs.docs as FAQDoc[];
   const updateDocs = updates.docs as UpdateDoc[];
   const cityPartnerDocs = cityPartner.docs as CityPartnerDoc[];
@@ -341,9 +325,6 @@ const getChapterBySlugUncached = async (slug: string): Promise<Chapter | null> =
             photo,
           };
         })
-      : [],
-    gallery: Array.isArray(galleryDocs)
-      ? galleryDocs.map((g) => getImageUrl(g.image) || g.url || "")
       : [],
     faqs: Array.isArray(faqDocs)
       ? faqDocs.map((f) => ({
