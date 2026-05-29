@@ -34,7 +34,15 @@ const Navbar = ({ chapters, currentChapterSlug, host }: NavbarProps) => {
       <nav className="section-container flex items-center justify-between h-16">
         {/* LOGO */}
         <div className="pt-3 shrink-0">
-          <Image src="/Nia.png" alt="NIA Logo" width={45} height={45} className="w-auto h-[38px]" />
+          <Image
+            src="/Nia.png"
+            alt="NIA Logo"
+            width={45}
+            height={45}
+            className="w-auto h-[38px]"
+            loading="eager"
+            priority
+          />
         </div>
 
         {/* DESKTOP NAV */}

@@ -4,14 +4,19 @@ import { Check } from "lucide-react";
 import Typography from "@/components/ui/typography";
 import VistorPassForm from "./VistorPassForm";
 import { StepsSectionProps } from "@/lib/types";
+import { ScrollReveal } from "@/components/ui/reveal";
 
 const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSectionProps) => {
   return (
-    <section id="StepsSection" className="bg-paper border-t border-line">
+    <section id="StepsSection" className="bg-paper border-t border-line overflow-hidden">
       <div className="section-container section-padding">
         <div className="bg-white rounded-3xl overflow-hidden border border-line grid grid-cols-1 md:grid-cols-2">
           {/* Left Side (Dark Blue) */}
-          <div className="bg-brand-deep text-white p-[52px_36px] sm:p-[52px_44px] relative overflow-hidden">
+          <ScrollReveal
+            direction="left"
+            duration={0.85}
+            className="bg-brand-deep text-white p-[52px_36px] sm:p-[52px_44px] relative overflow-hidden h-full flex flex-col justify-center"
+          >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(46,157,219,0.25),transparent_50%)] pointer-events-none"></div>
 
             <div className="relative">
@@ -60,15 +65,17 @@ const StepsSection = ({ chapterId, chapterSlug, chapterName, venue }: StepsSecti
                 </li>
               </ul>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right Side (Form) */}
-          <VistorPassForm
-            chapterId={chapterId}
-            chapterSlug={chapterSlug}
-            chapterName={chapterName}
-            venue={venue}
-          />
+          <ScrollReveal direction="right" duration={0.85} className="h-full">
+            <VistorPassForm
+              chapterId={chapterId}
+              chapterSlug={chapterSlug}
+              chapterName={chapterName}
+              venue={venue}
+            />
+          </ScrollReveal>
         </div>
       </div>
     </section>

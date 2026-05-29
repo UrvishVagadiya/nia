@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Typography from "@/components/ui/typography";
 import { CityPartnerSectionProps } from "@/lib/types";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ui/reveal";
 
 const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
   if (!data) return null;
@@ -14,7 +15,7 @@ const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
     <section id="cityPartner" className="border-b border-line/70 overflow-hidden">
       {/* --- Content Grid Section --- */}
       <div className="section-container section-padding">
-        <div className="flex flex-col items-center text-center justify-center mx-auto pb-10 md:pb-16">
+        <ScrollReveal className="flex flex-col items-center text-center justify-center mx-auto pb-10 md:pb-16">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft w-fit mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
@@ -26,10 +27,11 @@ const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
             {data.title}
             {data.subtitle && <span className="heading-italic-brand"> {data.subtitle}</span>}
           </Typography>
-        </div>
+        </ScrollReveal>
+
         <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-8 md:gap-10 lg:gap-14 items-center">
           {/* Left Column: Visuals */}
-          <div className="relative">
+          <ScrollReveal duration={0.9} className="relative">
             {/* Decorative Blurs */}
             <div className="absolute -left-6 top-8 h-36 w-36 rounded-full bg-brand-soft/70 blur-3xl" />
             <div className="absolute -right-3 -bottom-5 h-28 w-28 rounded-full bg-paper-2 blur-2xl" />
@@ -106,42 +108,43 @@ const CityPartnerSection = ({ data }: CityPartnerSectionProps) => {
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right Column: Narrative Content */}
-          <div className="flex flex-col gap-2 lg:pl-4 text-left">
+          <StaggerContainer staggerDelay={0.12} className="flex flex-col gap-2 lg:pl-4 text-left">
             <div className="space-y-4 max-w-160 mx-auto lg:mx-0 text-justify">
               {data.messageParagraphs.map((paragraph, idx) => (
-                <Typography
-                  key={idx}
-                  variant="body-md"
-                  color="ink-2"
-                  className="whitespace-pre-wrap"
-                >
-                  {paragraph.text}
-                </Typography>
+                <StaggerItem key={idx} direction="up" distance={30}>
+                  <Typography variant="body-md" color="ink-2" className="whitespace-pre-wrap">
+                    {paragraph.text}
+                  </Typography>
+                </StaggerItem>
               ))}
 
               {data.closingText && (
-                <Typography
-                  variant="body-md"
-                  color="ink-2"
-                  className="mb-5 max-w-145 mt-2 whitespace-pre-wrap"
-                >
-                  {data.closingText}
-                </Typography>
+                <StaggerItem direction="up" distance={30}>
+                  <Typography
+                    variant="body-md"
+                    color="ink-2"
+                    className="mb-5 max-w-145 mt-2 whitespace-pre-wrap"
+                  >
+                    {data.closingText}
+                  </Typography>
+                </StaggerItem>
               )}
 
-              <div>
-                <Typography variant="h5" color="brand-deep" className="serif-it text-[16px]">
-                  Warm Regards,
-                </Typography>
-                <Typography variant="h5" color="brand" className="text-[15px] lg:text-[16px]">
-                  {data.signatureLine}
-                </Typography>
-              </div>
+              <StaggerItem direction="up" distance={30}>
+                <div>
+                  <Typography variant="h5" color="brand-deep" className="serif-it text-[16px]">
+                    Warm Regards,
+                  </Typography>
+                  <Typography variant="h5" color="brand" className="text-[15px] lg:text-[16px]">
+                    {data.signatureLine}
+                  </Typography>
+                </div>
+              </StaggerItem>
             </div>
-          </div>
+          </StaggerContainer>
         </div>
       </div>
     </section>

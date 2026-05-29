@@ -5,9 +5,10 @@ import { useState, useEffect, useCallback } from "react";
 import Typography from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { SLOT_CONFIGS } from "@/constant/TestimonialsSection.data";
-import { Testimonial } from "@/lib/types";
-
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Testimonial } from "@/lib/types";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrollReveal } from "@/components/ui/reveal";
 
 interface TestimonialsSectionProps {
   testimonials?: Testimonial[];
@@ -39,7 +40,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
     <section>
       <div className="md:section-container! section-padding">
         {/* ── Heading ── */}
-        <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-5 md:mx-auto">
+        <ScrollReveal className="text-center flex flex-col items-center mb-14 max-w-180 mx-5 md:mx-auto">
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-soft mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
@@ -53,10 +54,10 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
             Three chapters, eighteen referral stories a year on average — here are a few in their
             own words.
           </Typography>
-        </div>
+        </ScrollReveal>
 
         {/* ── Arc Avatar Row ── */}
-        <div className="overflow-x-hidden">
+        <ScrollReveal delay={0.15} className="overflow-x-hidden">
           <div className="flex justify-center items-end gap-3.5 mb-12 min-h-27.5">
             {(() => {
               const displayCount = Math.min(n, 7);
@@ -108,29 +109,43 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
               });
             })()}
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* ── Testimonial Card wrapper ── */}
-        <div className="relative max-w-210 mx-5 md:mx-10 lg:mx-auto">
-          <div className="bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none">
-            {/* Name */}
-            <Typography as="div" variant="h5" color="brand" className="mb-1 italic">
-              {current.who}
-            </Typography>
+        <ScrollReveal
+          delay={0.2}
+          duration={0.9}
+          className="relative max-w-210 mx-5 md:mx-10 lg:mx-auto"
+        >
+          <div className="bg-white border border-line-2/40 rounded-[24px] py-12 px-16 max-sm:px-8 max-sm:py-8 text-center transition-all duration-500 shadow-none min-h-[260px] flex flex-col justify-center overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+              >
+                {/* Name */}
+                <Typography as="div" variant="h5" color="brand" className="mb-1 italic">
+                  {current.who}
+                </Typography>
 
-            {/* Role */}
-            <Typography as="div" variant="eyebrow" color="ink-3" className="mb-8">
-              {current.role}
-            </Typography>
+                {/* Role */}
+                <Typography as="div" variant="eyebrow" color="ink-3" className="mb-8">
+                  {current.role}
+                </Typography>
 
-            {/* Quote */}
-            <Typography as="p" variant="body-md" color="ink-2" className="max-w-170 mx-auto">
-              &ldquo;{current.quote}&rdquo;
-            </Typography>
+                {/* Quote */}
+                <Typography as="p" variant="body-md" color="ink-2" className="max-w-170 mx-auto">
+                  &ldquo;{current.quote}&rdquo;
+                </Typography>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Prev arrow */}
-          <div className="pl-2 absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
+          <div className="pl-2 absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-20">
             <Button
               variant="arrow-primary"
               onClick={() => {
@@ -144,7 +159,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
           </div>
 
           {/* Next arrow */}
-          <div className="pr-2 absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
+          <div className="pr-2 absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-20">
             <Button
               variant="arrow-primary"
               onClick={() => {
@@ -156,7 +171,7 @@ const TestimonialsSection = ({ testimonials = [] }: TestimonialsSectionProps) =>
               <ChevronRight size={20} />
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* ── Dot indicators ── */}
         <div className="flex justify-center gap-1.5 mt-6">

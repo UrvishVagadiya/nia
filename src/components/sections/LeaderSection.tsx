@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Typography from "@/components/ui/typography";
 import { LeaderProps } from "@/lib/types";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ui/reveal";
 
 const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
   if (!cmsLeader) return null;
@@ -19,12 +20,17 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
     specialty: cmsLeader.specialty || "Chapter Leader",
     tenure: cmsLeader.tenure || "Founding Member",
   };
+
   return (
     <section id="leader">
       <div className="section-container section-padding">
         <div className="leader-grid flex flex-col md:flex-row gap-16 items-center">
           {/* Portrait with gradient overlay */}
-          <div className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-105 sm:flex-none">
+          <ScrollReveal
+            direction="left"
+            duration={0.95}
+            className="relative aspect-4/5 rounded-[18px] overflow-hidden bg-paper-3 w-full sm:w-105 sm:flex-none"
+          >
             {leader.photo ? (
               <Image
                 src={leader.photo}
@@ -63,67 +69,75 @@ const LeaderSection = ({ leader: cmsLeader, chapter }: LeaderProps) => {
                 {leader.name}
               </Typography>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right column */}
-          <div className="flex flex-col sm:flex-1">
+          <StaggerContainer staggerDelay={0.08} className="flex flex-col sm:flex-1">
             {/* Eyebrow */}
-            <span className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3.5 py-1.5 w-fit mb-4">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand shrink-0" />
-              <Typography variant="eyebrow" color="brand-2" className="font-bold!">
-                Chapter Leadership
-              </Typography>
-            </span>
+            <StaggerItem direction="up" distance={25}>
+              <span className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3.5 py-1.5 w-fit mb-4">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand shrink-0" />
+                <Typography variant="eyebrow" color="brand-2" className="font-bold!">
+                  Chapter Leadership
+                </Typography>
+              </span>
+            </StaggerItem>
 
             {/* Heading */}
-            <Typography
-              as="h2"
-              variant="h2"
-              color="brand-deep"
-              className="mb-6 [text-balance] md:text-[48px]!"
-            >
-              Led by <span className="heading-italic-brand">{leader.name.split(" ")[0]}</span>.
-              <br />
-              Vouched for by every seat in the room.
-            </Typography>
+            <StaggerItem direction="up" distance={25}>
+              <Typography
+                as="h2"
+                variant="h2"
+                color="brand-deep"
+                className="mb-6 [text-balance] md:text-[48px]!"
+              >
+                Led by <span className="heading-italic-brand">{leader.name.split(" ")[0]}</span>.
+                <br />
+                Vouched for by every seat in the room.
+              </Typography>
+            </StaggerItem>
 
             {/* Bio */}
-            <Typography variant="body-md" color="ink-2" className="mb-7 max-w-145 [text-pretty]">
-              {leader.bio}
-            </Typography>
+            <StaggerItem direction="up" distance={25}>
+              <Typography variant="body-md" color="ink-2" className="mb-7 max-w-145 [text-pretty]">
+                {leader.bio}
+              </Typography>
+            </StaggerItem>
 
             {/* Stats from leader and chapter */}
-            <div className="grid grid-cols-3 border border-line rounded-[14px] overflow-hidden bg-paper-2 max-w-135">
-              {[
-                { label: "Specialty", value: leader.specialty },
-                { label: "Tenure", value: leader.tenure },
-                { label: "Chapter", value: chapterName },
-              ].map((item, index) => (
-                <div
-                  key={item.label}
-                  className={`px-4.5 py-4 ${index !== 2 ? "border-r border-line" : ""}`}
-                >
-                  <Typography
-                    as="span"
-                    variant="eyebrow"
-                    color="ink-4"
-                    className="block font-bold! text-[#8b95a4]! mb-1.5"
+            <StaggerItem direction="up" distance={25}>
+              <div className="grid grid-cols-3 border border-line rounded-[14px] overflow-hidden bg-paper-2 max-w-135">
+                {[
+                  { label: "Specialty", value: leader.specialty },
+                  { label: "Tenure", value: leader.tenure },
+                  { label: "Chapter", value: chapterName },
+                ].map((item, index) => (
+                  <div
+                    key={item.label}
+                    className={`px-4.5 py-4 ${index !== 2 ? "border-r border-line" : ""}`}
                   >
-                    {item.label}
-                  </Typography>
+                    <Typography
+                      as="span"
+                      variant="eyebrow"
+                      color="ink-4"
+                      className="block font-bold! text-[#8b95a4]! mb-1.5"
+                    >
+                      {item.label}
+                    </Typography>
 
-                  <Typography
-                    as="span"
-                    variant="body-sm"
-                    color="brand-deep"
-                    className="block font-bold! text-[12px]!"
-                  >
-                    {item.value}
-                  </Typography>
-                </div>
-              ))}
-            </div>
-          </div>
+                    <Typography
+                      as="span"
+                      variant="body-sm"
+                      color="brand-deep"
+                      className="block font-bold! text-[12px]!"
+                    >
+                      {item.value}
+                    </Typography>
+                  </div>
+                ))}
+              </div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </div>
     </section>

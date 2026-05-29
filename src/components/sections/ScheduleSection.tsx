@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import Typography from "@/components/ui/typography";
 import { ScheduleItem, ScheduleSectionProps } from "@/lib/types";
 import { useDateFormatter, useSortedEvents } from "@/hooks/date";
+import { motion, AnimatePresence } from "framer-motion";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ui/reveal";
 
 const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: ScheduleSectionProps) => {
   const [selectedEvent, setSelectedEvent] = useState<ScheduleItem | null>(null);
@@ -30,7 +32,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
     <section id="schedule">
       <div className="section-container section-padding grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
         {/* Left Side (Text content) */}
-        <div>
+        <ScrollReveal>
           <div className="inline-flex items-center gap-2.5 px-3.5 py-1.25 rounded-pill bg-brand-soft mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow" color="brand-2">
@@ -62,27 +64,43 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
               </Typography>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Right Side (Cards) */}
-        <div>
-          <div className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden transition-all duration-300">
-            <div className="flex justify-between items-start mb-6">
-              <span className="px-3 py-1.25 bg-brand text-white rounded-pill text-[11px] font-bold tracking-[0.08em] uppercase">
-                {selectedEvent && sortedEvents.indexOf(selectedEvent) === 0
-                  ? "Next meeting"
-                  : "Selected meeting"}
-              </span>
-              <span className="text-[11px] text-white/70 font-semibold tracking-[0.04em]">
-                {activeEvent.rsvps} {" RSVP'd"}
-              </span>
-            </div>
-            <div className="font-serif text-[clamp(36px,4vw,52px)] leading-none font-semibold tracking-[-0.02em] mb-4">
-              {formatDateLong(activeEvent.date)}
-            </div>
-            <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-11.25">
-              {activeEvent.topic}
-            </div>
+        <div className="flex flex-col">
+          {/* Active Event Card */}
+          <ScrollReveal
+            delay={0.15}
+            className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden transition-all duration-300 min-h-[300px] flex flex-col justify-between"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeEvent.date}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="flex flex-col flex-1"
+              >
+                <div className="flex justify-between items-start mb-6">
+                  <span className="px-3 py-1.25 bg-brand text-white rounded-pill text-[11px] font-bold tracking-[0.08em] uppercase">
+                    {!selectedEvent || sortedEvents.indexOf(activeEvent) === 0
+                      ? "Next meeting"
+                      : "Selected meeting"}
+                  </span>
+                  <span className="text-[11px] text-white/70 font-semibold tracking-[0.04em]">
+                    {activeEvent.rsvps} {" RSVP'd"}
+                  </span>
+                </div>
+                <div className="font-serif text-[clamp(36px,4vw,52px)] leading-none font-semibold tracking-[-0.02em] mb-4">
+                  {formatDateLong(activeEvent.date)}
+                </div>
+                <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-11.25 flex-1">
+                  {activeEvent.topic}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
             <Button
               variant="primary"
               render={
@@ -95,36 +113,39 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
                 />
               }
               nativeButton={false}
-              className="w-full justify-center"
+              className="w-full justify-center mt-auto"
             >
               Request a visitor pass
             </Button>
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {/* Schedule Grid buttons */}
+          <StaggerContainer staggerDelay={0.06} className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {sortedEvents.map((item, index) => {
               const label = index === 0 ? "Up next" : getWeekOfMonthLabel(item.date) || "Wk";
               const isActive = selectedEvent === item;
               return (
-                <Button
-                  key={index}
-                  variant={isActive ? "schedule-active" : "schedule-inactive"}
-                  onClick={() => setSelectedEvent(item)}
-                >
-                  <div
-                    className={`text-[10px] uppercase tracking-[0.08em] font-bold ${isActive ? "text-brand" : "text-ink-4"}`}
+                <StaggerItem key={index} direction="up" distance={15}>
+                  <Button
+                    variant={isActive ? "schedule-active" : "schedule-inactive"}
+                    onClick={() => setSelectedEvent(item)}
+                    className="w-full h-full"
                   >
-                    {label}
-                  </div>
-                  <div
-                    className={`text-[15px] mt-1 font-bold ${isActive ? "text-brand" : "text-brand-deep"}`}
-                  >
-                    {formatDateShort(item.date)}
-                  </div>
-                </Button>
+                    <div
+                      className={`text-[10px] uppercase tracking-[0.08em] font-bold ${isActive ? "text-brand" : "text-ink-4"}`}
+                    >
+                      {label}
+                    </div>
+                    <div
+                      className={`text-[15px] mt-1 font-bold ${isActive ? "text-brand" : "text-brand-deep"}`}
+                    >
+                      {formatDateShort(item.date)}
+                    </div>
+                  </Button>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         </div>
       </div>
     </section>

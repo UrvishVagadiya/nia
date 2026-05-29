@@ -2,8 +2,8 @@
 
 import Typography from "../ui/typography";
 import { cn } from "@/lib/utils";
-
 import { StatBandProps } from "@/lib/types";
+import { StaggerContainer, StaggerItem } from "@/components/ui/reveal";
 
 const StatBand = ({ stats: cmsStats }: StatBandProps) => {
   const items = cmsStats?.length
@@ -23,13 +23,18 @@ const StatBand = ({ stats: cmsStats }: StatBandProps) => {
           }}
         />
 
-        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-nowrap items-stretch">
+        <StaggerContainer
+          staggerDelay={0.1}
+          className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-nowrap items-stretch"
+        >
           {items.map((stat, i) => {
             const isFirst = i === 0;
 
             return (
-              <div
+              <StaggerItem
                 key={stat.key}
+                direction="up"
+                distance={15}
                 className={cn(
                   "min-w-0 transition-all duration-300 flex flex-col justify-center py-6 lg:flex-1 lg:basis-0 text-center",
                   !isFirst && "lg:border-l lg:border-white/20"
@@ -52,10 +57,10 @@ const StatBand = ({ stats: cmsStats }: StatBandProps) => {
                     {stat.label}
                   </Typography>
                 </div>
-              </div>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
       </div>
     </div>
   );

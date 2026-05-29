@@ -6,6 +6,31 @@ import { Button } from "@/components/ui/button";
 import { Check, ArrowRight } from "lucide-react";
 import Typography from "../ui/typography";
 import type { HeroProps } from "@/lib/types";
+import { motion, type Easing } from "framer-motion";
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const EASE_PRESET: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: EASE_PRESET satisfies Easing,
+    },
+  },
+};
 
 const HeroSection = ({
   chapterNumber,
@@ -69,57 +94,80 @@ const HeroSection = ({
       return "9:30 — 11:00 AM";
     }
   };
+
   return (
     <section className="overflow-hidden">
       <div className="section-container section-padding grid grid-col-1 md:grid-cols-2 gap-16 items-center">
         {/* Left Side: Copy */}
-        <div>
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand" />
-            <Typography variant="eyebrow" color="brand-2">
-              NIA Surat · {chapterNumber}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col"
+        >
+          <motion.div variants={itemVariants}>
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-pill bg-brand-soft mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand" />
+              <Typography variant="eyebrow" color="brand-2">
+                NIA Surat · {chapterNumber}
+              </Typography>
+            </div>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <Typography as="h1" variant="h1" color="brand-deep" className="mb-1">
+              NIA {chapterName}.
             </Typography>
-          </div>
+          </motion.div>
 
-          <Typography as="h1" variant="h1" color="brand-deep" className="mb-1">
-            NIA {chapterName}.
-          </Typography>
-
-          <Typography variant="h1" color="brand" className="italic mb-5.5">
-            {subtitle}
-          </Typography>
+          <motion.div variants={itemVariants}>
+            <Typography variant="h1" color="brand" className="italic mb-5.5">
+              {subtitle}
+            </Typography>
+          </motion.div>
 
           {caption && (
-            <Typography variant="body-lg" color="ink-2" className="mb-7">
-              {caption}
-            </Typography>
+            <motion.div variants={itemVariants}>
+              <Typography variant="body-lg" color="ink-2" className="mb-7">
+                {caption}
+              </Typography>
+            </motion.div>
           )}
 
-          <ul className="list-none p-0 m-0 mb-8 grid grid-cols-2 gap-3">
-            {(bullets || []).map((item, idx) => (
-              <li key={idx} className="flex items-center gap-2.5">
-                <span className="w-5.5 h-5.5 rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
-                  <Check size={12} strokeWidth={3} />
-                </span>
-                <Typography variant="body-sm" color="ink-2" className="text-[14.5px]!">
-                  {item}
-                </Typography>
-              </li>
-            ))}
-          </ul>
+          <motion.div variants={itemVariants}>
+            <ul className="list-none p-0 m-0 mb-8 grid grid-cols-2 gap-3">
+              {(bullets || []).map((item, idx) => (
+                <li key={idx} className="flex items-center gap-2.5">
+                  <span className="w-5.5 h-5.5 rounded-full bg-brand-soft text-brand grid place-items-center shrink-0">
+                    <Check size={12} strokeWidth={3} />
+                  </span>
+                  <Typography variant="body-sm" color="ink-2" className="text-[14.5px]!">
+                    {item}
+                  </Typography>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
 
-          <div className="flex flex-wrap gap-3">
-            <Button variant="primary" render={<Link href="#apply" />} nativeButton={false}>
-              Visit a meeting
-            </Button>
-            <Button variant="secondary" render={<Link href="#about" />} nativeButton={false}>
-              What is NIA?
-            </Button>
-          </div>
-        </div>
+          <motion.div variants={itemVariants}>
+            <div className="flex flex-wrap gap-3">
+              <Button variant="primary" render={<Link href="#apply" />} nativeButton={false}>
+                Visit a meeting
+              </Button>
+              <Button variant="secondary" render={<Link href="#about" />} nativeButton={false}>
+                What is NIA?
+              </Button>
+            </div>
+          </motion.div>
+        </motion.div>
 
         {/* Right Side: Visuals */}
-        <div className="relative">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+          className="relative"
+        >
           <div className="grid grid-cols-[1.15fr_1fr] grid-rows-2 gap-3 aspect-[1.05/1]">
             <div className="row-span-2 rounded-[18px] overflow-hidden bg-paper-3 relative border border-line w-full h-full">
               <Image
@@ -167,7 +215,7 @@ const HeroSection = ({
             View Schedule
             <ArrowRight className="bg-brand rounded-full h-5 w-5 p-1" />
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

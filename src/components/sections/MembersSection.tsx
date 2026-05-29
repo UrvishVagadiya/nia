@@ -11,6 +11,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { Button } from "@/components/ui/button";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import MemberCard from "./MemberCard";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ui/reveal";
 
 const MembersSection = ({ members = [] }: MembersSectionProps) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -85,7 +86,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
   return (
     <section id="members" className="bg-paper">
       <div className="py-11 lg:py-22 px-0 md:px-5 lg:px-8 w-full max-w-7xl mx-auto">
-        <div className="text-center mb-10 px-5 lg:px-8">
+        <ScrollReveal className="text-center mb-10 px-5 lg:px-8">
           <div className="inline-flex items-center gap-2 rounded-pill bg-brand-soft px-3 py-1.5 mb-4">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand" />
             <Typography variant="eyebrow">THE DIRECTORY</Typography>
@@ -96,7 +97,7 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
           <Typography variant="body-md" color="ink-3" className="mt-4 max-w-2xl mx-auto">
             {members.length} category leaders. Each one holds an exclusive seat in their specialty.
           </Typography>
-        </div>
+        </ScrollReveal>
 
         {/* Filter buttons */}
         <div className="flex overflow-x-auto no-scrollbar md:flex-wrap items-center justify-start md:justify-center gap-2 mb-6">
@@ -128,35 +129,39 @@ const MembersSection = ({ members = [] }: MembersSectionProps) => {
           })}
         </div>
 
-        <Carousel
-          setApi={setApi}
-          plugins={[WheelGesturesPlugin()]}
-          opts={{
-            align: "start",
-            loop: false,
-            dragFree: true,
-            containScroll: "trimSnaps",
-            breakpoints: {
-              "(min-width: 768px)": { active: false },
-            },
-          }}
-          className="relative w-full overflow-hidden"
-        >
-          <CarouselContent className="md:flex md:flex-wrap md:justify-center gap-4 md:gap-4 ml-0">
-            {filtered.map((member, index) => (
-              <CarouselItem
-                key={member.id}
-                className={cn(
-                  "basis-[78%] min-w-73 sm:max-w-80 md:max-w-none md:basis-auto md:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)] ml-0 md:pl-0",
-                  index === 0 && "pl-8 sm:pl-12",
-                  index === filtered.length - 1 && "pr-8 sm:pr-12 md:pr-0"
-                )}
-              >
-                <MemberCard member={member} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        <StaggerContainer staggerDelay={0.05} amount={0.1}>
+          <Carousel
+            setApi={setApi}
+            plugins={[WheelGesturesPlugin()]}
+            opts={{
+              align: "start",
+              loop: false,
+              dragFree: true,
+              containScroll: "trimSnaps",
+              breakpoints: {
+                "(min-width: 768px)": { active: false },
+              },
+            }}
+            className="relative w-full overflow-hidden"
+          >
+            <CarouselContent className="md:flex md:flex-wrap md:justify-center gap-4 md:gap-4 ml-0">
+              {filtered.map((member, index) => (
+                <CarouselItem
+                  key={member.id}
+                  className={cn(
+                    "basis-[78%] min-w-73 sm:max-w-80 md:max-w-none md:basis-auto md:w-[calc(50%-12px)] lg:w-[calc(33.333%-12px)] xl:w-[calc(25%-12px)] ml-0 md:pl-0",
+                    index === 0 && "pl-8 sm:pl-12",
+                    index === filtered.length - 1 && "pr-8 sm:pr-12 md:pr-0"
+                  )}
+                >
+                  <StaggerItem direction="up" distance={25} className="h-full">
+                    <MemberCard member={member} />
+                  </StaggerItem>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </StaggerContainer>
 
         {/* Mobile-only Controls & Pagination */}
         <div className="md:hidden mt-10">
