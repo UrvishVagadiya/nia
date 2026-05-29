@@ -1,0 +1,343 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Font family — system stack as brand font */
+  --font-sans: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono);
+  --font-heading: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  /* ── NIA Brand Colors ── */
+  --color-brand: #2e9ddb;
+  --color-brand-2: #1b6fa8;
+  --color-brand-deep: #0e3a5c;
+  --color-brand-soft: #e8f2f9;
+  --color-gold: #f5b43e;
+
+  /* ── Ink (text) ── */
+  --color-ink: #0e1620;
+  --color-ink-2: #2a3340;
+  --color-ink-3: #5a6472;
+  --color-ink-4: #8b95a4;
+
+  /* ── Paper (backgrounds) ── */
+  --color-paper: #ffffff;
+  --color-paper-2: #f6f8fb;
+  --color-paper-3: #f6f8fb;
+
+  /* ── Lines ── */
+  --color-line: #e2e7ee;
+  --color-line-2: #c8d1dd;
+
+  /* ── Why-join tile tints ── */
+  --color-tint-lavender: #f0ebfa;
+  --color-tint-blush: #fce6e6;
+  --color-tint-mint: #e2f4e5;
+  --color-tint-butter: #fdeedc;
+
+  /* ── Border radii ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* ── Shadows ── */
+  --shadow-pill: 0 2px 10px rgba(20, 30, 50, 0.1);
+  --shadow-card: 0 4px 20px rgba(20, 30, 50, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(46, 157, 219, 0.25);
+
+  /* ── Shadcn base mappings ── */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--color-paper-2);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-paper-2);
+  --color-muted-foreground: var(--color-ink-3);
+  --color-accent: var(--color-brand-soft);
+  --color-accent-foreground: var(--color-brand-2);
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-border: var(--color-line);
+  --color-input: var(--color-line);
+  --color-ring: var(--color-brand);
+  --color-card: var(--color-paper);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-paper);
+  --color-popover-foreground: var(--color-ink);
+
+  --color-chart-1: var(--color-brand);
+  --color-chart-2: var(--color-brand-2);
+  --color-chart-3: var(--color-gold);
+  --color-chart-4: var(--color-ink-3);
+  --color-chart-5: var(--color-ink-4);
+
+  --color-sidebar: var(--color-paper);
+  --color-sidebar-foreground: var(--color-ink);
+  --color-sidebar-primary: var(--color-brand);
+  --color-sidebar-primary-foreground: #ffffff;
+  --color-sidebar-accent: var(--color-paper-2);
+  --color-sidebar-accent-foreground: var(--color-ink);
+  --color-sidebar-border: var(--color-line);
+  --color-sidebar-ring: var(--color-brand);
+}
+
+/* ── Global resets ─────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans;
+    font-size: 16px;
+    font-family:
+      system-ui,
+      -apple-system,
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html {
+    @apply scroll-smooth scroll-pt-24;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+}
+
+/* ── NIA Section Utilities ─────────────────────────────────────────── */
+
+@layer utilities {
+  .section-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    @apply px-5 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-11 lg:py-22;
+  }
+
+  .hero-container {
+    width: 100%;
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+    @apply px-5 lg:px-8;
+  }
+
+  .heading-italic-brand {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--color-brand);
+  }
+
+  /* Eyebrow / pill text */
+  .eyebrow-text {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: var(--color-brand-2);
+  }
+
+  /* Stat numeral */
+  .stat-numeral {
+    font-size: clamp(56px, 5vw, 72px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-gold);
+  }
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+
+/* Responsive section utilities are now handled via @apply in the utilities layer above */
+
+/* ── Legacy User Utilities & Typography ────────────────────────────── */
+
+@layer utilities {
+  .serif {
+    font-family: "Georgia", "Times New Roman", Times, serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .serif-it {
+    font-family: "Georgia", "Times New Roman", Times, serif;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .reset-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+  }
+}
+
+/* ── Legacy Component Grids (from original source code) ────────────── */
+
+@media (max-width: 980px) {
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .stat-band-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .blog-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .leader-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .schedule-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .faq-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .apply-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 32px !important;
+  }
+
+  .post-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-link-d {
+    display: none !important;
+  }
+
+  .chapter-switcher-d {
+    display: none !important;
+  }
+
+  .chapter-switcher-m {
+    display: flex !important;
+  }
+
+  .nav-cta-d {
+    display: none !important;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .members-grid {
+    display: none !important;
+  }
+
+  .members-carousel {
+    display: block !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .filter-row {
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-row::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.members-carousel-scroller::-webkit-scrollbar,
+.members-carousel-strip::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ── Dynamic Alternating Sections ────────────────────────────────────── */
+
+.alternating-sections > section {
+  /* Default to paper */
+  background-color: var(--color-paper-2) !important;
+}
+
+.alternating-sections > section:nth-of-type(even) {
+  background-color: var(--color-paper) !important;
+}
+
+.alternating-sections > section.no-alternate {
+  background-color: unset !important;
+}
