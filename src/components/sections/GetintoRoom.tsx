@@ -7,6 +7,7 @@ import {
   GETINTOROOM_IMAGE,
   GETINTOROOM_STEPS,
 } from "@/constant/GetintoRoom.data";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ui/reveal";
 
 const GetintoRoom = () => {
   return (
@@ -14,19 +15,22 @@ const GetintoRoom = () => {
       <div className="section-container section-padding">
         <div className="bg-paper rounded-3xl p-[clamp(32px,4vw,56px)] border border-line">
           {/* Header */}
-          <div className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
+          <ScrollReveal className="text-center flex flex-col items-center mb-14 max-w-180 mx-auto">
             <Typography as="h2" variant="h2" color="brand-deep" className="max-w-110 pb-4 ">
               {GETINTOROOM_HEADER.title}
             </Typography>
             <Typography variant="body-md" color="ink-3" className="max-w-155">
               {GETINTOROOM_HEADER.subtitle}
             </Typography>
-          </div>
+          </ScrollReveal>
 
           {/* Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-14 items-center">
             {/* Image Box */}
-            <div className="aspect-square bg-paper-3 rounded-[18px] overflow-hidden relative">
+            <ScrollReveal
+              duration={0.85}
+              className="aspect-square bg-paper-3 rounded-[18px] overflow-hidden relative"
+            >
               <Image
                 src={GETINTOROOM_IMAGE.src}
                 alt={GETINTOROOM_IMAGE.alt}
@@ -40,16 +44,18 @@ const GetintoRoom = () => {
                   {GETINTOROOM_IMAGE.location}
                 </Typography>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Steps Timeline */}
-            <div className="flex flex-col relative">
+            <StaggerContainer staggerDelay={0.14} className="flex flex-col relative">
               {/* Connecting Line */}
               <div className="absolute left-5.75 top-5 bottom-5 w-px bg-line-2 z-0"></div>
 
               {GETINTOROOM_STEPS.map((step, index) => (
-                <div
+                <StaggerItem
                   key={step.number}
+                  direction="left"
+                  distance={20}
                   className={`grid grid-cols-[46px_1fr] gap-5 ${index !== GETINTOROOM_STEPS.length - 1 ? "pb-7" : "pb-0"} relative`}
                 >
                   <div className="w-11.5 h-11.5 rounded-full bg-white border-2 border-brand text-brand flex items-center justify-center text-[13px] font-bold relative z-10 shrink-0">
@@ -68,9 +74,9 @@ const GetintoRoom = () => {
                       {step.description}
                     </Typography>
                   </div>
-                </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </div>
       </div>
