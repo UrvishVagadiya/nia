@@ -70,16 +70,17 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
         <div className="flex flex-col">
           {/* Active Event Card */}
           <ScrollReveal
+            direction="none"
             delay={0.15}
-            className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden transition-all duration-300 min-h-[300px] flex flex-col justify-between"
+            className="bg-brand-deep text-white rounded-[18px] p-8 mb-3 relative overflow-hidden min-h-[300px] flex flex-col justify-between"
           >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeEvent.date}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="flex flex-col flex-1"
               >
                 <div className="flex justify-between items-start mb-6">
@@ -98,25 +99,25 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
                 <div className="text-[15px] text-white/80 mb-7 leading-normal text-pretty min-h-11.25 flex-1">
                   {activeEvent.topic}
                 </div>
+
+                <Button
+                  variant="primary"
+                  render={
+                    <Link
+                      href={
+                        selectedSlug && activeEvent.date
+                          ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
+                          : "#StepsSection"
+                      }
+                    />
+                  }
+                  nativeButton={false}
+                  className="w-full justify-center mt-auto"
+                >
+                  Request a visitor pass
+                </Button>
               </motion.div>
             </AnimatePresence>
-
-            <Button
-              variant="primary"
-              render={
-                <Link
-                  href={
-                    selectedSlug && activeEvent.date
-                      ? `?chapter=${selectedSlug}&venue=${encodeURIComponent(displayVenue)}&date=${encodeURIComponent(activeEvent.date)}&topic=${encodeURIComponent(activeEvent.topic)}#StepsSection`
-                      : "#StepsSection"
-                  }
-                />
-              }
-              nativeButton={false}
-              className="w-full justify-center mt-auto"
-            >
-              Request a visitor pass
-            </Button>
           </ScrollReveal>
 
           {/* Schedule Grid buttons */}
@@ -125,7 +126,7 @@ const ScheduleSection = ({ chapterSlug, events = [], chapterVenue = "" }: Schedu
               const label = index === 0 ? "Up next" : getWeekOfMonthLabel(item.date) || "Wk";
               const isActive = selectedEvent === item;
               return (
-                <StaggerItem key={index} direction="up" distance={15}>
+                <StaggerItem key={index} direction="none">
                   <Button
                     variant={isActive ? "schedule-active" : "schedule-inactive"}
                     onClick={() => setSelectedEvent(item)}

@@ -69,7 +69,10 @@ export default async function ChapterPage({ params }: PageProps) {
         />
         <WhyJoinSection />
         <GetintoRoom />
-        <StepsSection />
+        <StepsSection
+          chapterSlug={slug}
+          chapterName={slug.charAt(0).toUpperCase() + slug.slice(1)}
+        />
       </main>
     );
   }
@@ -107,8 +110,12 @@ export default async function ChapterPage({ params }: PageProps) {
       {/* Testimonials from chapter and global pool */}
       <TestimonialsSection testimonials={chapter.testimonials} />
 
-      {/* Chapter-specific Schedule/Events */}
-      <ScheduleSection chapterSlug={chapter.slug} />
+      <ScheduleSection
+        key={chapter.slug}
+        chapterSlug={chapter.slug}
+        events={chapter.events || []}
+        chapterVenue={chapter.venue || ""}
+      />
 
       {/* Pricing Plans for this chapter */}
       <PricingSection plans={chapter.pricing} />
