@@ -60,7 +60,7 @@ export default async function ChapterPage({ params }: PageProps) {
 
     // Fallback data for known chapters that aren't in the CMS yet
     return (
-      <main>
+      <main className="overflow-hidden alternating-sections">
         <HeroSection
           chapterNumber={slug === "superiors" ? "Chapter 02" : "Chapter 03"}
           chapterName={slug.charAt(0).toUpperCase() + slug.slice(1)}
@@ -78,7 +78,7 @@ export default async function ChapterPage({ params }: PageProps) {
   const nextEvent = getNextEvent(chapter.events || []);
 
   return (
-    <main>
+    <main className="overflow-hidden alternating-sections">
       <HeroSection
         chapterNumber={chapter.chapterNumber}
         chapterName={chapter.name}
