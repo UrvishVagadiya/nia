@@ -33,8 +33,7 @@ const StatBand = ({ stats: cmsStats }: StatBandProps) => {
             return (
               <StaggerItem
                 key={stat.key}
-                direction="up"
-                distance={15}
+                direction="none"
                 className={cn(
                   "min-w-0 transition-all duration-300 flex flex-col justify-center py-6 lg:flex-1 lg:basis-0 text-center",
                   !isFirst && "lg:border-l lg:border-white/20"
